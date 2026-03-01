@@ -58,9 +58,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * we will also need to adjust the "PIDF" coefficients with some that are a better fit for our application.
  */
 
-@TeleOp(name = "MatthewTeleopStarterBot", group = "StarterBot")
+@TeleOp(name = "DanielStarterbotTeleopMecanums", group = "StarterBot")
 //@Disabled
-public class MatthewTeleopStarterBot extends OpMode {
+public class DanielStarterbotTeleopMecanums extends OpMode {
     final double FEED_TIME_SECONDS = 0.20; //The feeder servos run this long when a shot is requested.
     final double STOP_SPEED = 0.0; //We send this power to the servos when we want them to stop.
     final double FULL_SPEED = 1.0;
@@ -71,8 +71,8 @@ public class MatthewTeleopStarterBot extends OpMode {
      * velocity. Here we are setting the target, and minimum velocity that the launcher should run
      * at. The minimum velocity is a threshold for determining when to fire.
      */
-    final double LAUNCHER_TARGET_VELOCITY = 2500;
-    final double LAUNCHER_MIN_VELOCITY = 1200;
+    final double LAUNCHER_TARGET_VELOCITY = 1125;
+    final double LAUNCHER_MIN_VELOCITY = 1075;
 
     // Declare OpMode members.
     private DcMotor leftFrontDrive = null;
@@ -108,7 +108,7 @@ public class MatthewTeleopStarterBot extends OpMode {
         LAUNCHING,
     }
 
-    private LaunchState launchState;
+    private org.firstinspires.ftc.teamcode.DanielStarterbotTeleopMecanums.LaunchState launchState;
 
     // Setup a variable for each drive wheel to save power level for telemetry
     double leftFrontPower;
@@ -121,7 +121,7 @@ public class MatthewTeleopStarterBot extends OpMode {
      */
     @Override
     public void init() {
-        launchState = LaunchState.IDLE;
+        launchState = org.firstinspires.ftc.teamcode.DanielStarterbotTeleopMecanums.LaunchState.IDLE;
 
         /*
          * Initialize the hardware variables. Note that the strings used here as parameters
@@ -129,7 +129,7 @@ public class MatthewTeleopStarterBot extends OpMode {
          * step.
          */
         leftFrontDrive = hardwareMap.get(DcMotor.class, "frontLeft");
-        rightFrontDrive = hardwareMap.get(DcMotor.class, "rightFront");
+        rightFrontDrive = hardwareMap.get(DcMotor.class, "frontRight");
         leftBackDrive = hardwareMap.get(DcMotor.class, "backLeft");
         rightBackDrive = hardwareMap.get(DcMotor.class, "backRight");
         launcher = hardwareMap.get(DcMotorEx.class, "Flywheel");
@@ -272,24 +272,24 @@ public class MatthewTeleopStarterBot extends OpMode {
         switch (launchState) {
             case IDLE:
                 if (shotRequested) {
-                    launchState = LaunchState.SPIN_UP;
+                    launchState = org.firstinspires.ftc.teamcode.DanielStarterbotTeleopMecanums.LaunchState.SPIN_UP;
                 }
                 break;
             case SPIN_UP:
                 launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
                 if (launcher.getVelocity() > LAUNCHER_MIN_VELOCITY) {
-                    launchState = LaunchState.LAUNCH;
+                    launchState = org.firstinspires.ftc.teamcode.DanielStarterbotTeleopMecanums.LaunchState.LAUNCH;
                 }
                 break;
             case LAUNCH:
                 leftFeeder.setPower(FULL_SPEED);
                 rightFeeder.setPower(FULL_SPEED);
                 feederTimer.reset();
-                launchState = LaunchState.LAUNCHING;
+                launchState = org.firstinspires.ftc.teamcode.DanielStarterbotTeleopMecanums.LaunchState.LAUNCHING;
                 break;
             case LAUNCHING:
                 if (feederTimer.seconds() > FEED_TIME_SECONDS) {
-                    launchState = LaunchState.IDLE;
+                    launchState = org.firstinspires.ftc.teamcode.DanielStarterbotTeleopMecanums.LaunchState.IDLE;
                     leftFeeder.setPower(STOP_SPEED);
                     rightFeeder.setPower(STOP_SPEED);
                 }

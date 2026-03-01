@@ -58,9 +58,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * we will also need to adjust the "PIDF" coefficients with some that are a better fit for our application.
  */
 
-@TeleOp(name = "MatthewTeleopStarterBot", group = "StarterBot")
+@TeleOp(name = "FudaiTeleopStarterBot", group = "StarterBot")
 //@Disabled
-public class MatthewTeleopStarterBot extends OpMode {
+public class FudaiTeleopStarterBot extends OpMode {
     final double FEED_TIME_SECONDS = 0.20; //The feeder servos run this long when a shot is requested.
     final double STOP_SPEED = 0.0; //We send this power to the servos when we want them to stop.
     final double FULL_SPEED = 1.0;
@@ -71,7 +71,7 @@ public class MatthewTeleopStarterBot extends OpMode {
      * velocity. Here we are setting the target, and minimum velocity that the launcher should run
      * at. The minimum velocity is a threshold for determining when to fire.
      */
-    final double LAUNCHER_TARGET_VELOCITY = 2500;
+    final double LAUNCHER_TARGET_VELOCITY = 2000;
     final double LAUNCHER_MIN_VELOCITY = 1200;
 
     // Declare OpMode members.
@@ -129,7 +129,7 @@ public class MatthewTeleopStarterBot extends OpMode {
          * step.
          */
         leftFrontDrive = hardwareMap.get(DcMotor.class, "frontLeft");
-        rightFrontDrive = hardwareMap.get(DcMotor.class, "rightFront");
+        rightFrontDrive = hardwareMap.get(DcMotor.class, "frontRight");
         leftBackDrive = hardwareMap.get(DcMotor.class, "backLeft");
         rightBackDrive = hardwareMap.get(DcMotor.class, "backRight");
         launcher = hardwareMap.get(DcMotorEx.class, "Flywheel");
