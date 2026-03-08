@@ -58,9 +58,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * we will also need to adjust the "PIDF" coefficients with some that are a better fit for our application.
  */
 
-@TeleOp(name = "MatthewTeleopStarterBot", group = "StarterBot")
+@TeleOp(name = "ClaireTeleOpStarterbot", group = "StarterBot")
 //@Disabled
-public class MatthewTeleopStarterBot extends OpMode {
+public class ClaireTeleopStarterbot extends OpMode {
     final double FEED_TIME_SECONDS = 0.20; //The feeder servos run this long when a shot is requested.
     final double STOP_SPEED = 0.0; //We send this power to the servos when we want them to stop.
     final double FULL_SPEED = 1.0;
@@ -71,8 +71,8 @@ public class MatthewTeleopStarterBot extends OpMode {
      * velocity. Here we are setting the target, and minimum velocity that the launcher should run
      * at. The minimum velocity is a threshold for determining when to fire.
      */
-    final double LAUNCHER_TARGET_VELOCITY = 2500;
-    final double LAUNCHER_MIN_VELOCITY = 1200;
+    final double LAUNCHER_TARGET_VELOCITY = 1125;
+    final double LAUNCHER_MIN_VELOCITY = 1075;
 
     // Declare OpMode members.
     private DcMotor leftFrontDrive = null;
@@ -180,7 +180,7 @@ public class MatthewTeleopStarterBot extends OpMode {
          * Much like our drivetrain motors, we set the left feeder servo to reverse so that they
          * both work to feed the ball into the robot.
          */
-        rightFeeder.setDirection(DcMotorSimple.Direction.REVERSE);
+        leftFeeder.setDirection(DcMotorSimple.Direction.REVERSE);
 
         /*
          * Tell the driver that initialization is complete.
@@ -248,7 +248,7 @@ public class MatthewTeleopStarterBot extends OpMode {
     public void stop() {
     }
 
-        void mecanumDrive(double forward, double strafe, double rotate){
+    void mecanumDrive(double forward, double strafe, double rotate){
 
         /* the denominator is the largest motor power (absolute value) or 1
          * This ensures all the powers maintain the same ratio,
