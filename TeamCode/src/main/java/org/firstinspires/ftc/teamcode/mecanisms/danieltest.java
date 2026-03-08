@@ -1,16 +1,21 @@
 package org.firstinspires.ftc.teamcode.mecanisms;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gamepad1;
+
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+@TeleOp
 
-public class danieltest {
+public class danieltest extends OpMode {
     private DcMotor Flywheel;
     private DcMotor rightFront;
     private DcMotor leftFront;
     private DcMotor rightBack;
     private DcMotor leftBack;
 
-
+    @Override
     public void init(HardwareMap hwMap) {
         Flywheel = hwMap.get(DcMotor.class, "Flywheel");
         Flywheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -26,4 +31,15 @@ public class danieltest {
         leftBack.setDirection(DcMotor.Direction.REVERSE);
         leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-    }}
+    }
+
+    @Override
+    public void loop() {
+if(gamepad1.y){
+    rightFront.setPower(0.3);
+}
+if(gamepad1.y){
+    rightBack.setPower(0.3);
+}
+    }
+}
