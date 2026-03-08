@@ -129,7 +129,7 @@ public class MatthewTeleopStarterBot extends OpMode {
          * step.
          */
         leftFrontDrive = hardwareMap.get(DcMotor.class, "frontLeft");
-        rightFrontDrive = hardwareMap.get(DcMotor.class, "rightFront");
+        rightFrontDrive = hardwareMap.get(DcMotor.class, "frontRight");
         leftBackDrive = hardwareMap.get(DcMotor.class, "backLeft");
         rightBackDrive = hardwareMap.get(DcMotor.class, "backRight");
         launcher = hardwareMap.get(DcMotorEx.class, "Flywheel");
@@ -248,7 +248,7 @@ public class MatthewTeleopStarterBot extends OpMode {
     public void stop() {
     }
 
-    void mecanumDrive(double forward, double strafe, double rotate){
+        void mecanumDrive(double forward, double strafe, double rotate){
 
         /* the denominator is the largest motor power (absolute value) or 1
          * This ensures all the powers maintain the same ratio,
