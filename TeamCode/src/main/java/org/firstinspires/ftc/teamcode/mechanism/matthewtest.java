@@ -13,5 +13,6 @@ private DcMotor Flywheel;
 public void  init(HardwareMap hwMap){
     Flywheel = hwMap.get(DcMotor.class, "Flywheel");
     Flywheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    Flywheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 }
 }
