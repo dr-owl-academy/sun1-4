@@ -9,7 +9,7 @@ private DcMotor rightFront;
 private DcMotor leftBack;
 private DcMotor rightBack;
 private DcMotor Flywheel;
-
+@Override
 public void  init(HardwareMap hwMap){
     Flywheel = hwMap.get(DcMotor.class, "Flywheel");
     Flywheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -22,5 +22,10 @@ public void  init(HardwareMap hwMap){
     leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     leftBack = hwMap.get(DcMotor.class, "leftBack");
     leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+}
+
+@Override
+ public void loop() {
+    if(Gamepad1.y)
 }
 }
