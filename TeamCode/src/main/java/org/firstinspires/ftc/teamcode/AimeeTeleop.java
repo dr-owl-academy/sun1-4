@@ -132,7 +132,7 @@ public class AimeeTeleop extends OpMode {
         leftFrontDrive = hardwareMap.get(DcMotor.class, "frontLeft");
         rightFrontDrive = hardwareMap.get(DcMotor.class, "frontRight");
         leftBackDrive = hardwareMap.get(DcMotor.class, "backLeft");
-        rightBackDrive = hardwareMap.get(DcMotor.class, "frontLeft");
+        rightBackDrive = hardwareMap.get(DcMotor.class, "backRight");
         launcher = hardwareMap.get(DcMotorEx.class, "Flywheel");
         leftFeeder = hardwareMap.get(CRServo.class, "leftTransfer");
         rightFeeder = hardwareMap.get(CRServo.class, "rightTransfer"); /* possibly need to change the names of the last 3 later */
