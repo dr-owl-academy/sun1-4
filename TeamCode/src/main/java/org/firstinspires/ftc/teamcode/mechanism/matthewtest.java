@@ -26,6 +26,5 @@ public void  init(HardwareMap hwMap){
 
 @Override
  public void loop() {
-    if(Gamepad1.y)
 }
 }
