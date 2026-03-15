@@ -10,26 +10,26 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class danieltest extends OpMode {
     private DcMotor Flywheel;
-    private DcMotor rightFront;
-    private DcMotor leftFront;
-    private DcMotor rightBack;
-    private DcMotor leftBack;
+    private DcMotor frontRight;
+    private DcMotor frontLeft;
+    private DcMotor backRight;
+    private DcMotor backLeft;
 
     @Override
     public void init() {
         Flywheel = hardwareMap.get(DcMotor.class, "Flywheel");
         Flywheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         Flywheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightFront = hardwareMap.get(DcMotor.class, "rightFront");
-        rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightBack = hardwareMap.get(DcMotor.class, "rightBack");
-        rightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        leftFront = hardwareMap.get(DcMotor.class, "leftFront");
-        leftFront.setDirection(DcMotor.Direction.REVERSE);
-        leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        leftBack = hardwareMap.get(DcMotor.class, "leftBack");
-        leftBack.setDirection(DcMotor.Direction.REVERSE);
-        leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        frontRight = hardwareMap.get(DcMotor.class, "rightFront");
+        frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        backRight = hardwareMap.get(DcMotor.class, "rightBack");
+        backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        frontLeft = hardwareMap.get(DcMotor.class, "leftFront");
+        frontLeft.setDirection(DcMotor.Direction.REVERSE);
+        frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        backLeft = hardwareMap.get(DcMotor.class, "leftBack");
+        backLeft.setDirection(DcMotor.Direction.REVERSE);
+        backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
     }
 
@@ -37,34 +37,34 @@ public class danieltest extends OpMode {
     @Override
     public void loop() {
         if (gamepad1.y) {
-            rightFront.setPower(0.3);
+            frontRight.setPower(0.3);
         } else {
-            rightFront.setPower(0.0);
+            frontRight.setPower(0.0);
         }
         if (gamepad1.a) {
-            rightBack.setPower(0.3);
+            backRight.setPower(0.3);
         } else {
-            rightBack.setPower(0.0);
+            backRight.setPower(0.0);
         }
         if (gamepad1.x) {
-            leftFront.setPower(0.3);
+            frontLeft.setPower(0.3);
         } else {
-            leftFront.setPower(0.0);
+            frontLeft.setPower(0.0);
         }
         if (gamepad1.b) {
-            leftBack.setPower(0.3);
+            backLeft.setPower(0.3);
         } else {
-            leftBack.setPower(0.0);
+            backLeft.setPower(0.0);
         }
         if (gamepad1.right_bumper) {
             Flywheel.setPower(0.3);
         } else {
             Flywheel.setPower(0.0);
         }
-        telemetry.addData("RF", rightFront.getPower());
-        telemetry.addData("LF", leftFront.getPower());
-        telemetry.addData("LB", leftBack.getPower());
-        telemetry.addData("RB", rightBack.getPower());
+        telemetry.addData("FR", frontRight.getPower());
+        telemetry.addData("FL", frontLeft.getPower());
+        telemetry.addData("BL", backLeft.getPower());
+        telemetry.addData("BR", backRight.getPower());
         telemetry.addData("Flywheel", Flywheel.getPower());
         telemetry.update();
     }
