@@ -37,15 +37,23 @@ public class danieltest extends OpMode {
     public void loop() {
         if (gamepad1.y) {
             rightFront.setPower(0.3);
+        } else {
+            rightFront.setPower(0.0);
         }
         if (gamepad1.a) {
             rightBack.setPower(0.3);
+        } else {
+            rightBack.setPower(0.0);
         }
         if (gamepad1.x) {
             leftFront.setPower(0.3);
+        } else {
+            leftFront.setPower(0.0);
         }
         if (gamepad1.b) {
             leftBack.setPower(0.3);
+        } else {
+            leftBack.setPower(0.0);
         }
     }
 }
