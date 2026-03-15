@@ -3,10 +3,13 @@ package org.firstinspires.ftc.teamcode.mechanisms;
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gamepad1;
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
 
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-public class tinaTest {
+@TeleOp
+public class tinaTest extends OpMode {
     private DcMotor Flywheel;
     private DcMotor rightFront;
     private DcMotor leftFront;
@@ -15,18 +18,18 @@ public class tinaTest {
 
 
     @Override
-    public void init(HardwareMap hwMap){
-        Flywheel = hwMap.get(DcMotor.class, "Flywheel");
+    public void init(){
+        Flywheel = hardwareMap.get(DcMotor.class, "Flywheel");
         Flywheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         Flywheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightFront = hwMap.get(DcMotor.class, "frontRight");
+        rightFront = hardwareMap.get(DcMotor.class, "frontRight");
         rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightBack = hwMap.get(DcMotor.class, "backRight");
+        rightBack = hardwareMap.get(DcMotor.class, "backRight");
         rightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        leftFront = hwMap.get(DcMotor.class, "frontLeft");
+        leftFront = hardwareMap.get(DcMotor.class, "frontLeft");
         leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         leftFront.setDirection(DcMotor.Direction.REVERSE);
-        leftBack = hwMap.get(DcMotor.class, "backLeft");
+        leftBack = hardwareMap.get(DcMotor.class, "backLeft");
         leftBack.setDirection(DcMotor.Direction.REVERSE);
         leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
@@ -35,8 +38,6 @@ public class tinaTest {
 
     @Override
     public void loop() {
-
-        init(hardwareMap);
 
         if (gamepad1.y) {
             rightFront.setPower(0.3);
