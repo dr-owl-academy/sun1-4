@@ -78,7 +78,6 @@ public class iris_test1 {
             if(gamepad1.aWasPressed()) {
                 rightBack.setPower(0);
             }
-
         }
     }
 }
