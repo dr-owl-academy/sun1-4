@@ -16,22 +16,23 @@ public class danieltest extends OpMode {
     private DcMotor leftBack;
 
     @Override
-    public void init(HardwareMap hwMap) {
-        Flywheel = hwMap.get(DcMotor.class, "Flywheel");
+    public void init() {
+        Flywheel = hardwareMap.get(DcMotor.class, "Flywheel");
         Flywheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         Flywheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightFront = hwMap.get(DcMotor.class, "rightFront");
+        rightFront = hardwareMap.get(DcMotor.class, "rightFront");
         rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightBack = hwMap.get(DcMotor.class, "rightBack");
+        rightBack = hardwareMap.get(DcMotor.class, "rightBack");
         rightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        leftFront = hwMap.get(DcMotor.class, "leftFront");
+        leftFront = hardwareMap.get(DcMotor.class, "leftFront");
         leftFront.setDirection(DcMotor.Direction.REVERSE);
         leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        leftBack = hwMap.get(DcMotor.class, "leftBack");
+        leftBack = hardwareMap.get(DcMotor.class, "leftBack");
         leftBack.setDirection(DcMotor.Direction.REVERSE);
         leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
     }
+
 
     @Override
     public void loop() {
@@ -55,6 +56,17 @@ public class danieltest extends OpMode {
         } else {
             leftBack.setPower(0.0);
         }
+        if (gamepad1.right_bumper) {
+            Flywheel.setPower(0.3);
+        } else {
+            Flywheel.setPower(0.0);
+        }
+        telemetry.addData("RF", rightFront.getPower());
+        telemetry.addData("LF", leftFront.getPower());
+        telemetry.addData("LB", leftBack.getPower());
+        telemetry.addData("RB", rightBack.getPower());
+        telemetry.addData("Flywheel", Flywheel.getPower());
+        telemetry.update();
     }
 }
 
