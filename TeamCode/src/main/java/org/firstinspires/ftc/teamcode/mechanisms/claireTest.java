@@ -17,10 +17,10 @@ public class claireTest extends LinearOpMode {
     @Override
     public void runOpMode() {
 
-        rightFront = hardwareMap.get(DcMotor.class, "rightFront");
-        rightBack = hardwareMap.get(DcMotor.class, "rightBack");
-        leftFront = hardwareMap.get(DcMotor.class, "leftFront");
-        leftBack = hardwareMap.get(DcMotor.class, "leftBack");
+        rightFront = hardwareMap.get(DcMotor.class, "frontRight");
+        rightBack = hardwareMap.get(DcMotor.class, "backRight");
+        leftFront = hardwareMap.get(DcMotor.class, "frontLeft");
+        leftBack = hardwareMap.get(DcMotor.class, "backLeft");
         Flywheel = hardwareMap.get(DcMotor.class, "Flywheel");
 
         waitForStart();
