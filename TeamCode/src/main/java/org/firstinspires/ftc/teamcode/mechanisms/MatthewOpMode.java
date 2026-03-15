@@ -1,58 +1,64 @@
 package org.firstinspires.ftc.teamcode.mechanisms;
 
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 
-public class MatthewOpMode {
+public class MatthewOpMode extends OpMode {
     private DcMotor leftFront;
     private DcMotor rightFront;
     private DcMotor leftBack;
     private DcMotor rightBack;
     private DcMotor Flywheel;
 
-    public void  init(HardwareMap hwMap){
-        Flywheel = hwMap.get(DcMotor.class, "Flywheel");
+    public void init() {
+        Flywheel = hardwareMap.get(DcMotor.class, "Flywheel");
         Flywheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         Flywheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightFront = hwMap.get(DcMotor.class, "rightFront");
+        rightFront = hardwareMap.get(DcMotor.class, "rightFront");
         rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightBack = hwMap.get(DcMotor.class, "rightBack");
+        rightBack = hardwareMap.get(DcMotor.class, "rightBack");
         rightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        leftFront = hwMap.get(DcMotor.class, "leftFront");
+        leftFront = hardwareMap.get(DcMotor.class, "leftFront");
         leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        leftBack = hwMap.get(DcMotor.class, "leftBack");
+        leftBack = hardwareMap.get(DcMotor.class, "leftBack");
         leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
         leftBack.setDirection(DcMotorSimple.Direction.REVERSE);
 
     }
-   public void wheels () {
-       if (gamepad1.yWasPressed) {
+
+    @Override
+    public void loop() {
+
+    }
+
+    public void wheels () {
+       if (gamepad1.a) {
            leftFront.setPower(0.5);
-           if (gamepad1.yWasReleased) {
-               leftFront.setPower(0);
-           }
+       } else {
+           leftFront.setPower(0);
        }
-       if (gamepad1.yWasPressed) {
+
+       if (gamepad1.b) {
            leftBack.setPower(0.5);
-           if (gamepad1.yWasReleased) {
-               leftBack.setPower(0)
-           }
+       } else {
+           leftBack.setPower(0);
        }
-       if (gamepad1.yWasPressed) {
+
+       if (gamepad1.x) {
            rightFront.setPower(0.5);
-           if (gamepad1.yWasReleased) {
-               rightFront.setPower(0)
-           }
+       } else {
+           rightFront.setPower(0);
        }
-       if (gamepad1.yWasPressed) {
+
+       if (gamepad1.y) {
            rightBack.setPower(0.5);
-           if (gamepad1.yWasReleased) {
-               rightBack.setPower(0)
-           }
+       } else {
+           rightBack.setPower(0);
        }
-   }
+   }}
