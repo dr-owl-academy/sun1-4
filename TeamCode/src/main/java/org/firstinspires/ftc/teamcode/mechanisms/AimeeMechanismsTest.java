@@ -63,6 +63,18 @@ public class AimeeMechanismsTest {
             rightBack.setPower(0.0);
         }
 
+        if (gamepad1.left_bumper) {
+            Flywheel.setPower(0.3);
+        } else {
+            Flywheel.setPower(0.0);
+        }
+
+        telemetry.addData("RF", rightFront.getPower());
+        telemetry.addData("LF", leftFront.getPower());
+        telemetry.addData("LB", leftBack.getPower());
+        telemetry.addData("RB", rightBack.getPower());
+        telemetry.addData("Flywheel", Flywheel.getPower());
+        telemetry.update();
 
     }
 }
