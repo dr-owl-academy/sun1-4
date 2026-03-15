@@ -12,7 +12,7 @@ public class MatthewOpMode {
     private DcMotor leftBack;
     private DcMotor rightBack;
     private DcMotor Flywheel;
-    @Override
+
     public void  init(HardwareMap hwMap){
         Flywheel = hwMap.get(DcMotor.class, "Flywheel");
         Flywheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -30,18 +30,29 @@ public class MatthewOpMode {
         leftBack.setDirection(DcMotorSimple.Direction.REVERSE);
 
     }
-
-    @Override
-    public void loop() {
-        // runs 50x* a second
-        double speedForward = gamepad1.x /2.0;
-
-
-        telemetry.addData("x_button",gamepad1.x);
-        telemetry.addData("y_button", gamepad1.y);
-        telemetry.addData("a_button", gamepad1.a);
-        telemetry.addData("b_button", gamepad1.b);
-
-
-    }
-}
+   public void wheels () {
+       if (gamepad1.yWasPressed) {
+           leftFront.setPower(0.5);
+           if (gamepad1.yWasReleased) {
+               leftFront.setPower(0);
+           }
+       }
+       if (gamepad1.yWasPressed) {
+           leftBack.setPower(0.5);
+           if (gamepad1.yWasReleased) {
+               leftBack.setPower(0)
+           }
+       }
+       if (gamepad1.yWasPressed) {
+           rightFront.setPower(0.5);
+           if (gamepad1.yWasReleased) {
+               rightFront.setPower(0)
+           }
+       }
+       if (gamepad1.yWasPressed) {
+           rightBack.setPower(0.5);
+           if (gamepad1.yWasReleased) {
+               rightBack.setPower(0)
+           }
+       }
+   }
