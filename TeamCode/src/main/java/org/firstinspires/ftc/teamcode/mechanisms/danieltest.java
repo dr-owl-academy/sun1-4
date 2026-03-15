@@ -20,14 +20,14 @@ public class danieltest extends OpMode {
         Flywheel = hardwareMap.get(DcMotor.class, "Flywheel");
         Flywheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         Flywheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        frontRight = hardwareMap.get(DcMotor.class, "rightFront");
+        frontRight = hardwareMap.get(DcMotor.class, "frontRight");
         frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        backRight = hardwareMap.get(DcMotor.class, "rightBack");
+        backRight = hardwareMap.get(DcMotor.class, "backRight");
         backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        frontLeft = hardwareMap.get(DcMotor.class, "leftFront");
+        frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
         frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        backLeft = hardwareMap.get(DcMotor.class, "leftBack");
+        backLeft = hardwareMap.get(DcMotor.class, "backLeft");
         backLeft.setDirection(DcMotor.Direction.REVERSE);
         backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
