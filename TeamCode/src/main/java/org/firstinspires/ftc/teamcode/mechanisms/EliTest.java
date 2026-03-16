@@ -17,6 +17,7 @@ public class EliTest {
     private static final double ticksPerRev = 537.6; // example for GoBilda motor
     private static final double inPerTick = 0.01;    // adjust for your wheel setup
 
+
     public void init(HardwareMap hwMap){
 
         flywheel = hwMap.get(DcMotor.class, "Flywheel");
