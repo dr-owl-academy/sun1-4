@@ -58,7 +58,7 @@ public class danieltest extends OpMode {
             backLeft.setPower(0.0);
         }
         if (gamepad1.right_bumper) {
-            Flywheel.setPower(1.0);
+            Flywheel.setPower(0.3);
         } else {
             Flywheel.setPower(0.0);
         }
