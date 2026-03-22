@@ -21,16 +21,16 @@ public class Ellamech extends OpMode {
         Flywheel = hardwareMap.get(DcMotor.class, "Flywheel");
         Flywheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         Flywheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightFront = hardwareMap.get(DcMotor.class, "rightFront");
-        rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightBack = hardwareMap.get(DcMotor.class, "rightBack");
-        rightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        leftFront = hardwareMap.get(DcMotor.class,"leftFront");
-        leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        leftFront.setDirection(DcMotor.Direction.REVERSE);
-        leftBack = hardwareMap.get(DcMotor.class,"leftBack");
-        leftBack.setDirection(DcMotor.Direction.REVERSE);
-        leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        frontRight = hardwareMap.get(DcMotor.class, "rightFront");
+        frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        backRight = hardwareMap.get(DcMotor.class, "rightBack");
+        backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        frontLeft = hardwareMap.get(DcMotor.class,"leftFront");
+        frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        frontLeft.setDirection(DcMotor.Direction.REVERSE);
+        backLeft = hardwareMap.get(DcMotor.class,"leftBack");
+        backLeft.setDirection(DcMotor.Direction.REVERSE);
+        backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
     @Override
