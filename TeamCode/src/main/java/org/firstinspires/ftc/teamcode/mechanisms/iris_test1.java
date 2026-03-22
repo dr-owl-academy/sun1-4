@@ -2,9 +2,13 @@ package org.firstinspires.ftc.teamcode.mechanisms;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Gamepad;
-import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
+import com.qualcomm.robotcore.util.ElapsedTime;
+
 
 
 @TeleOp
@@ -14,6 +18,8 @@ public class iris_test1 extends OpMode {
     private DcMotor leftFront;
     private DcMotor rightBack;
     private DcMotor leftBack;
+    private CRServo leftFeeder;
+    private CRServo rightFeeder;
 
 
     @Override
@@ -30,6 +36,8 @@ public class iris_test1 extends OpMode {
         leftFront.setDirection(DcMotor.Direction.REVERSE);
         leftBack = hardwareMap.get(DcMotor.class,"backLeft");
         leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        CRServo leftFeeder = hardwareMap.get(CRServo.class, "leftTransfer");
+        CRServo rightFeeder = hardwareMap.get(CRServo.class, "rightTransfer");
     }
 
     @Override
@@ -65,11 +73,21 @@ public class iris_test1 extends OpMode {
             Flywheel.setPower(0.0);
         }
 
+        if (gamepad1.right_bumper) {
+           leftFeeder.setPower(0.5);
+           rightFeeder.setPower(0.5);
+        } else {
+            leftFeeder.setPower(0.0);
+            rightFeeder.setPower(0.0);
+        }
+
         telemetry.addData("RF", rightFront.getPower());
         telemetry.addData("LF", leftFront.getPower());
         telemetry.addData("LB", leftBack.getPower());
         telemetry.addData("RB", rightBack.getPower());
         telemetry.addData("Flywheel", Flywheel.getPower());
+        telemetry.addData("leftTransfer", leftFeeder.getPower());
+        telemetry.addData("rightTransfer", rightFeeder.getPower());
         telemetry.update();
     }
 }
