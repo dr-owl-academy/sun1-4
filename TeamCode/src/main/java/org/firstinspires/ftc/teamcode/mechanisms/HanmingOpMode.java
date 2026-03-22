@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 @TeleOp
 public class HanmingOpMode extends OpMode {
     private DcMotor Flywheel;
-    private DcMotor rightFront;
+    private DcMotor frontRight;
     private DcMotor leftFront;
     private DcMotor rightBack;
     private DcMotor leftBack;
@@ -22,8 +22,8 @@ public class HanmingOpMode extends OpMode {
         Flywheel = hardwareMap.get(DcMotor.class, "Flywheel");
         Flywheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         Flywheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightFront = hardwareMap.get(DcMotor.class, "rightFront");
-        rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        frontRight = hardwareMap.get(DcMotor.class, "frontRight");
+        frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightBack = hardwareMap.get(DcMotor.class, "rightBack");
         rightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         leftFront = hardwareMap.get(DcMotor.class,"leftFront");
@@ -40,9 +40,9 @@ public class HanmingOpMode extends OpMode {
     public void loop() {
 
         if (gamepad1.y) {
-            rightFront.setPower(0.3);
+            frontRight.setPower(0.3);
         } else {
-            rightFront.setPower(0.0);
+            frontRight.setPower(0.0);
         }
 
         if (gamepad1.x) {
@@ -72,7 +72,7 @@ public class HanmingOpMode extends OpMode {
         if (gamepad1.dpad_left) {
             leftTransfer.setPower(1);
         } else {
-            lefTransfer.setPower(0.0);
+            leftTransfer.setPower(0.0);
         }
 
         if (gamepad1.dpad_right) {
@@ -81,7 +81,7 @@ public class HanmingOpMode extends OpMode {
             rightTransfer.setPower(0.0);
         }
 
-        telemetry.addData("RF", rightFront.getPower());
+        telemetry.addData("RF", frontRight.getPower());
         telemetry.addData("LF", leftFront.getPower());
         telemetry.addData("LB", leftBack.getPower());
         telemetry.addData("RB", rightBack.getPower());
