@@ -35,6 +35,7 @@ public class danieltest extends OpMode {
         backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         leftTransfer = hardwareMap.get(CRServo.class, "leftTransfer");
         rightTransfer = hardwareMap.get(CRServo.class, "rightTransfer");
+        rightTransfer.setDirection(CRServo.Direction.REVERSE);
 
     }
 
