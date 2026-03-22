@@ -30,7 +30,7 @@ public class Ellamech extends OpMode {
         leftFront.setDirection(DcMotor.Direction.REVERSE);
         leftBack = hardwareMap.get(DcMotor.class,"leftBack");
         leftBack.setDirection(DcMotor.Direction.REVERSE);
-        leftBac.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
     @Override
