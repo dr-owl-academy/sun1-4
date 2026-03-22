@@ -2,10 +2,12 @@ package org.firstinspires.ftc.teamcode.mechanisms;
 
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.hardware.Servo;
 
 public class MatthewOpMode extends OpMode {
     private DcMotor leftFront;
@@ -13,6 +15,8 @@ public class MatthewOpMode extends OpMode {
     private DcMotor leftBack;
     private DcMotor rightBack;
     private DcMotor Flywheel;
+    private CRServo leftTransfer;
+    private CRServo rightTransfer;
 
     public void init() {
         Flywheel = hardwareMap.get(DcMotor.class, "Flywheel");
@@ -26,6 +30,10 @@ public class MatthewOpMode extends OpMode {
         leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         leftBack = hardwareMap.get(DcMotor.class, "leftBack");
         leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftTransfer = hardwareMap.get(CRServo.class, "leftTransfer");
+        rightTransfer = hardwareMap.get(CRServo.class, "rightTransfer");
+        rightTransfer.setDirection(DcMotorSimple.Direction.REVERSE);
+
 
         leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
         leftBack.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -61,4 +69,30 @@ public class MatthewOpMode extends OpMode {
        } else {
            rightBack.setPower(0);
        }
+
+       if (gamepad1.right_bumper) {
+           Flywheel.setPower(5);
+       } else {
+           Flywheel.setPower(0);
+       }
+
+       if (gamepad1.dpad_left) {
+           leftTransfer.setPower(1);
+       } else {
+           leftTransfer.setPower(0);
+       }
+
+        if (gamepad1.dpad_right) {
+            rightTransfer.setPower(1);
+        } else {
+            rightTransfer.setPower(0);
+        }
+
+       telemetry.addData("a", gamepad1.a);
+       telemetry.addData("b", gamepad1.b);
+       telemetry.addData("x", gamepad1.x);
+       telemetry.addData("y", gamepad1.y);
+       telemetry.addData("right_bumper", gamepad1.right_bumper);
+       telemetry.addData("right_dpad", gamepad1.dpad_right);
+       telemetry.addData("left_dpad", gamepad1.dpad_left);
    }}
