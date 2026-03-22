@@ -37,6 +37,7 @@ public class tinaTest extends OpMode {
         leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         leftTransfer = hardwareMap.get(CRServo.class, "leftTransfer");
         rightTransfer = hardwareMap.get(CRServo.class, "rightTransfer");
+        rightTransfer.setDirection(CRServo.Direction.REVERSE);
 
 
     }
@@ -70,16 +71,14 @@ public class tinaTest extends OpMode {
         }else{
             Flywheel.setPower(0.0);
         }
-        if (gamepad1.dpad_left) {
+        if (gamepad1.dpad_up) {
             leftTransfer.setPower(0.3);
-        }else{
-            leftTransfer.setPower(0.0);
-        }
-        if (gamepad1.dpad_right) {
             rightTransfer.setPower(0.3);
         }else{
+            leftTransfer.setPower(0.0);
             rightTransfer.setPower(0.0);
         }
+
 
         telemetry.addData("RF", rightFront.getPower());
         telemetry.addData("RB", rightBack.getPower());
