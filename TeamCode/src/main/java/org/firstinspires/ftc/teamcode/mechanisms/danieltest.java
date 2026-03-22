@@ -34,7 +34,7 @@ public class danieltest extends OpMode {
         backLeft.setDirection(DcMotor.Direction.FORWARD);
         backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         leftTransfer = hardwareMap.get(CRServo.class, "leftTransfer");
-        rightTransfer = hardwareMap.get(CRServo.class, "rightTransfer)");
+        rightTransfer = hardwareMap.get(CRServo.class, "rightTransfer");
 
     }
 
@@ -81,8 +81,8 @@ public class danieltest extends OpMode {
         telemetry.addData("BL", backLeft.getPower());
         telemetry.addData("BR", backRight.getPower());
         telemetry.addData("Flywheel", Flywheel.getPower());
-        telemetry.addData("leftTransfer", leftTransfer.getPower());
-        telemetry.addData("rightTransfer", rightTransfer.getPower());
+        telemetry.addData("LT", leftTransfer.getPower());
+        telemetry.addData("RT", rightTransfer.getPower());
         telemetry.update();
     }
 }
