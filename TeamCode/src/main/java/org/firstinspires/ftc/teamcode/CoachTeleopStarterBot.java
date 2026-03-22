@@ -185,7 +185,7 @@ public class CoachTeleopStarterBot extends OpMode {
         /*
          * Tell the driver that initialization is complete.
          */
-        telemetry.addData("Status", "Initialized");
+        telemetry.addData("RF", rightFront"Initialized");
     }
 
     /*
