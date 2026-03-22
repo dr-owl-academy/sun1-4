@@ -11,9 +11,9 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 public class HanmingOpMode extends OpMode {
     private DcMotor Flywheel;
     private DcMotor frontRight;
-    private DcMotor leftFront;
-    private DcMotor rightBack;
-    private DcMotor leftBack;
+    private DcMotor frontLeft;
+    private DcMotor backRight;
+    private DcMotor backLeft;
     private CRServo leftTransfer;
     private CRServo rightTransfer;
 
@@ -24,15 +24,15 @@ public class HanmingOpMode extends OpMode {
         Flywheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontRight = hardwareMap.get(DcMotor.class, "frontRight");
         frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightBack = hardwareMap.get(DcMotor.class, "rightBack");
-        rightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        leftFront = hardwareMap.get(DcMotor.class,"leftFront");
-        leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        leftFront.setDirection(DcMotor.Direction.REVERSE);
-        leftBack = hardwareMap.get(DcMotor.class,"leftBack");
-        leftBack.setDirection(DcMotor.Direction.REVERSE);
-        leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        leftTransfer = hardwareMap.get(CRServo.class, "leftTranfer");
+        backRight = hardwareMap.get(DcMotor.class, "backRight");
+        backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        frontLeft = hardwareMap.get(DcMotor.class,"frontLeft");
+        frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        frontLeft.setDirection(DcMotor.Direction.REVERSE);
+        backLeft = hardwareMap.get(DcMotor.class,"backLeft");
+        backLeft.setDirection(DcMotor.Direction.REVERSE);
+        backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftTransfer = hardwareMap.get(CRServo.class, "leftTranfser");
         rightTransfer = hardwareMap.get(CRServo.class, "rightTransfer");
     }
 
@@ -46,21 +46,21 @@ public class HanmingOpMode extends OpMode {
         }
 
         if (gamepad1.x) {
-            leftFront.setPower(0.3);
+            frontLeft.setPower(0.3);
         } else {
-            leftFront.setPower(0.0);
+            frontLeft.setPower(0.0);
         }
 
         if (gamepad1.a) {
-            leftBack.setPower(0.3);
+            backLeft.setPower(0.3);
         } else {
-            leftBack.setPower(0.0);
+            backLeft.setPower(0.0);
         }
 
         if (gamepad1.b) {
-            rightBack.setPower(-0.3);
+            backRight.setPower(-0.3);
         } else {
-            rightBack.setPower(0.0);
+            backRight.setPower(0.0);
         }
 
         if (gamepad1.left_bumper) {
@@ -82,9 +82,9 @@ public class HanmingOpMode extends OpMode {
         }
 
         telemetry.addData("RF", frontRight.getPower());
-        telemetry.addData("LF", leftFront.getPower());
-        telemetry.addData("LB", leftBack.getPower());
-        telemetry.addData("RB", rightBack.getPower());
+        telemetry.addData("LF", frontLeft.getPower());
+        telemetry.addData("LB", backLeft.getPower());
+        telemetry.addData("RB", backRight.getPower());
         telemetry.addData("Flywheel", Flywheel.getPower());
         telemetry.update();
     }
