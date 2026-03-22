@@ -65,6 +65,14 @@ public class tinaTest extends OpMode {
             Flywheel.setPower(0.0);
         }
 
+        telemetry.addData("RF", rightFront.getPower());
+        telemetry.addData("RB", rightBack.getPower());
+        telemetry.addData("LF", leftFront.getPower());
+        telemetry.addData("LB", leftBack.getPower());
+        telemetry.addData("Flywheel", Flywheel.getPower());
+        telemetry.update();
+
+
     }
 }
 
