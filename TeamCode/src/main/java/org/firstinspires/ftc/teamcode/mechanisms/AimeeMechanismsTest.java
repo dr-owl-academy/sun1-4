@@ -38,34 +38,34 @@ public class AimeeMechanismsTest extends OpMode {
     @Override
     public void loop() {
         if (gamepad1.x){
-            leftFront.setPower(0.3);
+            leftFront.setPower(0.5);
         } else {
             leftFront.setPower(0.0);
         }
 
 
         if (gamepad1.y){
-            rightFront.setPower(0.3);
+            rightFront.setPower(0.5);
         } else {
             rightFront.setPower(0.0);
         }
 
 
         if (gamepad1.a){
-            leftBack.setPower(0.3);
+            leftBack.setPower(0.5);
         } else {
             leftBack.setPower(0.0);
         }
 
 
         if (gamepad1.b){
-            rightBack.setPower(0.3);
+            rightBack.setPower(0.5);
         } else {
             rightBack.setPower(0.0);
         }
 
         if (gamepad1.left_bumper) {
-            Flywheel.setPower(0.3);
+            Flywheel.setPower(0.5);
         } else {
             Flywheel.setPower(0.0);
         }
