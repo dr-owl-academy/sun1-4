@@ -4,6 +4,7 @@ import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gam
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -15,7 +16,8 @@ public class danieltest extends OpMode {
     private DcMotor frontLeft;
     private DcMotor backRight;
     private DcMotor backLeft;
-
+    private CRServo leftTransfer;
+    private CRServo rightTransfer;
     @Override
     public void init() {
         Flywheel = hardwareMap.get(DcMotor.class, "Flywheel");
@@ -31,6 +33,8 @@ public class danieltest extends OpMode {
         backLeft = hardwareMap.get(DcMotor.class, "backLeft");
         backLeft.setDirection(DcMotor.Direction.FORWARD);
         backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftTransfer = hardwareMap.get(CRServo.class, "leftTransfer");
+        rightTransfer = hardwareMap.get(CRServo.class, "rightTransfer)");
 
     }
 
@@ -62,11 +66,23 @@ public class danieltest extends OpMode {
         } else {
             Flywheel.setPower(0.0);
         }
+        if (gamepad1.dpad_right) {
+            rightTransfer.setPower(0.3);
+        } else {
+            rightTransfer.setPower(0.0);
+        }
+        if (gamepad1.dpad_left) {
+            leftTransfer.setPower(0.3);
+        } else {
+            leftTransfer.setPower(0.0);
+        }
         telemetry.addData("FR", frontRight.getPower());
         telemetry.addData("FL", frontLeft.getPower());
         telemetry.addData("BL", backLeft.getPower());
         telemetry.addData("BR", backRight.getPower());
         telemetry.addData("Flywheel", Flywheel.getPower());
+        telemetry.addData("leftTransfer", leftTransfer.getPower());
+        telemetry.addData("rightTransfer", rightTransfer.getPower());
         telemetry.update();
     }
 }
