@@ -5,6 +5,7 @@ import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.har
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -15,6 +16,9 @@ public class tinaTest extends OpMode {
     private DcMotor leftFront;
     private DcMotor rightBack;
     private DcMotor leftBack;
+    private CRServo leftTransfer;
+    private CRServo rightTransfer;
+
 
 
     @Override
@@ -30,8 +34,10 @@ public class tinaTest extends OpMode {
         leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         leftFront.setDirection(DcMotor.Direction.REVERSE);
         leftBack = hardwareMap.get(DcMotor.class, "backLeft");
-        leftBack.setDirection(DcMotor.Direction.REVERSE);
         leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftTransfer = hardwareMap.get(CRServo.class, "leftTransfer");
+        rightTransfer = hardwareMap.get(CRServo.class, "rightTransfer");
+
 
     }
 
