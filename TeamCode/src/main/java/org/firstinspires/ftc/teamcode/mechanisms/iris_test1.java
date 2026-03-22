@@ -30,8 +30,9 @@ public class iris_test1 extends OpMode {
         leftFront.setDirection(DcMotor.Direction.REVERSE);
         leftBack = hardwareMap.get(DcMotor.class,"backLeft");
         leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        CRServo leftFeeder = hardwareMap.get(CRServo.class, "leftTransfer");
-        CRServo rightFeeder = hardwareMap.get(CRServo.class, "rightTransfer");
+        leftFeeder = hardwareMap.get(CRServo.class, "leftTransfer");
+        rightFeeder = hardwareMap.get(CRServo.class, "rightTransfer");
+        rightFeeder.setDirection(CRServo.Direction.REVERSE);
     }
 
     @Override
