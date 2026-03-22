@@ -32,6 +32,8 @@ public class HanmingOpMode extends OpMode {
         leftBack = hardwareMap.get(DcMotor.class,"leftBack");
         leftBack.setDirection(DcMotor.Direction.REVERSE);
         leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftTransfer = hardwareMap.get(CRServo.class, "leftTranfer");
+        rightTransfer = hardwareMap.get(CRServo.class, "rightTransfer");
     }
 
     @Override
@@ -65,6 +67,18 @@ public class HanmingOpMode extends OpMode {
             Flywheel.setPower(0.3);
         } else {
             Flywheel.setPower(0.0);
+        }
+
+        if (gamepad1.dpad_left) {
+            leftTransfer.setPower(1);
+        } else {
+            lefTransfer.setPower(0.0);
+        }
+
+        if (gamepad1.dpad_right) {
+            rightTransfer.setPower(1);
+        } else {
+            rightTransfer.setPower(0.0);
         }
 
         telemetry.addData("RF", rightFront.getPower());
