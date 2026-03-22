@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.mechanisms;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -14,6 +15,8 @@ public class coachtest extends OpMode {
     private DcMotor leftFront;
     private DcMotor rightBack;
     private DcMotor leftBack;
+    private CRServo leftTransfer;
+    private CRServo rightTransfer;
 
 
     @Override
@@ -31,6 +34,8 @@ public class coachtest extends OpMode {
         leftBack = hardwareMap.get(DcMotor.class,"leftBack");
         leftBack.setDirection(DcMotor.Direction.REVERSE);
         leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftTransfer = hardwareMap.get(CRServo.class, "leftTranfer");
+        rightTransfer = hardwareMap.get(CRServo.class, "rightTransfer");
     }
 
     @Override
