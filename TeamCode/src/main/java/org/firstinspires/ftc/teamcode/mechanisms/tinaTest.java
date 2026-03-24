@@ -71,7 +71,7 @@ public class tinaTest extends OpMode {
         }else{
             Flywheel.setPower(0.0);
         }
-        if (gamepad1.dpad_up) {
+        if (gamepad1.right_bumper) {
             leftTransfer.setPower(0.3);
             rightTransfer.setPower(0.3);
         }else{
