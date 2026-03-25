@@ -71,14 +71,10 @@ public class HanmingOpMode extends OpMode {
 
         if (gamepad1.dpad_left) {
             leftTransfer.setPower(1);
-        } else {
-            leftTransfer.setPower(0.0);
         }
 
         if (gamepad1.dpad_right) {
             rightTransfer.setPower(1);
-        } else {
-            rightTransfer.setPower(0.0);
         }
 
         telemetry.addData("RF", frontRight.getPower());
