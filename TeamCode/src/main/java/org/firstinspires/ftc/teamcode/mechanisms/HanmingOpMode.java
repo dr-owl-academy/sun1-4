@@ -4,8 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Gamepad;
-import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 @TeleOp
 public class HanmingOpMode extends OpMode {
@@ -17,28 +16,45 @@ public class HanmingOpMode extends OpMode {
     private CRServo leftTransfer;
     private CRServo rightTransfer;
 
+    // Keep this OUTSIDE loop so it remembers its value
+    private double flywheelspeed = 0.3;
+
+    // These help prevent one button press from changing speed 50 times
+    private boolean lastDpadUp = false;
+    private boolean lastDpadDown = false;
+
     @Override
     public void init() {
         Flywheel = hardwareMap.get(DcMotor.class, "Flywheel");
         Flywheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         Flywheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
         frontRight = hardwareMap.get(DcMotor.class, "frontRight");
         frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
         backRight = hardwareMap.get(DcMotor.class, "backRight");
         backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        frontLeft = hardwareMap.get(DcMotor.class,"frontLeft");
+
+        frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
         frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
-        backLeft = hardwareMap.get(DcMotor.class,"backLeft");
+
+        backLeft = hardwareMap.get(DcMotor.class, "backLeft");
         backLeft.setDirection(DcMotor.Direction.REVERSE);
         backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        leftTransfer = hardwareMap.get(CRServo.class, "leftTranfser");
+
+        leftTransfer = hardwareMap.get(CRServo.class, "leftTransfer");
         rightTransfer = hardwareMap.get(CRServo.class, "rightTransfer");
+
+        // If both transfers should spin the same physical direction,
+        // one of them often needs to be reversed.
+        rightTransfer.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
     @Override
     public void loop() {
 
+        // Test drive motors one at a time
         if (gamepad1.y) {
             frontRight.setPower(0.3);
         } else {
@@ -58,30 +74,54 @@ public class HanmingOpMode extends OpMode {
         }
 
         if (gamepad1.b) {
-            backRight.setPower(-0.3);
+            backRight.setPower(0.3);
         } else {
             backRight.setPower(0.0);
         }
 
+        // Adjust flywheel speed one click at a time
+        if (gamepad1.dpad_up && !lastDpadUp) {
+            flywheelspeed += 0.05;
+        }
+
+        if (gamepad1.dpad_down && !lastDpadDown) {
+            flywheelspeed -= 0.05;
+        }
+
+        // Clamp between 0 and 1
+        flywheelspeed = Math.max(0.0, Math.min(1.0, flywheelspeed));
+
+        // Save current button states for next loop
+        lastDpadUp = gamepad1.dpad_up;
+        lastDpadDown = gamepad1.dpad_down;
+
+        // Turn flywheel on/off using chosen speed
         if (gamepad1.left_bumper) {
-            Flywheel.setPower(0.3);
+            Flywheel.setPower(flywheelspeed);
         } else {
             Flywheel.setPower(0.0);
         }
 
+        // Transfers
         if (gamepad1.dpad_left) {
-            leftTransfer.setPower(1);
-        }
-
-        if (gamepad1.dpad_right) {
-            rightTransfer.setPower(1);
+            leftTransfer.setPower(1.0);
+            rightTransfer.setPower(1.0);
+        } else if (gamepad1.dpad_right) {
+            leftTransfer.setPower(-1.0);
+            rightTransfer.setPower(-1.0);
+        } else {
+            leftTransfer.setPower(0.0);
+            rightTransfer.setPower(0.0);
         }
 
         telemetry.addData("RF", frontRight.getPower());
         telemetry.addData("LF", frontLeft.getPower());
         telemetry.addData("LB", backLeft.getPower());
         telemetry.addData("RB", backRight.getPower());
-        telemetry.addData("Flywheel", Flywheel.getPower());
+        telemetry.addData("Flywheel Power", Flywheel.getPower());
+        telemetry.addData("Flywheel Target Speed", flywheelspeed);
+        telemetry.addData("Left Transfer", gamepad1.dpad_left ? "Forward" : "Off");
+        telemetry.addData("Right Transfer", gamepad1.dpad_right ? "Reverse" : "Off");
         telemetry.update();
     }
 }
