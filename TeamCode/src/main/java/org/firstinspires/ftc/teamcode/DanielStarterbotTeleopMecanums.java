@@ -71,8 +71,10 @@ public class DanielStarterbotTeleopMecanums extends OpMode {
      * velocity. Here we are setting the target, and minimum velocity that the launcher should run
      * at. The minimum velocity is a threshold for determining when to fire.
      */
-    final double LAUNCHER_TARGET_VELOCITY = 1125;
-    final double LAUNCHER_MIN_VELOCITY = 1075;
+    final double LAUNCHER_TARGET_VELOCITY = 3000;
+    double LAUNCHER_MIN_VELOCITY = 1500;
+
+
 
     // Declare OpMode members.
     private DcMotor leftFrontDrive = null;
@@ -233,11 +235,20 @@ public class DanielStarterbotTeleopMecanums extends OpMode {
          */
         launch(gamepad1.rightBumperWasPressed());
 
+        if (gamepad1.dpadUpWasPressed()) {
+            LAUNCHER_MIN_VELOCITY += 100;
+        }
+
+        if (gamepad1.dpadDownWasPressed()) {
+            LAUNCHER_MIN_VELOCITY -= 100;
+        }
+
         /*
          * Show the state and motor powers
          */
         telemetry.addData("State", launchState);
         telemetry.addData("motorSpeed", launcher.getVelocity());
+        telemetry.addData("launcherminspeed", launcher.getVelocity());
 
     }
 
