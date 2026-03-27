@@ -82,7 +82,7 @@ public class MatthewOpMode extends OpMode {
            leftTransfer.setPower(0);
        }
 
-        if (gamepad1.dpad_right) {
+        if (gamepad1.dpad_left) {
             rightTransfer.setPower(0.5);
         } else {
             rightTransfer.setPower(0);
