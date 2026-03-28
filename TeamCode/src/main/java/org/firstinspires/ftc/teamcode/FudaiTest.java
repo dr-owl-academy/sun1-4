@@ -4,8 +4,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-public class Fudaitest {
-    private DcMotor Flywheel;
+public class FudaiTest {
+    private DcMotor flyWheel;
     private DcMotor rightFront;
     private DcMotor leftFront;
     private DcMotor rightBack;
@@ -13,9 +13,9 @@ public class Fudaitest {
 
 
     public void init(HardwareMap hwMap) {
-        Flywheel = hwMap.get(DcMotor.class, "Flywheel");
-        Flywheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        Flywheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        flyWheel = hwMap.get(DcMotor.class, "Flywheel");
+        flyWheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        flyWheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightFront = hwMap.get(DcMotor.class, "rightFront");
         rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightBack = hwMap.get(DcMotor.class, "rightBack");
