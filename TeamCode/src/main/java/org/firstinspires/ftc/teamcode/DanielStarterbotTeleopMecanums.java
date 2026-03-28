@@ -248,9 +248,14 @@ public class DanielStarterbotTeleopMecanums extends OpMode {
          */
         telemetry.addData("State", launchState);
         telemetry.addData("motorSpeed", launcher.getVelocity());
-        telemetry.addData("launcherminspeed", launcher.getVelocity());
-
+        telemetry.addData("launcherminspeed", LAUNCHER_MIN_VELOCITY());
+        telemetry.update();;
     }
+
+    private String LAUNCHER_MIN_VELOCITY() {
+        return "";
+    }
+
 
     /*
      * Code to run ONCE after the driver hits STOP
