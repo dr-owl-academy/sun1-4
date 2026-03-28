@@ -91,8 +91,6 @@ public class AimeeMechanismsTest extends OpMode {
             rightTransfer.setPower(0.0);
         }
 
-        /** one of the Transfers has to be in reverse I think so add that later **/
-
         telemetry.addData("RF", rightFront.getPower());
         telemetry.addData("LF", leftFront.getPower());
         telemetry.addData("LB", leftBack.getPower());
