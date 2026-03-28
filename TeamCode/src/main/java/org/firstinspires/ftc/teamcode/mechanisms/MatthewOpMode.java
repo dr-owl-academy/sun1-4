@@ -13,7 +13,7 @@ public class MatthewOpMode extends OpMode {
     private DcMotor leftFront;
     private DcMotor rightFront;
     private DcMotor leftBack;
-    private DcMotor rightBack;
+     private DcMotor rightBack;
     private DcMotor Flywheel;
     private CRServo leftTransfer;
     private CRServo rightTransfer;
