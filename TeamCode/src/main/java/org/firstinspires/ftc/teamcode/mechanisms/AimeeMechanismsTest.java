@@ -61,7 +61,7 @@ public class AimeeMechanismsTest extends OpMode {
 
 
         if (gamepad1.a){
-            leftBack.setPower(0.5);
+            leftBack.setPower(-0.5);
         } else {
             leftBack.setPower(0.0);
         }
@@ -80,7 +80,7 @@ public class AimeeMechanismsTest extends OpMode {
         }
 
         if (gamepad1.dpad_left) {
-            leftTransfer.setPower(0.5);
+            leftTransfer.setPower(-0.5);
         } else {
             leftTransfer.setPower(0.0);
         }
