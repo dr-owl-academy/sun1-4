@@ -73,7 +73,7 @@ public class AimeeTeleop extends OpMode {
      * at. The minimum velocity is a threshold for determining when to fire.
      */
     final double LAUNCHER_TARGET_VELOCITY = 1500; /*maybe try 2000 and 1200 for each one respectively */
-    final double LAUNCHER_MIN_VELOCITY = 1200;
+     double LAUNCHER_MIN_VELOCITY = 1200;
 
     // Declare OpMode members.
     private DcMotor leftFrontDrive = null;
