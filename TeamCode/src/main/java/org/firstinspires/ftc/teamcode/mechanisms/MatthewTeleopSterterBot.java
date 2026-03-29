@@ -15,6 +15,13 @@ public class MatthewTeleopSterterBot extends OpMode {
     private CRServo leftTransfer;
     private CRServo rightTransfer;
 
+    private enum LaunchState {
+        IDLE,
+        SPIN_UP,
+        LAUNCH,
+        LAUNCHING,
+    }
+
     public void init() {
         Flywheel = hardwareMap.get(DcMotor.class, "Flywheel");
         Flywheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
