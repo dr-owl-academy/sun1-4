@@ -1,15 +1,16 @@
 package org.firstinspires.ftc.teamcode.mechanisms;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-
+@TeleOp
 public class MatthewTeleopSterterBot extends OpMode {
     private DcMotor leftFront;
-    private DcMotor rightFront;
-    private DcMotor leftBack;
-    private DcMotor rightBack;
+    private DcMotor frontRight;
+    private DcMotor backLeft;
+    private DcMotor backRight;
     private DcMotor Flywheel;
     private CRServo leftTransfer;
     private CRServo rightTransfer;
@@ -18,21 +19,21 @@ public class MatthewTeleopSterterBot extends OpMode {
         Flywheel = hardwareMap.get(DcMotor.class, "Flywheel");
         Flywheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         Flywheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightFront = hardwareMap.get(DcMotor.class, "rightFront");
-        rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightBack = hardwareMap.get(DcMotor.class, "rightBack");
-        rightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        frontRight = hardwareMap.get(DcMotor.class, "frontRight");
+        frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        backRight = hardwareMap.get(DcMotor.class, "backRight");
+        backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         leftFront = hardwareMap.get(DcMotor.class, "leftFront");
         leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        leftBack = hardwareMap.get(DcMotor.class, "leftBack");
-        leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        backLeft = hardwareMap.get(DcMotor.class, "leftBack");
+        backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         leftTransfer = hardwareMap.get(CRServo.class, "leftTransfer");
         rightTransfer = hardwareMap.get(CRServo.class, "rightTransfer");
         rightTransfer.setDirection(DcMotorSimple.Direction.REVERSE);
 
 
         leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
-        leftBack.setDirection(DcMotorSimple.Direction.REVERSE);
+        backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
     }
 
@@ -49,21 +50,21 @@ public class MatthewTeleopSterterBot extends OpMode {
         }
 
         if (gamepad1.b) {
-            leftBack.setPower(0.5);
+            backLeft.setPower(0.5);
         } else {
-            leftBack.setPower(0);
+            backLeft.setPower(0);
         }
 
         if (gamepad1.x) {
-            rightFront.setPower(0.5);
+            frontRight.setPower(0.5);
         } else {
-            rightFront.setPower(0);
+            frontRight.setPower(0);
         }
 
         if (gamepad1.y) {
-            rightBack.setPower(0.5);
+            backRight.setPower(0.5);
         } else {
-            rightBack.setPower(0);
+            backRight.setPower(0);
         }
 
         if (gamepad1.right_bumper) {
