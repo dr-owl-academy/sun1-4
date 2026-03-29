@@ -228,10 +228,14 @@ public class AimeeTeleop extends OpMode {
         } else if (gamepad1.b) { // stop flywheel
             launcher.setVelocity(STOP_SPEED);
         }
+        if (gamepad2.dpadUpWasPressed()) {
+            LAUNCHER_MIN_VELOCITY += 10;
+        }
 
-        /*
-         * Now we call our "Launch" function.
-         */
+        if (gamepad2.dpadDownWasPressed()) {
+            LAUNCHER_MIN_VELOCITY -= 10;
+        }
+
         launch(gamepad1.rightBumperWasPressed());
 
         /*
@@ -239,8 +243,11 @@ public class AimeeTeleop extends OpMode {
          */
         telemetry.addData("State", launchState);
         telemetry.addData("motorSpeed", launcher.getVelocity());
+        telemetry.addData("Launch Min Vel", LAUNCHER_MIN_VELOCITY);
+        telemetry.update();
 
     }
+
 
     /*
      * Code to run ONCE after the driver hits STOP
