@@ -72,7 +72,7 @@ public class CoachTeleopStarterBot extends OpMode {
      * at. The minimum velocity is a threshold for determining when to fire.
      */
     final double LAUNCHER_TARGET_VELOCITY = 2000;
-    final double LAUNCHER_MIN_VELOCITY = 1200;
+    double LAUNCHER_MIN_VELOCITY = 1200;
 
     // Declare OpMode members.
     private DcMotor leftFrontDrive = null;
@@ -227,7 +227,13 @@ public class CoachTeleopStarterBot extends OpMode {
         } else if (gamepad1.b) { // stop flywheel
             launcher.setVelocity(STOP_SPEED);
         }
+        if (gamepad2.dpadUpWasPressed()) {
+            LAUNCHER_MIN_VELOCITY += 100;
+        }
 
+        if (gamepad2.dpadDownWasPressed()) {
+            LAUNCHER_MIN_VELOCITY -= 100;
+        }
         /*
          * Now we call our "Launch" function.
          */
@@ -238,6 +244,8 @@ public class CoachTeleopStarterBot extends OpMode {
          */
         telemetry.addData("State", launchState);
         telemetry.addData("motorSpeed", launcher.getVelocity());
+        telemetry.addData("Launch Min Vel", LAUNCHER_MIN_VELOCITY);
+        telemetry.update();
 
     }
 
