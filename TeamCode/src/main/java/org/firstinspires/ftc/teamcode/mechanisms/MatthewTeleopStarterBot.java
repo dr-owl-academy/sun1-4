@@ -231,7 +231,7 @@ public class MatthewTeleopStarterBot extends OpMode {
         /*
          * Now we call our "Launch" function.
          */
-        launch(gamepad1.rightBumperWasPressed());
+        launch(gamepad1.aWasPressed());
 
         /*
          * Show the state and motor powers
