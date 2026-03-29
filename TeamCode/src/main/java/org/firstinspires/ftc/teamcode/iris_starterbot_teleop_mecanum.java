@@ -71,8 +71,8 @@ public class iris_starterbot_teleop_mecanum extends OpMode {
      * velocity. Here we are setting the target, and minimum velocity that the launcher should run
      * at. The minimum velocity is a threshold for determining when to fire.
      */
-    final double LAUNCHER_TARGET_VELOCITY = 2000;
-    final double LAUNCHER_MIN_VELOCITY = 1200;
+    double LAUNCHER_TARGET_VELOCITY = 1700;
+    double LAUNCHER_MIN_VELOCITY = 1200;
 
     // Declare OpMode members.
     private DcMotor leftFrontDrive = null;
@@ -222,6 +222,16 @@ public class iris_starterbot_teleop_mecanum extends OpMode {
          * Here we give the user control of the speed of the launcher motor without automatically
          * queuing a shot.
          */
+        if (gamepad1.dpadDownWasPressed()) {
+            LAUNCHER_TARGET_VELOCITY -= 100;
+            launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
+        }
+        if (gamepad1.dpadUpWasPressed()) {
+            LAUNCHER_TARGET_VELOCITY += 100;
+            launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
+
+        }
+        telemetry.addData("Target_Velocity" , launcher.getVelocity());
         if (gamepad1.y) {
             launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
         } else if (gamepad1.b) { // stop flywheel
