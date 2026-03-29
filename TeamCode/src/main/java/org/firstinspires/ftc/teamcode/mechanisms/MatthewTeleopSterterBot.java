@@ -5,8 +5,14 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+
+import org.firstinspires.ftc.teamcode.CoachTeleopStarterBot;
+
 @TeleOp
 public class MatthewTeleopSterterBot extends OpMode {
+    final double FEED_TIME_SECONDS = 0.50; //The feeder servos run this long when a shot is requested.
+    final double STOP_SPEED = 0.0; //We send this power to the servos when we want them to stop.
+    final double FULL_SPEED = 1.0;
     private DcMotor leftFront;
     private DcMotor frontRight;
     private DcMotor backLeft;
@@ -14,6 +20,8 @@ public class MatthewTeleopSterterBot extends OpMode {
     private DcMotor Flywheel;
     private CRServo leftTransfer;
     private CRServo rightTransfer;
+    final double LAUNCHER_TARGET_VELOCITY = 2000;
+    final double LAUNCHER_MIN_VELOCITY = 1200;
 
     private enum LaunchState {
         IDLE,
@@ -99,4 +107,33 @@ public class MatthewTeleopSterterBot extends OpMode {
         telemetry.addData("right_bumper", gamepad1.right_bumper);
         telemetry.addData("right_dpad", gamepad1.dpad_right);
         telemetry.addData("left_dpad", gamepad1.dpad_left);
-    }}
+    }
+    void launch(boolean shotRequested) {
+        switch (launchState) {
+            case IDLE:
+                if (shotRequested) {
+                    launchState = CoachTeleopStarterBot.LaunchState.SPIN_UP;
+                }
+                break;
+            case SPIN_UP:
+                launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
+                if (launcher.getVelocity() > LAUNCHER_MIN_VELOCITY) {
+                    launchState = CoachTeleopStarterBot.LaunchState.LAUNCH;
+                }
+                break;
+            case LAUNCH:
+                leftTransfer.setPower(FULL_SPEED);
+                rightTransfer.setPower(FULL_SPEED);
+                feederTimer.reset();
+                launchState = CoachTeleopStarterBot.LaunchState.LAUNCHING;
+                break;
+            case LAUNCHING:
+                if (feederTimer.seconds() > FEED_TIME_SECONDS) {
+                    launchState = CoachTeleopStarterBot.LaunchState.IDLE;
+                    leftTransfer.setPower(STOP_SPEED);
+                    rightTransfer.setPower(STOP_SPEED);
+                }
+                break;
+        }
+    }
+}
