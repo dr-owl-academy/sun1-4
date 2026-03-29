@@ -236,11 +236,11 @@ public class DanielStarterbotTeleopMecanums extends OpMode {
         launch(gamepad1.rightBumperWasPressed());
 
         if (gamepad1.dpadUpWasPressed()) {
-            LAUNCHER_TARGET_VELOCITY += 50;
+            LAUNCHER_TARGET_VELOCITY += 25;
         }
 
         else if (gamepad1.dpadDownWasPressed()) {
-            LAUNCHER_TARGET_VELOCITY -= 50;
+            LAUNCHER_TARGET_VELOCITY -= 25;
         }
 
         /*
