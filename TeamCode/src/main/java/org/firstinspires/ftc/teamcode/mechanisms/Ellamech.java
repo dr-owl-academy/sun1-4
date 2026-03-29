@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.mechanisms;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -31,9 +32,11 @@ public class Ellamech extends OpMode {
         leftBack = hardwareMap.get(DcMotor.class,"leftBack");
         leftBack.setDirection(DcMotor.Direction.REVERSE);
         leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightTransfer = hardwareMap.get(CRServo.class, "rightTransfer");
+        leftTransfer = hardwareMap.get(CRServo.class,"leftTransfer");
     }
-
     @Override
+
     public void loop() {
 
         if (gamepad1.y) {
