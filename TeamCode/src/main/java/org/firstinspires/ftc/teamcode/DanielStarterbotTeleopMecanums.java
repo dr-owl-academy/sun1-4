@@ -249,7 +249,12 @@ public class DanielStarterbotTeleopMecanums extends OpMode {
         telemetry.addData("State", launchState);
         telemetry.addData("motorSpeed", launcher.getVelocity());
         telemetry.addData("launcherminspeed", LAUNCHER_MIN_VELOCITY());
+        telemetry.addData("launchertargetspeed", LAUNCHER_TARGET_VELOCITY());
         telemetry.update();
+    }
+
+    private String LAUNCHER_TARGET_VELOCITY() {
+        return null;
     }
 
     private String LAUNCHER_MIN_VELOCITY() {
