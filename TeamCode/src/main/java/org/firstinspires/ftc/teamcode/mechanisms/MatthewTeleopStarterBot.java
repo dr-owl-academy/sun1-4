@@ -72,7 +72,7 @@ public class MatthewTeleopStarterBot extends OpMode {
      * at. The minimum velocity is a threshold for determining when to fire.
      */
     final double LAUNCHER_TARGET_VELOCITY = 2000;
-    final double LAUNCHER_MIN_VELOCITY = 1200;
+    final double LAUNCHER_MIN_VELOCITY = 1000;
 
     // Declare OpMode members.
     private DcMotor leftFrontDrive = null;
