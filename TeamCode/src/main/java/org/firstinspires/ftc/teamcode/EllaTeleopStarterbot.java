@@ -71,8 +71,8 @@ public class CoachTeleopStarterBot extends OpMode {
      * velocity. Here we are setting the target, and minimum velocity that the launcher should run
      * at. The minimum velocity is a threshold for determining when to fire.
      */
-    final double LAUNCHER_TARGET_VELOCITY = 2000;
-    final double LAUNCHER_MIN_VELOCITY = 1200;
+    final double LAUNCHER_TARGET_VELOCITY = 1975;
+    final double LAUNCHER_MIN_VELOCITY = 900;
 
     // Declare OpMode members.
     private DcMotor leftFrontDrive = null;
