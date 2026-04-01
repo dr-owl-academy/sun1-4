@@ -72,7 +72,7 @@ public class ClaireTeleopStarterbot extends OpMode {
      * at. The minimum velocity is a threshold for determining when to fire.
      */
     final double LAUNCHER_TARGET_VELOCITY = 1125;
-    final double LAUNCHER_MIN_VELOCITY = 1075;
+    double LAUNCHER_MIN_VELOCITY = 1075;
 
     // Declare OpMode members.
     private DcMotor leftFrontDrive = null;
@@ -232,6 +232,11 @@ public class ClaireTeleopStarterbot extends OpMode {
          * Now we call our "Launch" function.
          */
         launch(gamepad1.rightBumperWasPressed());
+        if (gamepad1.dpadUpWasPressed()) {
+            LAUNCHER_MIN_VELOCITY += 100;
+        } else if (gamepad1.dpadDownWasPressed()) {
+            LAUNCHER_MIN_VELOCITY -= 100;
+        }
 
         /*
          * Show the state and motor powers
