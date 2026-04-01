@@ -97,3 +97,4 @@ public class Ellamech extends OpMode {
         this.rightTransfer = (CRServo) rightTransfer;
     }
 }
+
