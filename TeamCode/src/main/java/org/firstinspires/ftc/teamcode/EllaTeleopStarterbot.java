@@ -71,7 +71,7 @@ public class EllaTeleopStarterbot extends OpMode {
      * velocity. Here we are setting the target, and minimum velocity that the launcher should run
      * at. The minimum velocity is a threshold for determining when to fire.
      */
-    final double LAUNCHER_TARGET_VELOCITY = 1975;
+    double LAUNCHER_TARGET_VELOCITY = 1975;
     final double LAUNCHER_MIN_VELOCITY = 900;
 
     // Declare OpMode members.
@@ -231,7 +231,15 @@ public class EllaTeleopStarterbot extends OpMode {
         /*
          * Now we call our "Launch" function.
          */
-        launch(gamepad1.rightBumperWasPressed());
+        launch(gamepad2.rightBumperWasPressed());
+
+        if (gamepad2.dpadUpWasPressed()) {
+            LAUNCHER_TARGET_VELOCITY += 25;
+            launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
+        } else if (gamepad2.dpadDownWasPressed()) {
+            LAUNCHER_TARGET_VELOCITY -= 25;
+            launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
+        }
 
         /*
          * Show the state and motor powers
