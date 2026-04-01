@@ -44,7 +44,7 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /*
- * This file includes a teleop (driver-controlled) file for the goBILDA® StarterBot for the
+ * This file includes a teleop (driver-controlled) file for the goTILDA® StarterBot for the
  * 2025-2026 FIRST® Tech Challenge season DECODE™. It leverages a differential/Skid-Steer
  * system for robot mobility, one high-speed motor driving two "launcher wheels", and two servos
  * which feed that launcher.
@@ -110,7 +110,7 @@ public class EllaTeleopStarterbot extends OpMode {
 
     private LaunchState launchState;
 
-    // Setup a variable for each drive wheel to save power level for telemetry
+    // Set up a variable for each drive wheel to save power level for telemetry
     double leftFrontPower;
     double rightFrontPower;
     double leftBackPower;
@@ -149,7 +149,7 @@ public class EllaTeleopStarterbot extends OpMode {
         rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
 
         /*
-         * Here we set our launcher to the RUN_USING_ENCODER runmode.
+         * Here we set our launcher to the RUN_USING_ENCODER run mode.
          * If you notice that you have no control over the velocity of the motor, it just jumps
          * right to a number much higher than your set point, make sure that your encoders are plugged
          * into the port right beside the motor itself. And that the motors polarity is consistent
