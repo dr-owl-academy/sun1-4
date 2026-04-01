@@ -279,10 +279,10 @@ public class iris_starterbot_teleop_mecanum extends OpMode {
         leftFrontDrive.setPower(gamepad1.right_stick_x * -1);
         rightFrontDrive.setPower(gamepad1.right_stick_x);
 
-        leftFrontDrive.setPower(leftFrontPower);
-        rightFrontDrive.setPower(rightFrontPower);
-        leftBackDrive.setPower(leftBackPower);
-        rightBackDrive.setPower(rightBackPower);
+        //leftFrontDrive.setPower(leftFrontPower);
+        //rightFrontDrive.setPower(rightFrontPower);
+        //leftBackDrive.setPower(leftBackPower);
+        // rightBackDrive.setPower(rightBackPower);
 
     }
 
