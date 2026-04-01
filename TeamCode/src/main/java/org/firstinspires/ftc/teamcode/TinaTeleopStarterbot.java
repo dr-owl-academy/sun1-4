@@ -61,7 +61,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 @TeleOp(name = "TinaTeleopStarterbot", group = "StarterBot")
 //@Disabled
 public class TinaTeleopStarterbot extends OpMode {
-    final double FEED_TIME_SECONDS = 0.20; //The feeder servos run this long when a shot is requested.
+    final double FEED_TIME_SECONDS = 0.50; //The feeder servos run this long when a shot is requested.
     final double STOP_SPEED = 0.0; //We send this power to the servos when we want them to stop.
     final double FULL_SPEED = 1.0;
 
@@ -71,8 +71,8 @@ public class TinaTeleopStarterbot extends OpMode {
      * velocity. Here we are setting the target, and minimum velocity that the launcher should run
      * at. The minimum velocity is a threshold for determining when to fire.
      */
-    final double LAUNCHER_TARGET_VELOCITY = 1500;
-    double LAUNCHER_MIN_VELOCITY = 1000;
+    final double LAUNCHER_TARGET_VELOCITY = 2000;
+    double LAUNCHER_MIN_VELOCITY = 800;
 
     // Declare OpMode members.
     private DcMotor leftFrontDrive = null;
@@ -234,10 +234,10 @@ public class TinaTeleopStarterbot extends OpMode {
         launch(gamepad1.rightBumperWasPressed());
 
         if (gamepad1.dpadUpWasPressed()) {
-            LAUNCHER_MIN_VELOCITY += 100;
+            LAUNCHER_MIN_VELOCITY += 50;
         }
         else if (gamepad1.dpadDownWasPressed()) {
-            LAUNCHER_MIN_VELOCITY -= 100;
+            LAUNCHER_MIN_VELOCITY -= 50;
         }
 
         /*
