@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.mechanisms;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.CRServoImpl;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -15,6 +16,8 @@ public class Ellamech extends OpMode {
     private DcMotor leftFront;
     private DcMotor rightBack;
     private DcMotor leftBack;
+    private CRServo rightTransfer;
+    private CRServo leftTransfer;
 
 
     @Override
@@ -69,11 +72,28 @@ public class Ellamech extends OpMode {
             Flywheel.setPower(0.0);
         }
 
+        if (gamepad1.right_bumper) {
+            rightTransfer.setPower(-0.5);
+        } else {
+            rightTransfer.setPower(0.0);
+        }
+
+        if (gamepad1.right_bumper) {
+            leftTransfer.setPower(0.5);
+        } else {
+            leftTransfer.setPower(0.0);
+        }
+
+
         telemetry.addData("RF", rightFront.getPower());
         telemetry.addData("LF", leftFront.getPower());
         telemetry.addData("LB", leftBack.getPower());
         telemetry.addData("RB", rightBack.getPower());
         telemetry.addData("Flywheel", Flywheel.getPower());
         telemetry.update();
+    }
+
+    public void setRightTransfer(DcMotor rightTransfer) {
+        this.rightTransfer = (CRServo) rightTransfer;
     }
 }
