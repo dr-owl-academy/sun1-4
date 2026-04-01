@@ -71,7 +71,7 @@ public class TinaTeleopStarterbot extends OpMode {
      * velocity. Here we are setting the target, and minimum velocity that the launcher should run
      * at. The minimum velocity is a threshold for determining when to fire.
      */
-    final double LAUNCHER_TARGET_VELOCITY = 2000;
+    double LAUNCHER_TARGET_VELOCITY = 2000;
     double LAUNCHER_MIN_VELOCITY = 800;
 
     // Declare OpMode members.
@@ -222,22 +222,24 @@ public class TinaTeleopStarterbot extends OpMode {
          * Here we give the user control of the speed of the launcher motor without automatically
          * queuing a shot.
          */
-        if (gamepad1.y) {
+        if (gamepad2.y) {
             launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
-        } else if (gamepad1.b) { // stop flywheel
+        } else if (gamepad2.b) { // stop flywheel
             launcher.setVelocity(STOP_SPEED);
         }
 
         /*
          * Now we call our "Launch" function.
          */
-        launch(gamepad1.rightBumperWasPressed());
+        launch(gamepad2.rightBumperWasPressed());
 
-        if (gamepad1.dpadUpWasPressed()) {
-            LAUNCHER_MIN_VELOCITY += 50;
+        if (gamepad2.dpadUpWasPressed()) {
+            LAUNCHER_TARGET_VELOCITY += 25;
+            launcher.setPower(LAUNCHER_TARGET_VELOCITY);
         }
-        else if (gamepad1.dpadDownWasPressed()) {
-            LAUNCHER_MIN_VELOCITY -= 50;
+        else if (gamepad2.dpadDownWasPressed()) {
+            LAUNCHER_TARGET_VELOCITY -= 25;
+            launcher.setPower(LAUNCHER_TARGET_VELOCITY);
         }
 
         /*
