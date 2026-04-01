@@ -71,7 +71,7 @@ public class ClaireTeleopStarterbot extends OpMode {
      * velocity. Here we are setting the target, and minimum velocity that the launcher should run
      * at. The minimum velocity is a threshold for determining when to fire.
      */
-    final double LAUNCHER_TARGET_VELOCITY = 1125;
+    double LAUNCHER_TARGET_VELOCITY = 1125;
     double LAUNCHER_MIN_VELOCITY = 1075;
 
     // Declare OpMode members.
@@ -180,8 +180,8 @@ public class ClaireTeleopStarterbot extends OpMode {
          * Much like our drivetrain motors, we set the left feeder servo to reverse so that they
          * both work to feed the ball into the robot.
          */
-        leftFeeder.setDirection(DcMotorSimple.Direction.REVERSE);
-        rightFeeder.setDirection(DcMotorSimple.Direction.FORWARD);
+        leftFeeder.setDirection(DcMotorSimple.Direction.FORWARD);
+        rightFeeder.setDirection(DcMotorSimple.Direction.REVERSE);
 
         /*
          * Tell the driver that initialization is complete.
@@ -235,9 +235,11 @@ public class ClaireTeleopStarterbot extends OpMode {
         launch(gamepad2.rightBumperWasPressed());
 
         if (gamepad2.dpadUpWasPressed()) {
-            LAUNCHER_MIN_VELOCITY += 25;
+            LAUNCHER_TARGET_VELOCITY += 25;
+            launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
         } else if (gamepad2.dpadDownWasPressed()) {
-            LAUNCHER_MIN_VELOCITY -= 25;
+            LAUNCHER_TARGET_VELOCITY -= 25;
+            launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
         }
 
 
