@@ -181,6 +181,7 @@ public class ClaireTeleopStarterbot extends OpMode {
          * both work to feed the ball into the robot.
          */
         leftFeeder.setDirection(DcMotorSimple.Direction.REVERSE);
+        rightFeeder.setDirection(DcMotorSimple.Direction.FORWARD);
 
         /*
          * Tell the driver that initialization is complete.
@@ -222,21 +223,24 @@ public class ClaireTeleopStarterbot extends OpMode {
          * Here we give the user control of the speed of the launcher motor without automatically
          * queuing a shot.
          */
-        if (gamepad1.y) {
+        if (gamepad2.y) {
             launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
-        } else if (gamepad1.b) { // stop flywheel
+        } else if (gamepad2.b) { // stop flywheel
             launcher.setVelocity(STOP_SPEED);
         }
 
         /*
          * Now we call our "Launch" function.
          */
-        launch(gamepad1.rightBumperWasPressed());
-        if (gamepad1.dpadUpWasPressed()) {
-            LAUNCHER_MIN_VELOCITY += 100;
-        } else if (gamepad1.dpadDownWasPressed()) {
-            LAUNCHER_MIN_VELOCITY -= 100;
+        launch(gamepad2.rightBumperWasPressed());
+
+        if (gamepad2.dpadUpWasPressed()) {
+            LAUNCHER_MIN_VELOCITY += 25;
+        } else if (gamepad2.dpadDownWasPressed()) {
+            LAUNCHER_MIN_VELOCITY -= 25;
         }
+
+
 
         /*
          * Show the state and motor powers
