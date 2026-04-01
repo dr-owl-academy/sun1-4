@@ -42,6 +42,10 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+
 
 /*
  * This file includes a teleop (driver-controlled) file for the goBILDA® StarterBot for the
@@ -216,32 +220,32 @@ public class iris_starterbot_teleop_mecanum extends OpMode {
          * both motors work to rotate the robot. Combinations of these inputs can be used to create
          * more complex maneuvers.
          */
-        mecanumDrive(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
+        mecanumDrive();
 
         /*
          * Here we give the user control of the speed of the launcher motor without automatically
          * queuing a shot.
          */
-        if (gamepad1.dpadDownWasPressed()) {
-            LAUNCHER_TARGET_VELOCITY -= 100;
+        if (gamepad2.dpadDownWasPressed()) {
+            LAUNCHER_TARGET_VELOCITY -= 15;
             launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
         }
-        if (gamepad1.dpadUpWasPressed()) {
-            LAUNCHER_TARGET_VELOCITY += 100;
+        if (gamepad2.dpadUpWasPressed()) {
+            LAUNCHER_TARGET_VELOCITY += 15;
             launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
 
         }
         telemetry.addData("Target_Velocity" , launcher.getVelocity());
-        if (gamepad1.y) {
+        if (gamepad2.y) {
             launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
-        } else if (gamepad1.b) { // stop flywheel
+        } else if (gamepad2.b) { // stop flywheel
             launcher.setVelocity(STOP_SPEED);
         }
 
         /*
          * Now we call our "Launch" function.
          */
-        launch(gamepad1.rightBumperWasPressed());
+        launch(gamepad2.rightBumperWasPressed());
 
         /*
          * Show the state and motor powers
@@ -258,18 +262,22 @@ public class iris_starterbot_teleop_mecanum extends OpMode {
     public void stop() {
     }
 
-    void mecanumDrive(double forward, double strafe, double rotate){
+    void mecanumDrive(){
 
-        /* the denominator is the largest motor power (absolute value) or 1
-         * This ensures all the powers maintain the same ratio,
-         * but only if at least one is out of the range [-1, 1]
-         */
-        double denominator = Math.max(Math.abs(forward) + Math.abs(strafe) + Math.abs(rotate), 1);
+        leftBackDrive.setPower(gamepad1.left_stick_y);
+        leftFrontDrive.setPower(gamepad1.left_stick_y);
+        rightFrontDrive.setPower(gamepad1.left_stick_y);
+        rightBackDrive.setPower(gamepad1.left_stick_y);
 
-        leftFrontPower = (forward + strafe + rotate) / denominator;
-        rightFrontPower = (forward - strafe - rotate) / denominator;
-        leftBackPower = (forward - strafe + rotate) / denominator;
-        rightBackPower = (forward + strafe - rotate) / denominator;
+        leftBackDrive.setPower(gamepad1.left_stick_x);
+        rightBackDrive.setPower(gamepad1.left_stick_x * -1);
+        leftFrontDrive.setPower(gamepad1.left_stick_x * -1);
+        rightFrontDrive.setPower(gamepad1.left_stick_x);
+
+        leftBackDrive.setPower(gamepad1.right_stick_x * -1);
+        rightBackDrive.setPower(gamepad1.right_stick_x);
+        leftFrontDrive.setPower(gamepad1.right_stick_x * -1);
+        rightFrontDrive.setPower(gamepad1.right_stick_x);
 
         leftFrontDrive.setPower(leftFrontPower);
         rightFrontDrive.setPower(rightFrontPower);
