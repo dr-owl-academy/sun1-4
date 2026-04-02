@@ -11,15 +11,15 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@TeleOp(name = "Eli_teleop_chickennuggetbot.java", group = "StarterBot")
+@TeleOp(name = "Eli_teleop_chickennuggetbot", group = "StarterBot")
 public class Eli_teleop_chickennuggetbot extends OpMode {
 
     final double FEED_TIME_SECONDS = 0.20;
     final double STOP_SPEED = 0.0;
     final double FULL_SPEED = 1.0;
 
-    final double LAUNCHER_TARGET_VELOCITY = 1125;
-    final double LAUNCHER_MIN_VELOCITY = 1075;
+    double LAUNCHER_TARGET_VELOCITY = 1225;
+    double LAUNCHER_MIN_VELOCITY = 1000;
 
     // Drive motors
     private DcMotor leftFrontDrive = null;
@@ -28,11 +28,11 @@ public class Eli_teleop_chickennuggetbot extends OpMode {
     private DcMotor rightBackDrive = null;
 
     // Launcher motor
-    private DcMotorEx flywheel = null;
+    private DcMotorEx launcher = null;
 
     // Feed servos
-    private CRServo leftransfer = null;
-    private CRServo righttransfer = null;
+    private CRServo leftFeeder = null;
+    private CRServo rightFeeder = null;
 
 
 
@@ -59,38 +59,37 @@ public class Eli_teleop_chickennuggetbot extends OpMode {
 
         launchState = LaunchState.IDLE;
 
-        leftFrontDrive = hardwareMap.get(DcMotor.class, "left_front_drive");
-        rightFrontDrive = hardwareMap.get(DcMotor.class, "right_front_drive");
-        leftBackDrive = hardwareMap.get(DcMotor.class, "left_back_drive");
-        rightBackDrive = hardwareMap.get(DcMotor.class, "right_back_drive");
+        leftFrontDrive = hardwareMap.get(DcMotor.class, "frontLeft");
+        rightFrontDrive = hardwareMap.get(DcMotor.class, "frontRight");
+        leftBackDrive = hardwareMap.get(DcMotor.class, "backLeft");
+        rightBackDrive = hardwareMap.get(DcMotor.class, "backRight");
+        launcher = hardwareMap.get(DcMotorEx.class, "Flywheel");
+        leftFeeder = hardwareMap.get(CRServo.class, "leftTransfer");
+        rightFeeder = hardwareMap.get(CRServo.class, "rightTransfer");
 
-        flywheel = hardwareMap.get(DcMotorEx.class, "launcher");
-
-        leftransfer = hardwareMap.get(CRServo.class, "left_feeder");
-        righttransfer = hardwareMap.get(CRServo.class, "right_feeder");
 
         leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
         rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
         leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
         rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
 
-        flywheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        launcher.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         leftFrontDrive.setZeroPowerBehavior(BRAKE);
         rightFrontDrive.setZeroPowerBehavior(BRAKE);
         leftBackDrive.setZeroPowerBehavior(BRAKE);
         rightBackDrive.setZeroPowerBehavior(BRAKE);
-        flywheel.setZeroPowerBehavior(BRAKE);
+        launcher.setZeroPowerBehavior(BRAKE);
 
-        leftransfer.setPower(STOP_SPEED);
-        righttransfer.setPower(STOP_SPEED);
+        leftFeeder.setPower(STOP_SPEED);
+        rightFeeder.setPower(STOP_SPEED);
 
-        flywheel.setPIDFCoefficients(
+        launcher.setPIDFCoefficients(
                 DcMotor.RunMode.RUN_USING_ENCODER,
                 new PIDFCoefficients(300, 0, 0, 10)
         );
 
-        leftransfer.setDirection(DcMotorSimple.Direction.REVERSE);
+        rightFeeder.setDirection(DcMotorSimple.Direction.REVERSE);
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -99,22 +98,36 @@ public class Eli_teleop_chickennuggetbot extends OpMode {
     @Override
     public void loop() {
 
+
+
         mecanumDrive(
                 -gamepad1.left_stick_y,
                 gamepad1.left_stick_x,
                 gamepad1.right_stick_x
         );
 
-        if (gamepad1.y) {
-            flywheel.setVelocity(LAUNCHER_TARGET_VELOCITY);
-        } else if (gamepad1.b) {
-            flywheel.setVelocity(STOP_SPEED);
+        if (gamepad1.dpadUpWasPressed()) {
+            LAUNCHER_TARGET_VELOCITY += 10;
+            telemetry.addData("motorSpeed", launcher.getVelocity());
+            telemetry.update();
         }
+
+        if (gamepad1.dpadDownWasPressed()) {
+            LAUNCHER_TARGET_VELOCITY -= 10;
+            telemetry.addData("motorSpeed", launcher.getVelocity());
+            telemetry.update();
+        }
+
+        if (gamepad1.y) {
+            launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
+        } else if (gamepad1.b) {
+            launcher.setVelocity(STOP_SPEED);
+         }
 
         launch(gamepad1.right_bumper);
 
         telemetry.addData("State", launchState);
-        telemetry.addData("motorSpeed", flywheel.getVelocity());
+        telemetry.addData("motorSpeed", launcher.getVelocity());
         telemetry.update();
     }
 
@@ -146,15 +159,15 @@ public class Eli_teleop_chickennuggetbot extends OpMode {
                 break;
 
             case SPIN_UP:
-                flywheel.setVelocity(LAUNCHER_TARGET_VELOCITY);
-                if (flywheel.getVelocity() > LAUNCHER_MIN_VELOCITY) {
+                launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
+                if (launcher.getVelocity() > LAUNCHER_MIN_VELOCITY) {
                     launchState = LaunchState.LAUNCH;
                 }
                 break;
 
             case LAUNCH:
-                leftransfer.setPower(FULL_SPEED);
-                righttransfer.setPower(FULL_SPEED);
+                leftFeeder.setPower(FULL_SPEED);
+                rightFeeder.setPower(FULL_SPEED);
                 feederTimer.reset();
                 launchState = LaunchState.LAUNCHING;
                 break;
@@ -162,8 +175,8 @@ public class Eli_teleop_chickennuggetbot extends OpMode {
             case LAUNCHING:
                 if (feederTimer.seconds() > FEED_TIME_SECONDS) {
                     launchState = LaunchState.IDLE;
-                    leftransfer.setPower(STOP_SPEED);
-                    righttransfer.setPower(STOP_SPEED);
+                    leftFeeder.setPower(STOP_SPEED);
+                    rightFeeder.setPower(STOP_SPEED);
                 }
                 break;
         }
