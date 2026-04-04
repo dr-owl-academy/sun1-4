@@ -71,7 +71,7 @@ public class MatthewTeleopStarterBot extends OpMode {
      * velocity. Here we are setting the target, and minimum velocity that the launcher should run
      * at. The minimum velocity is a threshold for determining when to fire.
      */
-    final double LAUNCHER_TARGET_VELOCITY = 1900;
+    double LAUNCHER_TARGET_VELOCITY = 1950;
     final double LAUNCHER_MIN_VELOCITY = 1000;
 
     // Declare OpMode members.
@@ -226,6 +226,12 @@ public class MatthewTeleopStarterBot extends OpMode {
             launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
         } else if (gamepad1.b) { // stop flywheel
             launcher.setVelocity(STOP_SPEED);
+        }
+        if (gamepad1.dpadUpWasPressed()){
+            LAUNCHER_TARGET_VELOCITY =+ 25;
+        }
+        if (gamepad1.dpadDownWasPressed()){
+            LAUNCHER_TARGET_VELOCITY =- 25;
         }
 
         /*
