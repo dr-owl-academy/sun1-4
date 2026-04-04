@@ -225,7 +225,7 @@ public class AimeeTeleop extends OpMode {
          */
 
 
-        /* for some reason the code stops working if I change it to gamepad2 instead of 1 */
+        /* for some reason the code stops working if I change it to gamepad2 instead of the orinigal gamepad1*/
         if (gamepad2.y) {
             launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
         } else if (gamepad1.b) { // stop flywheel
