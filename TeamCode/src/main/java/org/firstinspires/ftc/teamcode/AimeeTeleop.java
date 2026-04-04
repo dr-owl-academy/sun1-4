@@ -228,14 +228,15 @@ public class AimeeTeleop extends OpMode {
         /* for some reason gamepad2 screws everything up*/
         if (gamepad1.y) {
             launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
+
         } else if (gamepad1.b) { // stop flywheel
             launcher.setVelocity(STOP_SPEED);
         }
-        if (gamepad2.dpadUpWasPressed()) {
+        if (gamepad1.dpadUpWasPressed()) {
             LAUNCHER_MIN_VELOCITY += 10;
         }
 
-        if (gamepad2.dpadDownWasPressed()) {
+        if (gamepad1.dpadDownWasPressed()) {
             LAUNCHER_MIN_VELOCITY -= 10;
         }
 
