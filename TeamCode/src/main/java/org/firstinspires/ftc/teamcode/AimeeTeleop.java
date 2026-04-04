@@ -233,11 +233,11 @@ public class AimeeTeleop extends OpMode {
             launcher.setVelocity(STOP_SPEED);
         }
         if (gamepad1.dpadUpWasPressed()) {
-            LAUNCHER_MIN_VELOCITY += 25;
+            LAUNCHER_TARGET_VELOCITY += 25;
         }
 
         if (gamepad1.dpadDownWasPressed()) {
-            LAUNCHER_MIN_VELOCITY -= 25;
+            LAUNCHER_TARGET_VELOCITY -= 25;
         }
 
         launch(gamepad1.rightBumperWasPressed());
@@ -248,6 +248,7 @@ public class AimeeTeleop extends OpMode {
         telemetry.addData("State", launchState);
         telemetry.addData("motorSpeed", launcher.getVelocity());
         telemetry.addData("Launch Min Vel", LAUNCHER_MIN_VELOCITY);
+        telemetry.addData("Launch tgt Vel", LAUNCHER_TARGET_VELOCITY);
         telemetry.update();
 
     }
