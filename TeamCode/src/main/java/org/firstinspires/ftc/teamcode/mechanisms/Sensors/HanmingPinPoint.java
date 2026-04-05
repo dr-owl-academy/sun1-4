@@ -43,7 +43,7 @@ public class HanmingPinPoint extends OpMode {
 
     public void configurePinpoint(){
 
-        pinpoint.setOffsets(-84.0, -168.0, DistanceUnit.MM);
+        pinpoint.setOffsets(-0, -20, DistanceUnit.MM);
 
         pinpoint.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
 
