@@ -102,7 +102,6 @@ public class DanielPinpoint extends OpMode {
          */
         pinpoint.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.REVERSED,
                 GoBildaPinpointDriver.EncoderDirection.REVERSED);
-
         /*
          * Before running the robot, recalibrate the IMU. This needs to happen when the robot is stationary
          * The IMU will automatically calibrate when first powered on, but recalibrating before running
