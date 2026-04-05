@@ -9,7 +9,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 
-@TeleOp(name = "HanmingPPT", group = "Sensor")
+@TeleOp(name = "HanmingPinPoint", group = "Sensor")
 
 public class HanmingPinPoint extends OpMode {
 
