@@ -111,5 +111,7 @@ public class aimeePinpoint extends OpMode {
          * an incorrect starting value for x, y, and heading.
          */
         pinpoint.resetPosAndIMU();
+
+        /* calculate the distance with the formula I wrote down in the google doc :) */
     }
 }
