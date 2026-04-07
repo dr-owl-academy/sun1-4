@@ -8,6 +8,8 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
+import org.firstinspires.ftc.teamcode.PinpointLocalizer;
+
 @TeleOp
 public class HanmingOpMode extends OpMode {
     private DcMotor Flywheel;
@@ -20,6 +22,7 @@ public class HanmingOpMode extends OpMode {
     private double flywheelspeed = 0.3;
     private boolean lastDpadUp = false;
     private boolean lastDpadDown = false;
+    private PinpointLocalizer localizer;
 
     @Override
     public void init() {
@@ -44,6 +47,9 @@ public class HanmingOpMode extends OpMode {
         leftTransfer = hardwareMap.get(CRServo.class, "leftTransfer");
         rightTransfer = hardwareMap.get(CRServo.class, "rightTransfer");
         rightTransfer.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        localizer = new PinpointLocalizer(hardwareMap, 1.0, new Pose2d(0, 0, 0));
+
     }
 
     @Override
@@ -105,19 +111,30 @@ public class HanmingOpMode extends OpMode {
 
         PoseVelocity2d currentVelocity = localizer.update();
         Pose2d currentPose = localizer.getPose();
-        telemetry.addData("State", launchState);
-        telemetry.addData("motorSpeed", launcher.getVelocity());
-        telemetry.addData("Launch Min Vel", LAUNCHER_MIN_VELOCITY);
-        telemetry.addData("Launch tgt Vel", LAUNCHER_TARGET_VELOCITY);
-        telemetry.addData("Pose", "(%.1f, %.1f, %.1f)", currentPose.position.x, currentPose.position.y, Math.toDegrees(currentPose.heading.toDouble()));
+
+        double robotX = currentPose.position.x;
+        double robotY = currentPose.position.y;
+// Red goal
+        double redGoalX = 69;
+        double redGoalY = 69;
+// Blue goal
+        double blueGoalX = -69;
+        double blueGoalY = 69;
+// Distance calculations
+        double redDist = Math.hypot(redGoalX - robotX, redGoalY - robotY);
+        double blueDist = Math.hypot(blueGoalX - robotX, blueGoalY - robotY);
+
         telemetry.addData("RF", frontRight.getPower());
         telemetry.addData("LF", frontLeft.getPower());
         telemetry.addData("LB", backLeft.getPower());
         telemetry.addData("RB", backRight.getPower());
-        telemetry.addData("Flywheel Power", Flywheel.getPower());
-        telemetry.addData("Flywheel Target Speed", flywheelspeed);
         telemetry.addData("Left Transfer", gamepad1.dpad_left ? "Forward" : "Off");
         telemetry.addData("Right Transfer", gamepad1.dpad_right ? "Reverse" : "Off");
+        telemetry.addData("Flywheel Power", Flywheel.getPower());
+        telemetry.addData("Flywheel Target Speed", flywheelspeed);
+        telemetry.addData("Pose", "(%.1f, %.1f, %.1f)", currentPose.position.x, currentPose.position.y, Math.toDegrees(currentPose.heading.toDouble()));
+        telemetry.addData("Red Goal Dist", "%.2f", redDist);
+        telemetry.addData("Blue Goal Dist", "%.2f", blueDist);
         telemetry.update();
 
     }
