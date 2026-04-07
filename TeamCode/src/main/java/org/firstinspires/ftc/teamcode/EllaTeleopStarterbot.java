@@ -95,7 +95,7 @@ public class EllaTeleopStarterbot extends OpMode {
      * what "State" our machine is in, run the associated code, and when we are done with that step
      * move on to the next state.
      * This enum is called the "LaunchState". It reflects the current condition of the shooter
-     * motor and we move through the enum when the user asks our code to fire a shot.
+     * motorand we move through the enum when the user asks our code to fire a shot.
      * It starts at idle, when the user requests a launch, we enter SPIN_UP where we get the
      * motor up to speed, once it meets a minimum speed then it starts and then ends the launch process.
      * We can use higher level code to cycle through these states. But this allows us to write
