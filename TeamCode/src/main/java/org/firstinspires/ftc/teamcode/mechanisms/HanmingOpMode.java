@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.mechanisms;
 
+import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -15,11 +17,7 @@ public class HanmingOpMode extends OpMode {
     private DcMotor backLeft;
     private CRServo leftTransfer;
     private CRServo rightTransfer;
-
-    // Keep this OUTSIDE loop so it remembers its value
     private double flywheelspeed = 0.3;
-
-    // These help prevent one button press from changing speed 50 times
     private boolean lastDpadUp = false;
     private boolean lastDpadDown = false;
 
@@ -45,16 +43,12 @@ public class HanmingOpMode extends OpMode {
 
         leftTransfer = hardwareMap.get(CRServo.class, "leftTransfer");
         rightTransfer = hardwareMap.get(CRServo.class, "rightTransfer");
-
-        // If both transfers should spin the same physical direction,
-        // one of them often needs to be reversed.
         rightTransfer.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
     @Override
     public void loop() {
 
-        // Test drive motors one at a time
         if (gamepad1.y) {
             frontRight.setPower(0.3);
         } else {
@@ -79,7 +73,6 @@ public class HanmingOpMode extends OpMode {
             backRight.setPower(0.0);
         }
 
-        // Adjust flywheel speed one click at a time
         if (gamepad1.dpad_up && !lastDpadUp) {
             flywheelspeed += 0.05;
         }
@@ -88,21 +81,17 @@ public class HanmingOpMode extends OpMode {
             flywheelspeed -= 0.05;
         }
 
-        // Clamp between 0 and 1
         flywheelspeed = Math.max(0.0, Math.min(1.0, flywheelspeed));
 
-        // Save current button states for next loop
         lastDpadUp = gamepad1.dpad_up;
         lastDpadDown = gamepad1.dpad_down;
 
-        // Turn flywheel on/off using chosen speed
         if (gamepad1.left_bumper) {
             Flywheel.setPower(flywheelspeed);
         } else {
             Flywheel.setPower(0.0);
         }
 
-        // Transfers
         if (gamepad1.dpad_left) {
             leftTransfer.setPower(1.0);
             rightTransfer.setPower(1.0);
@@ -114,6 +103,13 @@ public class HanmingOpMode extends OpMode {
             rightTransfer.setPower(0.0);
         }
 
+        PoseVelocity2d currentVelocity = localizer.update();
+        Pose2d currentPose = localizer.getPose();
+        telemetry.addData("State", launchState);
+        telemetry.addData("motorSpeed", launcher.getVelocity());
+        telemetry.addData("Launch Min Vel", LAUNCHER_MIN_VELOCITY);
+        telemetry.addData("Launch tgt Vel", LAUNCHER_TARGET_VELOCITY);
+        telemetry.addData("Pose", "(%.1f, %.1f, %.1f)", currentPose.position.x, currentPose.position.y, Math.toDegrees(currentPose.heading.toDouble()));
         telemetry.addData("RF", frontRight.getPower());
         telemetry.addData("LF", frontLeft.getPower());
         telemetry.addData("LB", backLeft.getPower());
@@ -123,5 +119,6 @@ public class HanmingOpMode extends OpMode {
         telemetry.addData("Left Transfer", gamepad1.dpad_left ? "Forward" : "Off");
         telemetry.addData("Right Transfer", gamepad1.dpad_right ? "Reverse" : "Off");
         telemetry.update();
+
     }
 }
