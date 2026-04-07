@@ -39,7 +39,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
  *
  * See the sensor's product page: https://www.gobilda.com/pinpoint-odometry-computer-imu-sensor-fusion-for-2-wheel-odometry/
  */
-@TeleOp(name = "pinpoint", group = "Sensor")
+@TeleOp(name = "tina_pinpoint", group = "Sensor")
 
 public class tina_pinpoint extends OpMode {
     // Create an instance of the sensor
@@ -68,9 +68,11 @@ public class tina_pinpoint extends OpMode {
         pinpoint.update();
         Pose2D pose2D = pinpoint.getPosition();
 
-        telemetry.addData("X coordinate (IN)", pose2D.getX(DistanceUnit.INCH));
-        telemetry.addData("Y coordinate (IN)", pose2D.getY(DistanceUnit.INCH));
+        telemetry.addData("X coordinate (IN)", pose2D.getX(DistanceUnit.INCH)*-1);
+        telemetry.addData("Y coordinate (IN)", pose2D.getY(DistanceUnit.INCH)*-1);
         telemetry.addData("Heading angle (DEGREES)", pose2D.getHeading(AngleUnit.DEGREES));
+        telemetry.addData("red dist. (IN)", Math.sqrt(Math.pow((57-pose2D.getX(DistanceUnit.INCH)*-1) , 2)+Math.pow((57-pose2D.getY(DistanceUnit.INCH)*-1) , 2)));
+        telemetry.addData("blue dist. (IN)", Math.sqrt(Math.pow((-57-pose2D.getX(DistanceUnit.INCH)*-1) , 2)+Math.pow((58-pose2D.getY(DistanceUnit.INCH)*-1) , 2)));
     }
 
     public void configurePinpoint(){
