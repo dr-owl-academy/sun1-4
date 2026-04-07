@@ -185,7 +185,20 @@ public class EllaTeleopStarterbot extends OpMode {
         /*
          * Tell the driver that initialization is complete.
          */
+        //Initialize PinpointLocalizer with starting pose
+        localizer = new PinpointLocalizer(hardwareMap, PINPOINT_IN_PER_TICK, initialRobotPose);
+
+        /*
+         * Tell the driver that initialization is complete.
+         */
         telemetry.addData("Status", "Initialized");
+        telemetry.addData("Initial Pose", "(%.2f, %.2f, %.2f rad)", initialRobotPose.position.x, initialRobotPose.position.y, initialRobotPose.heading.toDouble());
+        telemetry.update();
+        w
+        telemetry.addData("Status", "Initialized");
+        telemetry.addData("Initial Pose", "(%.2f, %.2f, %.2f rad)", initialRobotPose.position.x, initialRobotPose.position.y, initialRobotPose.heading.toDouble());
+        telemetry.update();
+
     }
 
     /*
