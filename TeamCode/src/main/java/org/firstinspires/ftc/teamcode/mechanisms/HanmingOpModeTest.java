@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode.mechanisms;
 import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
+
+import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -9,16 +12,16 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.PinpointLocalizer;
+
 
 @TeleOp(name = "HanmingOpModeTest", group = "StarterBot")
 public class HanmingOpModeTest extends OpMode {
     final double FEED_TIME_SECONDS = 0.50;
     final double STOP_SPEED = 0.0;
     final double FULL_SPEED = 1.0;
-
     double LAUNCHER_TARGET_VELOCITY = 2000;
     double LAUNCHER_MIN_VELOCITY = 900;
-
     // Declare OpMode members.
     private DcMotor leftFrontDrive = null;
     private DcMotor rightFrontDrive = null;
@@ -27,6 +30,7 @@ public class HanmingOpModeTest extends OpMode {
     private DcMotorEx launcher = null;
     private CRServo leftFeeder = null;
     private CRServo rightFeeder = null;
+    private PinpointLocalizer localizer;
 
     ElapsedTime feederTimer = new ElapsedTime();
 
@@ -45,6 +49,7 @@ public class HanmingOpModeTest extends OpMode {
 
     @Override
     public void init() {
+
         launchState = LaunchState.IDLE;
         leftFrontDrive = hardwareMap.get(DcMotor.class, "frontLeft");
         rightFrontDrive = hardwareMap.get(DcMotor.class, "frontRight");
@@ -68,6 +73,9 @@ public class HanmingOpModeTest extends OpMode {
         launcher.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(300, 0, 0, 10));
         rightFeeder.setDirection(DcMotorSimple.Direction.REVERSE);
         telemetry.addData("Status", "Initialized");
+
+        localizer = new PinpointLocalizer(hardwareMap, 0.00076699, new Pose2d(0, 0, 0));
+
     }
 
     @Override
@@ -101,6 +109,32 @@ public class HanmingOpModeTest extends OpMode {
             rightFeeder.setPower(STOP_SPEED);
         }
 
+        PoseVelocity2d currentVelocity = localizer.update();
+        Pose2d currentPose = localizer.getPose();
+
+        double robotX = currentPose.position.x;
+        double robotY = currentPose.position.y;
+// Red goal
+        double redGoalX = 69;
+        double redGoalY = 69;
+// Blue goal
+        double blueGoalX = -69;
+        double blueGoalY = 69;
+// Distance calculations
+        double redDist = Math.hypot(redGoalX - robotX, redGoalY - robotY);
+        double blueDist = Math.hypot(blueGoalX - robotX, blueGoalY - robotY);
+
+        telemetry.addData("Pinpoint Status", localizer.driver.getDeviceStatus());
+        telemetry.addData("Pos X", currentPose.position.x);
+        telemetry.addData("Pos Y", currentPose.position.y);
+        telemetry.addData("Heading Deg", Math.toDegrees(currentPose.heading.toDouble()));
+        telemetry.addData("Left Transfer", gamepad2.dpad_left ? "Forward" : "Off");
+        telemetry.addData("Right Transfer", gamepad2.dpad_right ? "Reverse" : "Off");
+        telemetry.addData("Flywheel Power", launcher.getPower());
+        telemetry.addData("Flywheel Target Speed", LAUNCHER_TARGET_VELOCITY);
+        telemetry.addData("Pose", "(%.1f, %.1f, %.1f)", currentPose.position.x, currentPose.position.y, Math.toDegrees(currentPose.heading.toDouble()));
+        telemetry.addData("Red Goal Dist", "%.2f", redDist);
+        telemetry.addData("Blue Goal Dist", "%.2f", blueDist);
         telemetry.addData("motorSpeed", launcher.getVelocity());
         telemetry.addData("Launch Min Vel", LAUNCHER_MIN_VELOCITY);
         telemetry.addData("Launch tgt Vel", LAUNCHER_TARGET_VELOCITY);
