@@ -85,6 +85,7 @@ public class MatthewTeleopStarterBot extends OpMode {
     private DcMotorEx launcher = null;
     private CRServo leftFeeder = null;
     private CRServo rightFeeder = null;
+    private  PinpointLocalizer localizer;
 
     ElapsedTime feederTimer = new ElapsedTime();
 
@@ -118,7 +119,6 @@ public class MatthewTeleopStarterBot extends OpMode {
     double rightFrontPower;
     double leftBackPower;
     double rightBackPower;
-    PinpointLocalizer localizer;
 
     /*
      * Code to run ONCE when the driver hits INIT
