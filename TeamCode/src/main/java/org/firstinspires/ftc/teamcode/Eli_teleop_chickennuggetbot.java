@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode;
 
 import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
 
+import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -11,12 +13,20 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.mechanisms.Elipinpoint;
+
 @TeleOp(name = "Eli_teleop_chickennuggetbot", group = "StarterBot")
 public class Eli_teleop_chickennuggetbot extends OpMode {
 
     final double FEED_TIME_SECONDS = 0.20;
     final double STOP_SPEED = 0.0;
     final double FULL_SPEED = 1.0;
+
+    private static final double BLUE_GOAL_X = -57.0;
+    private static final double BLUE_GOAL_Y = 57.0;
+
+    private static final double RED_GOAL_X = 57.0;
+    private static final double RED_GOAL_Y = 57.0;
 
     double LAUNCHER_TARGET_VELOCITY = 1225;
     double LAUNCHER_MIN_VELOCITY = 1000;
@@ -35,7 +45,11 @@ public class Eli_teleop_chickennuggetbot extends OpMode {
     private CRServo rightFeeder = null;
 
 
+    private Elipinpoint localizer = null;
 
+    // Change this to your desired starting pose: x, y in inches, heading in radians
+    private Pose2d initialRobotPose = new Pose2d(0, 0, 0);
+    private static final double PINPOINT_IN_PER_TICK = 0.0019684344326;
 
 
     ElapsedTime feederTimer = new ElapsedTime();
@@ -91,7 +105,11 @@ public class Eli_teleop_chickennuggetbot extends OpMode {
 
         rightFeeder.setDirection(DcMotorSimple.Direction.REVERSE);
 
+        // Initialize PinpointLocalizer with starting pose
+        localizer = new Elipinpoint(hardwareMap, PINPOINT_IN_PER_TICK, initialRobotPose);
+
         telemetry.addData("Status", "Initialized");
+        telemetry.addData("Initial Pose", "(%.2f, %.2f, %.2f rad)", initialRobotPose.position.x, initialRobotPose.position.y, initialRobotPose.heading.toDouble());
         telemetry.update();
     }
 
@@ -126,8 +144,18 @@ public class Eli_teleop_chickennuggetbot extends OpMode {
 
         launch(gamepad1.right_bumper);
 
+        PoseVelocity2d currentVelocity = localizer.update();
+        Pose2d currentPose = localizer.getPose();
+
+
         telemetry.addData("State", launchState);
         telemetry.addData("motorSpeed", launcher.getVelocity());
+        telemetry.addData("Launch Min Vel", LAUNCHER_MIN_VELOCITY);
+        telemetry.addData("Launch tgt Vel", LAUNCHER_TARGET_VELOCITY);
+        telemetry.addData("Pose", "(%.1f, %.1f, %.1f)", currentPose.position.x, currentPose.position.y, Math.toDegrees(currentPose.heading.toDouble())
+        );
+        telemetry.addData("Velocity", "(%.1f, %.1f, %.1f)", currentVelocity.linearVel.x, currentVelocity.linearVel.y, Math.toDegrees(currentVelocity.angVel)
+        );
         telemetry.update();
     }
 
