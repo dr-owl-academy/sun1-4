@@ -34,6 +34,7 @@ package org.firstinspires.ftc.teamcode.mechanisms;
 
 import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
 
+import com.acmerobotics.roadrunner.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -42,6 +43,8 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.teamcode.PinpointLocalizer;
 
 /*
  * This file includes a teleop (driver-controlled) file for the goBILDA® StarterBot for the
@@ -115,6 +118,7 @@ public class MatthewTeleopStarterBot extends OpMode {
     double rightFrontPower;
     double leftBackPower;
     double rightBackPower;
+    PinpointLocalizer localizer;
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -135,6 +139,8 @@ public class MatthewTeleopStarterBot extends OpMode {
         launcher = hardwareMap.get(DcMotorEx.class, "Flywheel");
         leftFeeder = hardwareMap.get(CRServo.class, "leftTransfer");
         rightFeeder = hardwareMap.get(CRServo.class, "rightTransfer");
+
+        localizer = new PinpointLocalizer(hardwareMap, 0.00076699, new Pose2d(0, 0, 0));
 
         /*
          * To drive forward, most robots need the motor on one side to be reversed,
