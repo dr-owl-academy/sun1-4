@@ -35,6 +35,7 @@ package org.firstinspires.ftc.teamcode.mechanisms;
 import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
 
 import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -251,7 +252,10 @@ public class MatthewTeleopStarterBot extends OpMode {
          */
         telemetry.addData("State", launchState);
         telemetry.addData("motorSpeed", launcher.getVelocity());
-        Pose2d currentPose = null;
+
+        PoseVelocity2d currentVelocity = localizer.update();
+        Pose2d currentPose = localizer.getPose();
+
         double robotX = currentPose.position.x;
         double robotY = currentPose.position.y;
 // Red goal
