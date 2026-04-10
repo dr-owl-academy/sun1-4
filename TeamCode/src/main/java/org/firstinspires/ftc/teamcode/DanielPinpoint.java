@@ -50,6 +50,7 @@ public class DanielPinpoint extends OpMode {
     // Create an instance of the sensor
     GoBildaPinpointDriver pinpoint;
     private DanielPinpoint pose2D;
+    private DanielPinpoint currentPose;
 
     @Override
     public void init() {
@@ -75,8 +76,8 @@ public class DanielPinpoint extends OpMode {
             pinpoint.setPosition(new Pose2D(DistanceUnit.INCH, 0, 0, AngleUnit.DEGREES, 0));
 
 
-            double robotX = pose2D.getX(DistanceUnit.INCH);
-            double robotY = pose2D.getY(DistanceUnit.INCH);
+            double robotX = currentPose.getX(DistanceUnit.INCH);
+            double robotY = currentPose.getY(DistanceUnit.INCH);
 
             double redGoalX = 57;
             double redGoalY = 57;
