@@ -236,10 +236,10 @@ public class MatthewTeleopStarterBot extends OpMode {
             launcher.setVelocity(STOP_SPEED);
         }
         if (gamepad1.dpadUpWasPressed()){
-            LAUNCHER_TARGET_VELOCITY =+ 25;
+            LAUNCHER_TARGET_VELOCITY = LAUNCHER_TARGET_VELOCITY+ 25;
         }
         if (gamepad1.dpadDownWasPressed()){
-            LAUNCHER_TARGET_VELOCITY =- 25;
+            LAUNCHER_TARGET_VELOCITY = LAUNCHER_TARGET_VELOCITY- 25;
         }
 
         /*
@@ -259,11 +259,11 @@ public class MatthewTeleopStarterBot extends OpMode {
         double robotX = currentPose.position.x;
         double robotY = currentPose.position.y;
 // Red goal
-        double redGoalX = 69;
-        double redGoalY = 69;
+        double redGoalX = 57;
+        double redGoalY = 57;
 // Blue goal
-        double blueGoalX = -69;
-        double blueGoalY = 69;
+        double blueGoalX = -57;
+        double blueGoalY = 58;
 // Distance calculations
         double redDist = Math.hypot(redGoalX - robotX, redGoalY - robotY);
         double blueDist = Math.hypot(blueGoalX - robotX, blueGoalY - robotY);
