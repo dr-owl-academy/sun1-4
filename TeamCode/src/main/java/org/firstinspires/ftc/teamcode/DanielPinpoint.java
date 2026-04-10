@@ -22,6 +22,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import android.media.MediaParser;
+import android.view.DragEvent;
 
 import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
@@ -51,8 +52,9 @@ public class DanielPinpoint extends OpMode {
     // Create an instance of the sensor
     GoBildaPinpointDriver pinpoint;
     private DanielPinpoint pose2D;
-    private DanielPinpoint currentPose;
-    private Gamepad position;
+    private Object redDist;
+    private Object blueDist;
+
 
     @Override
     public void init() {
@@ -71,8 +73,9 @@ public class DanielPinpoint extends OpMode {
         telemetry.addLine("Push your robot around to see it track");
         telemetry.addLine("Press A to reset the position");
         double distance = 0;
-        double redDist = 0;
-        double blueDist = 0;
+
+
+
         if (gamepad1.a) {
             // You could use readings from April Tags here to give a new known position to the pinpoint
             pinpoint.setPosition(new Pose2D(DistanceUnit.INCH, 0, 0, AngleUnit.DEGREES, 0));
@@ -87,8 +90,8 @@ public class DanielPinpoint extends OpMode {
             double blueGoalX = -57;
             double blueGoalY = 58;
 
-            redDist = Math.hypot(redGoalX - robotX, redGoalY - robotY);
-            blueDist = Math.hypot(blueGoalX - robotX, blueGoalY - robotY);
+            double redDist = Math.hypot(redGoalX - robotX, redGoalY - robotY);
+            double blueDist = Math.hypot(blueGoalX - robotX, blueGoalY - robotY);
 
 
         }
