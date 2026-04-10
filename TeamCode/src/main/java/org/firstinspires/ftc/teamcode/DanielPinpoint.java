@@ -55,6 +55,11 @@ public class DanielPinpoint extends OpMode {
     private Object redDist;
     private Object blueDist;
 
+    public static final double redGoalX = 57;
+    public static final double redGoalY = 57;
+    public static final double blueGoalX = -57;
+    public static final double blueGoalY = 58;
+
 
     @Override
     public void init() {
@@ -81,12 +86,6 @@ public class DanielPinpoint extends OpMode {
             pinpoint.setPosition(new Pose2D(DistanceUnit.INCH, 0, 0, AngleUnit.DEGREES, 0));
 
 
-            final double redGoalX = 57;
-            double redGoalY = 57;
-
-            double blueGoalX = -57;
-            double blueGoalY = 58;
-
 
         }
         pinpoint.update();
@@ -98,11 +97,11 @@ public class DanielPinpoint extends OpMode {
         telemetry.addData("X coordinate (IN)", pose2D.getX(DistanceUnit.INCH));
         telemetry.addData("Y coordinate (IN)", pose2D.getY(DistanceUnit.INCH));
         telemetry.addData("Heading angle (DEGREES)", pose2D.getHeading(AngleUnit.DEGREES));
-        telemetry.addData("Distance from red goal", "%.2f", redDist);
-        telemetry.addData("Distance from blue goal", "%.2f", blueDist);
+        telemetry.addData("Distance from red goal", "%.2f inches", redDist);
+        telemetry.addData("Distance from blue goal", "%.2f inches", blueDist);
 
-        double redDist = Math.hypot(57 - robotX, 57 - robotY);
-        double blueDist = Math.hypot(-57 - robotX, 58 - robotY);
+        double redDist = Math.hypot(redGoalX - robotX, redGoalY - robotY);
+        double blueDist = Math.hypot(blueGoalX - robotX, blueGoalY - robotY);
     }
 
 
