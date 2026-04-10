@@ -62,14 +62,15 @@ public class DanielPinpoint extends OpMode {
     public void loop() {
         telemetry.addLine("Push your robot around to see it track");
         telemetry.addLine("Press A to reset the position");
-        if(gamepad1.a){
+        double distance = 0;
+        if (gamepad1.a) {
             // You could use readings from April Tags here to give a new known position to the pinpoint
             pinpoint.setPosition(new Pose2D(DistanceUnit.INCH, 0, 0, AngleUnit.DEGREES, 0));
 
             double x1 = 0.0, y1 = 0.0;
             double x2 = 57.0, y2 = 57.0;
 
-            double distance = Math.hypot(x2 - x1, y2 - y1);
+            distance = Math.hypot(x2 - x1, y2 - y1);
 
 
         }
@@ -79,6 +80,7 @@ public class DanielPinpoint extends OpMode {
         telemetry.addData("X coordinate (IN)", pose2D.getX(DistanceUnit.INCH));
         telemetry.addData("Y coordinate (IN)", pose2D.getY(DistanceUnit.INCH));
         telemetry.addData("Heading angle (DEGREES)", pose2D.getHeading(AngleUnit.DEGREES));
+        telemetry.addData("Distance from red goal", "%.2f inches", distance);
     }
 
     public void configurePinpoint(){
