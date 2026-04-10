@@ -65,6 +65,13 @@ public class DanielPinpoint extends OpMode {
         if(gamepad1.a){
             // You could use readings from April Tags here to give a new known position to the pinpoint
             pinpoint.setPosition(new Pose2D(DistanceUnit.INCH, 0, 0, AngleUnit.DEGREES, 0));
+
+            double x1 = 0.0, y1 = 0.0;
+            double x2 = 57.0, y2 = 57.0;
+
+            double distance = Math.hypot(x2 - x1, y2 - y1);
+
+
         }
         pinpoint.update();
         Pose2D pose2D = pinpoint.getPosition();
