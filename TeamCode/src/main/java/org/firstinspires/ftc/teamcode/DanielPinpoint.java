@@ -27,6 +27,7 @@ import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
@@ -51,6 +52,7 @@ public class DanielPinpoint extends OpMode {
     GoBildaPinpointDriver pinpoint;
     private DanielPinpoint pose2D;
     private DanielPinpoint currentPose;
+    private Gamepad position;
 
     @Override
     public void init() {
@@ -76,8 +78,8 @@ public class DanielPinpoint extends OpMode {
             pinpoint.setPosition(new Pose2D(DistanceUnit.INCH, 0, 0, AngleUnit.DEGREES, 0));
 
 
-            double robotX = currentPose.getX(DistanceUnit.INCH);
-            double robotY = currentPose.getY(DistanceUnit.INCH);
+            double robotX = pose2D.getX(DistanceUnit.INCH) * -1;
+            double robotY = pose2D.getY(DistanceUnit.INCH) * -1;
 
             double redGoalX = 57;
             double redGoalY = 57;
