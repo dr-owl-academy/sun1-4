@@ -21,6 +21,8 @@
  */
 package org.firstinspires.ftc.teamcode;
 
+import android.media.MediaParser;
+
 import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -29,6 +31,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
+
+import java.security.interfaces.DSAPrivateKey;
 
 /*
  * This OpMode illustrates how to use the GoBildaPinpoint
@@ -45,6 +49,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 public class DanielPinpoint extends OpMode {
     // Create an instance of the sensor
     GoBildaPinpointDriver pinpoint;
+    private DanielPinpoint pose2D;
 
     @Override
     public void init() {
@@ -63,14 +68,24 @@ public class DanielPinpoint extends OpMode {
         telemetry.addLine("Push your robot around to see it track");
         telemetry.addLine("Press A to reset the position");
         double distance = 0;
+        double redDist = 0;
+        double blueDist = 0;
         if (gamepad1.a) {
             // You could use readings from April Tags here to give a new known position to the pinpoint
             pinpoint.setPosition(new Pose2D(DistanceUnit.INCH, 0, 0, AngleUnit.DEGREES, 0));
 
-            double x1 = 0.0, y1 = 0.0;
-            double x2 = 57.0, y2 = 57.0;
 
-            distance = Math.hypot(x2 - x1, y2 - y1);
+            double robotX = pose2D.getX(DistanceUnit.INCH);
+            double robotY = pose2D.getY(DistanceUnit.INCH);
+
+            double redGoalX = 57;
+            double redGoalY = 57;
+
+            double blueGoalX = -57;
+            double blueGoalY = 58;
+
+            redDist = Math.hypot(redGoalX - robotX, redGoalY - robotY);
+            blueDist = Math.hypot(blueGoalX - robotX, blueGoalY - robotY);
 
 
         }
@@ -80,8 +95,18 @@ public class DanielPinpoint extends OpMode {
         telemetry.addData("X coordinate (IN)", pose2D.getX(DistanceUnit.INCH));
         telemetry.addData("Y coordinate (IN)", pose2D.getY(DistanceUnit.INCH));
         telemetry.addData("Heading angle (DEGREES)", pose2D.getHeading(AngleUnit.DEGREES));
-        telemetry.addData("Distance from red goal", "%.2f inches", distance);
+        telemetry.addData("Distance from red goal", "%.2f inches", redDist);
+        telemetry.addData("Distance from blue goal", "%.2f inches", blueDist);
     }
+
+    private double getY(DistanceUnit inch) {
+        return 0;
+    }
+
+    private double getX(DistanceUnit inch) {
+        return 0;
+    }
+
 
     public void configurePinpoint(){
         /*
