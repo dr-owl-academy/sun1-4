@@ -69,9 +69,9 @@ public class MatthewPinpoint extends OpMode {
         pinpoint.update();
         Pose2D pose2D = pinpoint.getPosition();
 
-        telemetry.addData("X coordinate (IN)", pose2D.getX(DistanceUnit.INCH));
-        telemetry.addData("Y coordinate (IN)", pose2D.getY(DistanceUnit.INCH));
-        telemetry.addData("Heading angle (DEGREES)", pose2D.getHeading(AngleUnit.DEGREES));
+        telemetry.addData("X coordinate (IN)", pose2D.getX(DistanceUnit.INCH)*-1);
+        telemetry.addData("Y coordinate (IN)", pose2D.getY(DistanceUnit.INCH)*-1);
+        telemetry.addData("Heading angle (DEGREES)", pose2D.getHeading(AngleUnit.DEGREES)*-1);
     }
 
     public void configurePinpoint(){
