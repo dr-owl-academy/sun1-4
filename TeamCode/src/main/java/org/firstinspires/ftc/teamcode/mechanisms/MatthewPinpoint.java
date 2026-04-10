@@ -58,8 +58,8 @@ public class MatthewPinpoint extends OpMode {
         double currentY = pose2D.getY(DistanceUnit.INCH) * -1;
 
         // --- Calculate Distances using Math.hypot ---
-        double distToRed = Math.hypot(RED_GOAL_X - currentX, RED_GOAL_Y - currentY);
-        double distToBlue = Math.hypot(BLUE_GOAL_X - currentX, BLUE_GOAL_Y - currentY);
+        double redDist = Math.hypot(RED_GOAL_X - currentX, RED_GOAL_Y - currentY);
+        double blueDist = Math.hypot(BLUE_GOAL_X - currentX, BLUE_GOAL_Y - currentY);
 
         // Display current position
         telemetry.addData("X coordinate (IN)", currentX);
@@ -67,16 +67,16 @@ public class MatthewPinpoint extends OpMode {
         telemetry.addData("Heading angle (DEGREES)", pose2D.getHeading(AngleUnit.DEGREES) * -1);
 
         // Display distances
-        telemetry.addLine("--- Goal Distances ---");
-        telemetry.addData("Distance to Red Goal (IN)", "%.2f", distToRed);
-        telemetry.addData("Distance to Blue Goal (IN)", "%.2f", distToBlue);
+        telemetry.addLine("Goal Distances");
+        telemetry.addData("Distance to Red Goal (IN)", "%.2f", redDist);
+        telemetry.addData("Distance to Blue Goal (IN)", "%.2f", blueDist);
 
         telemetry.update(); // Good practice to ensure telemetry pushes to the DS
     }
 
     public void configurePinpoint(){
         // [Your existing pinpoint configuration remains exactly the same]
-        pinpoint.setOffsets(-20, -20, DistanceUnit.MM);
+        pinpoint.setOffsets(-55.0, -110, DistanceUnit.MM);
         pinpoint.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
         pinpoint.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.FORWARD,
                 GoBildaPinpointDriver.EncoderDirection.FORWARD);
