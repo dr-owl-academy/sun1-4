@@ -81,35 +81,29 @@ public class DanielPinpoint extends OpMode {
             pinpoint.setPosition(new Pose2D(DistanceUnit.INCH, 0, 0, AngleUnit.DEGREES, 0));
 
 
-            double robotX = pose2D.getX(DistanceUnit.INCH) * -1;
-            double robotY = pose2D.getY(DistanceUnit.INCH) * -1;
-
-            double redGoalX = 57;
+            final double redGoalX = 57;
             double redGoalY = 57;
 
             double blueGoalX = -57;
             double blueGoalY = 58;
-
-            double redDist = Math.hypot(redGoalX - robotX, redGoalY - robotY);
-            double blueDist = Math.hypot(blueGoalX - robotX, blueGoalY - robotY);
 
 
         }
         pinpoint.update();
         Pose2D pose2D = pinpoint.getPosition();
 
+        double robotX = pose2D.getX(DistanceUnit.INCH) * -1;
+        double robotY = pose2D.getY(DistanceUnit.INCH) * -1;
+
         telemetry.addData("X coordinate (IN)", pose2D.getX(DistanceUnit.INCH));
         telemetry.addData("Y coordinate (IN)", pose2D.getY(DistanceUnit.INCH));
         telemetry.addData("Heading angle (DEGREES)", pose2D.getHeading(AngleUnit.DEGREES));
         telemetry.addData("Distance from red goal", "%.2f inches", redDist);
         telemetry.addData("Distance from blue goal", "%.2f inches", blueDist);
+
+        double redDist = Math.hypot(57 - robotX, 57 - robotY);
+        double blueDist = Math.hypot(-57 - robotX, 58 - robotY);
     }
-
-    private double getX(DistanceUnit distanceUnit) {
-    return 0;}
-
-    private double getY(DistanceUnit distanceUnit) {
-        return 0;}
 
 
     public void configurePinpoint(){
