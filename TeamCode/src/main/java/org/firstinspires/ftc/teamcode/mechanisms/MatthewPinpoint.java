@@ -56,6 +56,7 @@ public class MatthewPinpoint extends OpMode {
 
         // Set the location of the robot - this should be the place you are starting the robot from
         pinpoint.setPosition(new Pose2D(DistanceUnit.INCH, 0, 0, AngleUnit.DEGREES, 0));
+    double RedGoal;
     }
 
     @Override
