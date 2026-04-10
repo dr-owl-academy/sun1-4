@@ -39,8 +39,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
  *
  * See the sensor's product page: https://www.gobilda.com/pinpoint-odometry-computer-imu-sensor-fusion-for-2-wheel-odometry/
  */
-@TeleOp(name = "FudaiPinpoint.java", group = "Sensor")
-public class FudaiPinpoint extends OpMode {
+@TeleOp(name = "Fudaipinpoint.java", group = "Sensor")
+public class Fudaipinpoint extends OpMode {
     GoBildaPinpointDriver pinpoint;
 
     @Override
