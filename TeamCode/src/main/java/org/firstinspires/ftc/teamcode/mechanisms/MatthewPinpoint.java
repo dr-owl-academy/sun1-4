@@ -54,8 +54,8 @@ public class MatthewPinpoint extends OpMode {
 
         // Extract current X and Y.
         // Note: Keeping your *-1 inversion so it matches your field perspective.
-        double currentX = pose2D.getX(DistanceUnit.INCH);
-        double currentY = pose2D.getY(DistanceUnit.INCH);
+        double currentX = pose2D.getX(DistanceUnit.INCH) * -1;
+        double currentY = pose2D.getY(DistanceUnit.INCH) * -1;
 
         // --- Calculate Distances using Math.hypot ---
         double redDist = Math.hypot(RED_GOAL_X - currentX, RED_GOAL_Y - currentY);
