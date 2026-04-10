@@ -105,13 +105,11 @@ public class DanielPinpoint extends OpMode {
         telemetry.addData("Distance from blue goal", "%.2f inches", blueDist);
     }
 
-    private double getY(DistanceUnit inch) {
-        return 0;
-    }
+    private double getX(DistanceUnit distanceUnit) {
+    return 0;}
 
-    private double getX(DistanceUnit inch) {
-        return 0;
-    }
+    private double getY(DistanceUnit distanceUnit) {
+        return 0;}
 
 
     public void configurePinpoint(){
