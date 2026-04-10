@@ -88,10 +88,6 @@ public class EllaTeleopStarterbot extends OpMode {
     private Pose2d initialRobotPose = new Pose2d(0, 0, 0);
     private static final double PINPOINT_IN_PER_TICK = 0.0019684344326;
 
-    // Change this to your desired starting pose: x, y in inches, heading in radians
-    private Pose2d initialRobotPose = new Pose2d(0, 0, 0);
-    private static final double PINPOINT_IN_PER_TICK = 0.0019684344326;
-
     ElapsedTime feederTimer = new ElapsedTime();
 
     /*
