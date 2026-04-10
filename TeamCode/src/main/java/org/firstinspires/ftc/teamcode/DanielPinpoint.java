@@ -91,8 +91,8 @@ public class DanielPinpoint extends OpMode {
         pinpoint.update();
         Pose2D pose2D = pinpoint.getPosition();
 
-        double robotX = pose2D.getX(DistanceUnit.INCH) * -1;
-        double robotY = pose2D.getY(DistanceUnit.INCH) * -1;
+        double robotX = pose2D.getX(DistanceUnit.INCH);
+        double robotY = pose2D.getY(DistanceUnit.INCH);
 
         double redDist = Math.hypot(redGoalX - robotX, redGoalY - robotY);
         double blueDist = Math.hypot(blueGoalX - robotX, blueGoalY - robotY);
