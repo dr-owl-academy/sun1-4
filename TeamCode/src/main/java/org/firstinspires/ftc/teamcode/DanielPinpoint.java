@@ -94,14 +94,16 @@ public class DanielPinpoint extends OpMode {
         double robotX = pose2D.getX(DistanceUnit.INCH) * -1;
         double robotY = pose2D.getY(DistanceUnit.INCH) * -1;
 
+        double redDist = Math.hypot(redGoalX - robotX, redGoalY - robotY);
+        double blueDist = Math.hypot(blueGoalX - robotX, blueGoalY - robotY);
+
         telemetry.addData("X coordinate (IN)", pose2D.getX(DistanceUnit.INCH));
         telemetry.addData("Y coordinate (IN)", pose2D.getY(DistanceUnit.INCH));
         telemetry.addData("Heading angle (DEGREES)", pose2D.getHeading(AngleUnit.DEGREES));
         telemetry.addData("Distance from red goal", "%.2f inches", redDist);
         telemetry.addData("Distance from blue goal", "%.2f inches", blueDist);
 
-        double redDist = Math.hypot(redGoalX - robotX, redGoalY - robotY);
-        double blueDist = Math.hypot(blueGoalX - robotX, blueGoalY - robotY);
+
     }
 
 
