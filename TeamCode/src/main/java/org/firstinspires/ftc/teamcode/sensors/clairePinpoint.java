@@ -45,6 +45,12 @@ import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 public class clairePinpoint extends OpMode {
     // Create an instance of the sensor
     GoBildaPinpointDriver pinpoint;
+    // Goal positions (in inches)
+    double blueGoalX = -57;
+    double blueGoalY = 58;
+
+    double redGoalX = 57;
+    double redGoalY = 57;
 
     @Override
     public void init() {
@@ -69,9 +75,28 @@ public class clairePinpoint extends OpMode {
         pinpoint.update();
         Pose2D pose2D = pinpoint.getPosition();
 
-        telemetry.addData("X coordinate (IN)", pose2D.getX(DistanceUnit.INCH));
-        telemetry.addData("Y coordinate (IN)", pose2D.getY(DistanceUnit.INCH));
+        double robotX = pose2D.getX(DistanceUnit.INCH);
+        double robotY = -pose2D.getY(DistanceUnit.INCH);
+
+// distance to blue goal
+        double blueDistance = Math.sqrt(
+                Math.pow(blueGoalX - robotX, 2) +
+                        Math.pow(blueGoalY - robotY, 2)
+        );
+
+// distance to red goal
+        double redDistance = Math.sqrt(
+                Math.pow(redGoalX - robotX, 2) +
+                        Math.pow(redGoalY - robotY, 2)
+        );
+
+// telemetry
+        telemetry.addData("X coordinate (IN)", robotX);
+        telemetry.addData("Y coordinate (IN)", robotY);
         telemetry.addData("Heading angle (DEGREES)", pose2D.getHeading(AngleUnit.DEGREES));
+
+        telemetry.addData("Distance to Blue Goal (in)", Math.round(blueDistance * 100.0) / 100.0);
+        telemetry.addData("Distance to Red Goal (in)", Math.round(redDistance * 100.0) / 100.0);
     }
 
     public void configurePinpoint(){
@@ -84,7 +109,7 @@ public class clairePinpoint extends OpMode {
          *  The Y pod offset refers to how far forwards from the tracking point the Y (strafe) odometry pod is.
          *  Forward of center is a positive number, backwards is a negative number.
          */
-        pinpoint.setOffsets(-84.0, -168.0, DistanceUnit.MM); //these are tuned for 3110-0002-0001 Product Insight #1
+        pinpoint.setOffsets(-57.0, -132.0, DistanceUnit.MM); //these are tuned for 3110-0002-0001 Product Insight #1
 
         /*
          * Set the kind of pods used by your robot. If you're using goBILDA odometry pods, select either
