@@ -83,7 +83,7 @@ public class iris_starterbot_teleop_mecanum extends OpMode {
     double LAUNCHER_TARGET_VELOCITY = 2000;
     double LAUNCHER_MIN_VELOCITY = 900;
 
-    double kOffset = 0;
+    double kOffset = 300;
 
     // Declare OpMode members.
     private DcMotor leftFrontDrive = null;
@@ -351,9 +351,7 @@ public class iris_starterbot_teleop_mecanum extends OpMode {
         // Only clamp minimum (no upper clamp)
         x = Math.max(18, x);
 
-        return 0.0000487634 * x * x * x
-                - 0.0126354 * x * x
-                + 6.9415 * x
-                + 993.60499;
+        return - 0.000291077 * x * x * x + 0.109951 * x * x - 6.00757 * x + 1334.39439;
+
     }
 }
