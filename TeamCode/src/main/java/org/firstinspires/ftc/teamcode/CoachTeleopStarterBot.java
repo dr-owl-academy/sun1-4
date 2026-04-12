@@ -81,7 +81,7 @@ public class CoachTeleopStarterBot extends OpMode {
     double LAUNCHER_TARGET_VELOCITY = 2000;
     double LAUNCHER_MIN_VELOCITY = 900;
 
-    double kOffset = 0;
+    double kOffset = 200;
 
     // Declare OpMode members.
     private DcMotor leftFrontDrive = null;
@@ -95,7 +95,7 @@ public class CoachTeleopStarterBot extends OpMode {
     private PinpointLocalizer localizer = null;
 
     // Change this to your desired starting pose: x, y in inches, heading in radians
-    private Pose2d initialRobotPose = new Pose2d(0, 0, 0);
+    private Pose2d initialRobotPose = new Pose2d(-24, -62, 0);
     private static final double PINPOINT_IN_PER_TICK = 0.0019684344326;
 
     ElapsedTime feederTimer = new ElapsedTime();
@@ -349,9 +349,9 @@ public class CoachTeleopStarterBot extends OpMode {
         // Only clamp minimum (no upper clamp)
         x = Math.max(18, x);
 
-        return 0.0000487634 * x * x * x
-                - 0.0126354 * x * x
-                + 6.9415 * x
-                + 993.60499;
+        return  0.0000487634 * x * x * x
+                - 0.0120502 * x * x
+                + 6.84276 * x
+                + 1021.17195;
     }
 }
