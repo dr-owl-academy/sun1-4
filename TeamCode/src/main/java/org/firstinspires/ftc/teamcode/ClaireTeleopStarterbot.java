@@ -43,6 +43,10 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
+
 /*
  * This file includes a teleop (driver-controlled) file for the goBILDA® StarterBot for the
  * 2025-2026 FIRST® Tech Challenge season DECODE™. It leverages a differential/Skid-Steer
@@ -110,7 +114,7 @@ public class ClaireTeleopStarterbot extends OpMode {
 
     private LaunchState launchState;
 
-    // Setup a variable for each drive wheel to save power level for telemetry
+    // Set up a variable for each drive wheel to save power level for telemetry
     double leftFrontPower;
     double rightFrontPower;
     double leftBackPower;
@@ -201,6 +205,44 @@ public class ClaireTeleopStarterbot extends OpMode {
      */
     @Override
     public void start() {
+        @Override
+        public void loop() {
+            telemetry.addLine("Push your robot around to see it track");
+            telemetry.addLine("Press A to reset the position");
+            if(gamepad1.a){
+                // You could use readings from April Tags here to give a new known position to the pinpoint
+                pinpoint.setPosition(new Pose2D(DistanceUnit.INCH, 0, 0, AngleUnit.DEGREES, 0));
+            }
+            pinpoint.update();
+            Pose2D pose2D = pinpoint.getPosition();
+
+            double robotX = pose2D.getX(DistanceUnit.INCH);
+            double robotY = -pose2D.getY(DistanceUnit.INCH);
+
+// distance to blue goal
+            double blueDistance = Math.sqrt(
+                    Math.pow(blueGoalX - robotX, 2) +
+                            Math.pow(blueGoalY - robotY, 2)
+            );
+
+// distance to red goal
+            double redDistance = Math.sqrt(
+                    Math.pow(redGoalX - robotX, 2) +
+                            Math.pow(redGoalY - robotY, 2)
+            );
+
+// telemetry
+            telemetry.addData("X coordinate (IN)", robotX);
+            telemetry.addData("Y coordinate (IN)", robotY);
+            telemetry.addData("Heading angle (DEGREES)", pose2D.getHeading(AngleUnit.DEGREES));
+
+            telemetry.addData("Distance to Blue Goal (in)", Math.round(blueDistance * 100.0) / 100.0);
+            telemetry.addData("Distance to Red Goal (in)", Math.round(redDistance * 100.0) / 100.0);
+        }
+
+        public void configurePinpoint;
+        /*
+         *
     }
 
     /*
@@ -306,5 +348,13 @@ public class ClaireTeleopStarterbot extends OpMode {
                 }
                 break;
         }
+    }double velocityFromDistance(double x) {
+        // Only clamp minimum (no upper clamp)
+        x = Math.max(18, x);
+
+        return 0.0000487634 * x * x * x
+                - 0.0120502 * x * x
+                + 6.84276 * x
+                + 1021.17195;
     }
-}
+    }
