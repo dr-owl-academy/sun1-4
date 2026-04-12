@@ -113,5 +113,6 @@ public class aimeePinpoint extends OpMode {
         pinpoint.resetPosAndIMU();
 
         /* calculate the distance with the formula I wrote down in the google doc :) */
+        /* THIS IS A TEST, I REPEAT THIS IS A TEST*/
     }
 }
