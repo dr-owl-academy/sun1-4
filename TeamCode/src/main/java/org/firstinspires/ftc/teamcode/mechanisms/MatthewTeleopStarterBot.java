@@ -409,5 +409,8 @@ public class MatthewTeleopStarterBot extends OpMode {
                 GoBildaPinpointDriver.EncoderDirection.FORWARD);
         pinpoint.resetPosAndIMU();
     }
-
+double velocityFromDostamce(double x) {
+         x = Math.max(18,x);
+         return -0.0000268509 * x;
+}
 }
