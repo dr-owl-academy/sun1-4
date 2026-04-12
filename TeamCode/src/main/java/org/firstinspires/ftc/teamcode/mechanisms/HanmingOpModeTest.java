@@ -110,6 +110,13 @@ public class HanmingOpModeTest extends OpMode {
             rightFeeder.setPower(STOP_SPEED);
         }
 
+        if (gamepad2.y) {
+            LAUNCHER_TARGET_VELOCITY = velocityFromDistance(10) + kOffset;
+            launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
+        } else if (gamepad2.b) {
+            launcher.setVelocity(STOP_SPEED);
+        }
+
         PoseVelocity2d currentVelocity = localizer.update();
         Pose2d currentPose = localizer.getPose();
 
@@ -139,6 +146,7 @@ public class HanmingOpModeTest extends OpMode {
         telemetry.addData("motorSpeed", launcher.getVelocity());
         telemetry.addData("Launch Min Vel", LAUNCHER_MIN_VELOCITY);
         telemetry.addData("Launch tgt Vel", LAUNCHER_TARGET_VELOCITY);
+        telemetry.addData("Offset", kOffset);
         telemetry.update();
 
     }
@@ -207,13 +215,15 @@ public class HanmingOpModeTest extends OpMode {
                     launchState = LaunchState.IDLE;
                 }
                 break;
-
-            if (gamepad2.y) {
-                LAUNCHER_TARGET_VELOCITY = velocityFromDistance(redDist) + kOffset;
-                launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
-            } else if (gamepad2.b) { // stop flywheel
-                launcher.setVelocity(STOP_SPEED);
-            }
         }
+    }
+    double velocityFromDistance(double x) {
+
+        x = Math.max(18, x);
+
+        return -0.00276858 * x * x * x
+                + 0.734433 * x * x
+                - 53.4832 * x
+                + 2467.23833;
     }
 }
