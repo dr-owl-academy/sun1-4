@@ -123,11 +123,11 @@ public class MatthewTeleopStarterBot extends OpMode {
         double robotX = currentPose.position.x;
         double robotY = currentPose.position.y;
 // Red goal
-        double redGoalX = 69;
-        double redGoalY = 69;
+        double redGoalX = 57;
+        double redGoalY = 57;
 // Blue goal
-        double blueGoalX = -69;
-        double blueGoalY = 69;
+        double blueGoalX = -57;
+        double blueGoalY = 58;
 // Distance calculations
         double redDist = Math.hypot(redGoalX - robotX, redGoalY - robotY);
         double blueDist = Math.hypot(blueGoalX - robotX, blueGoalY - robotY);
