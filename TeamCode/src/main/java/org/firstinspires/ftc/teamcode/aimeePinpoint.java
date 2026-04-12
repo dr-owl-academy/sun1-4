@@ -42,7 +42,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
  */
 @TeleOp(name = "aimeePinpoint", group = "Sensor")
 public class aimeePinpoint extends OpMode {
-    // Create an instance of the sensor
+    // Create an instance of the sensor\
     GoBildaPinpointDriver pinpoint;
 
     @Override
