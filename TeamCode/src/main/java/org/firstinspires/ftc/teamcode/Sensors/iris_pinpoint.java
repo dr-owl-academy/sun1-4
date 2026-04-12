@@ -39,7 +39,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
  *
  * See the sensor's product page: https://www.gobilda.com/pinpoint-odometry-computer-imu-sensor-fusion-for-2-wheel-odometry/
  */
-@TeleOp(name = "iris_pinpoint", group = "mechanisms")
+@TeleOp(name = "iris_pinpoint", group = "Sensors")
 public class iris_pinpoint extends OpMode {
     // Create an instance of the sensor
     GoBildaPinpointDriver pinpoint;
@@ -70,8 +70,8 @@ public class iris_pinpoint extends OpMode {
         telemetry.addData("X coordinate (IN)", pose2D.getX(DistanceUnit.INCH)*-1);
         telemetry.addData("Y coordinate (IN)", pose2D.getY(DistanceUnit.INCH)*-1);
         telemetry.addData("Heading angle (DEGREES)", pose2D.getHeading(AngleUnit.DEGREES));
-        telemetry.addData("Distance to Red Goal (IN)" , Math.sqrt(Math.pow(57-(pose2D.getX(DistanceUnit.INCH)*-1) , 2) + Math.pow((57-(pose2D.getY(DistanceUnit.INCH))*-1) , 2)));
-        telemetry.addData("Distance to Blue Goal (IN)" , Math.sqrt(Math.pow(-57-(pose2D.getX(DistanceUnit.INCH)*-1) , 2) + Math.pow((58-(pose2D.getY(DistanceUnit.INCH))*-1) , 2)));
+        telemetry.addData("Distance to Red Goal (IN)" , Math.sqrt(Math.pow(57-(pose2D.getX(DistanceUnit.INCH)) , 2) + Math.pow((57-(pose2D.getY(DistanceUnit.INCH))) , 2)));
+        telemetry.addData("Distance to Blue Goal (IN)" , Math.sqrt(Math.pow(-57-(pose2D.getX(DistanceUnit.INCH)) , 2) + Math.pow((58-(pose2D.getY(DistanceUnit.INCH))) , 2)));
     }
 
     public void configurePinpoint(){
