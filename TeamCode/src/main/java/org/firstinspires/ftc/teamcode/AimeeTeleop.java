@@ -314,4 +314,14 @@ public class AimeeTeleop extends OpMode {
                 break;
         }
     }
+
+    double velocityFromDistance(double x) {
+        // Only clamp minimum (no upper clamp)
+        x = Math.max(18, x);
+
+        return  0.0000487634 * x * x * x
+                - 0.0120502 * x * x
+                + 6.84276 * x
+                + 1021.17195;
+    }
 }
