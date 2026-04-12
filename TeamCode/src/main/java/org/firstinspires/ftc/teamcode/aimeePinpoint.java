@@ -45,6 +45,15 @@ public class aimeePinpoint extends OpMode {
     // Create an instance of the sensor\
     GoBildaPinpointDriver pinpoint;
 
+    private aimeePinpoint pose2d;
+    private Object redDistance;
+    private Object blueDistance;
+
+    public static final double redGoalX = 57;
+    public static final double redGoalY = 57;
+    public static final double blueGoalX = -57;
+    public static final double blueGoalY = 58;
+
     @Override
     public void init() {
         // Get a reference to the sensor
