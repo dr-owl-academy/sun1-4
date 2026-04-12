@@ -236,11 +236,11 @@ public class DanielStarterbotTeleopMecanums extends OpMode {
          * Here we give the user control of the speed of the launcher motor without automatically
          * queuing a shot.
          */
-        if (gamepad1.y) {
-            launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
-        } else if (gamepad1.b) { // stop flywheel
-            launcher.setVelocity(STOP_SPEED);
-        }
+//        if (gamepad1.y) {
+//            launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
+//        } else if (gamepad1.b) { // stop flywheel
+//            launcher.setVelocity(STOP_SPEED);
+//        }
 
         /*
          * Now we call our "Launch" function.
@@ -264,6 +264,12 @@ public class DanielStarterbotTeleopMecanums extends OpMode {
         double redDist = Math.hypot(redGoalX - robotX, redGoalY - robotY);
         double blueDist = Math.hypot(blueGoalX - robotX, blueGoalY - robotY);
 
+        if (gamepad1.y) {
+            LAUNCHER_TARGET_VELOCITY = velocityFromDistance(redDist) + kOffset;
+            launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
+        } else if (gamepad1.b) { // stop flywheel
+            launcher.setVelocity(STOP_SPEED);
+        }
         /*
          * Show the state and motor powers
          */
@@ -278,13 +284,7 @@ public class DanielStarterbotTeleopMecanums extends OpMode {
         telemetry.update();
     }
 
-    private String LAUNCHER_TARGET_VELOCITY() {
-        return null;
-    }
 
-    private String LAUNCHER_MIN_VELOCITY() {
-        return "";
-    }
 
 
     /*
