@@ -73,7 +73,7 @@ public class DanielStarterbotTeleopMecanums extends OpMode {
     public static final double blueGoalX = -57;
     public static final double blueGoalY = 58;
 
-    private Pose2d initialRobotPose = new Pose2d(0, 0, 0);
+    private Pose2d initialRobotPose = new Pose2d(-24, -62, 0);
     private static final double PINPOINT_IN_PER_TICK = 0.0019684344326;
     /*
      * When we control our launcher motor, we are using encoders. These allow the control system
