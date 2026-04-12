@@ -194,6 +194,7 @@ public class DanielStarterbotTeleopMecanums extends OpMode {
          * both work to feed the ball into the robot.
          */
         rightFeeder.setDirection(DcMotorSimple.Direction.REVERSE);
+        localizer = new PinpointLocalizer(hardwareMap, PINPOINT_IN_PER_TICK, initialRobotPose);
 
         /*
          * Tell the driver that initialization is complete.
