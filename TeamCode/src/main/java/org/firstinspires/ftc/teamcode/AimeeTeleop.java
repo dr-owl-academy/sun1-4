@@ -92,6 +92,8 @@ public class AimeeTeleop extends OpMode {
     private CRServo leftFeeder = null;
     private CRServo rightFeeder = null;
     private PinpointLocalizer localizer = null;
+    private Pose2d initialRobotPose = new Pose2d(-24, -62, 0);
+    private static final double PINPOINT_IN_PER_TICK = 0.0019684344326;
 
     ElapsedTime feederTimer = new ElapsedTime();
 
