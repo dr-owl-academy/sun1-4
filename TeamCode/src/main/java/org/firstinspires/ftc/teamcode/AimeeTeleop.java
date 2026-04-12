@@ -83,6 +83,7 @@ public class AimeeTeleop extends OpMode {
     private DcMotorEx launcher = null;
     private CRServo leftFeeder = null;
     private CRServo rightFeeder = null;
+    private PinpointLocalizer aimeeLocalizer = null;
 
     ElapsedTime feederTimer = new ElapsedTime();
 
