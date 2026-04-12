@@ -94,11 +94,11 @@ public class HanmingOpModeTest extends OpMode {
         } else if (gamepad2.b) { // stop flywheel
             launcher.setVelocity(STOP_SPEED);
         }
-        if (gamepad2.dpadUpWasPressed()) {
+        if (gamepad1.dpadUpWasPressed()) {
             kOffset += 10;
         }
 
-        if (gamepad2.dpadDownWasPressed()) {
+        if (gamepad1.dpadDownWasPressed()) {
             kOffset -= 10;
         }
 
