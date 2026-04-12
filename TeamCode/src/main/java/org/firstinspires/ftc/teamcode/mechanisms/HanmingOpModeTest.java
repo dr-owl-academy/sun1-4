@@ -75,7 +75,7 @@ public class HanmingOpModeTest extends OpMode {
         rightFeeder.setDirection(DcMotorSimple.Direction.REVERSE);
         telemetry.addData("Status", "Initialized");
 
-        localizer = new PinpointLocalizer(hardwareMap, 0.00076699, new Pose2d(0,-62, 0));
+        localizer = new PinpointLocalizer(hardwareMap, 25.4, new Pose2d(0,-62, 0));
 
     }
 
@@ -123,11 +123,11 @@ public class HanmingOpModeTest extends OpMode {
         double robotX = currentPose.position.x;
         double robotY = currentPose.position.y;
 // Red goal
-        double redGoalX = 69;
-        double redGoalY = 69;
+        double redGoalX = 57;
+        double redGoalY = 57;
 // Blue goal
-        double blueGoalX = -69;
-        double blueGoalY = 69;
+        double blueGoalX = -57;
+        double blueGoalY = 57;
 // Distance calculations
         double redDist = Math.hypot(redGoalX - robotX, redGoalY - robotY);
         double blueDist = Math.hypot(blueGoalX - robotX, blueGoalY - robotY);
