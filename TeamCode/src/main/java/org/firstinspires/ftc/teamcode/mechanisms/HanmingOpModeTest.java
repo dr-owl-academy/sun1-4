@@ -46,6 +46,7 @@ public class HanmingOpModeTest extends OpMode {
     double rightFrontPower;
     double leftBackPower;
     double rightBackPower;
+    double kOffset = 0;
 
     @Override
     public void init() {
@@ -179,7 +180,7 @@ public class HanmingOpModeTest extends OpMode {
                 launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
 
                 if (launcher.getVelocity() > LAUNCHER_MIN_VELOCITY) {
-                    feederTimer.reset(); // start delay timer
+                    feederTimer.reset();
                     launchState = LaunchState.LAUNCH;
                 }
                 break;
@@ -206,6 +207,13 @@ public class HanmingOpModeTest extends OpMode {
                     launchState = LaunchState.IDLE;
                 }
                 break;
+
+            if (gamepad2.y) {
+                LAUNCHER_TARGET_VELOCITY = velocityFromDistance(redDist) + kOffset;
+                launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
+            } else if (gamepad2.b) { // stop flywheel
+                launcher.setVelocity(STOP_SPEED);
+            }
         }
     }
 }
