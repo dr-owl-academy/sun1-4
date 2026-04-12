@@ -95,11 +95,11 @@ public class HanmingOpModeTest extends OpMode {
             launcher.setVelocity(STOP_SPEED);
         }
         if (gamepad2.dpadUpWasPressed()) {
-            LAUNCHER_TARGET_VELOCITY += 50;
+            kOffset += 10;
         }
 
         if (gamepad2.dpadDownWasPressed()) {
-            LAUNCHER_TARGET_VELOCITY -= 50;
+            kOffset -= 10;
         }
 
         if (gamepad2.right_trigger > 0.1) {
