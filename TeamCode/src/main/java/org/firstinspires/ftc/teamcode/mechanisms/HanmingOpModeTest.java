@@ -75,7 +75,7 @@ public class HanmingOpModeTest extends OpMode {
         rightFeeder.setDirection(DcMotorSimple.Direction.REVERSE);
         telemetry.addData("Status", "Initialized");
 
-        localizer = new PinpointLocalizer(hardwareMap, 0.00076699, new Pose2d(0, 0, 0));
+        localizer = new PinpointLocalizer(hardwareMap, 0.00076699, new Pose2d(0,-62, 0));
 
     }
 
@@ -136,16 +136,15 @@ public class HanmingOpModeTest extends OpMode {
         telemetry.addData("Pos X", currentPose.position.x);
         telemetry.addData("Pos Y", currentPose.position.y);
         telemetry.addData("Heading Deg", Math.toDegrees(currentPose.heading.toDouble()));
+        telemetry.addData("Pose", "(%.1f, %.1f, %.1f)", currentPose.position.x, currentPose.position.y, Math.toDegrees(currentPose.heading.toDouble()));
+        telemetry.addData("Red Goal Dist", "%.2f", redDist);
+        telemetry.addData("Blue Goal Dist", "%.2f", blueDist);
+        telemetry.addLine();
         telemetry.addData("Left Transfer", gamepad2.dpad_left ? "Forward" : "Off");
         telemetry.addData("Right Transfer", gamepad2.dpad_right ? "Reverse" : "Off");
         telemetry.addData("Flywheel Power", launcher.getPower());
         telemetry.addData("Flywheel Target Speed", LAUNCHER_TARGET_VELOCITY);
-        telemetry.addData("Pose", "(%.1f, %.1f, %.1f)", currentPose.position.x, currentPose.position.y, Math.toDegrees(currentPose.heading.toDouble()));
-        telemetry.addData("Red Goal Dist", "%.2f", redDist);
-        telemetry.addData("Blue Goal Dist", "%.2f", blueDist);
-        telemetry.addData("motorSpeed", launcher.getVelocity());
         telemetry.addData("Launch Min Vel", LAUNCHER_MIN_VELOCITY);
-        telemetry.addData("Launch tgt Vel", LAUNCHER_TARGET_VELOCITY);
         telemetry.addData("Offset", kOffset);
         telemetry.update();
 
