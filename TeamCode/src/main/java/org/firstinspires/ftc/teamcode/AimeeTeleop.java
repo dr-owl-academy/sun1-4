@@ -67,6 +67,10 @@ public class AimeeTeleop extends OpMode {
     final double FEED_TIME_SECONDS = 0.20; //The feeder servos run this long when a shot is requested.
     final double STOP_SPEED = 0.0; //We send this power to the servos when we want them to stop.
     final double FULL_SPEED = 1.0;
+    public static final double redGoalX = 57;
+    public static final double redGoalY = 57;
+    public static final double blueGoalX = -57;
+    public static final double blueGoalY = 58;
 
     /*
      * When we control our launcher motor, we are using encoders. These allow the control system
