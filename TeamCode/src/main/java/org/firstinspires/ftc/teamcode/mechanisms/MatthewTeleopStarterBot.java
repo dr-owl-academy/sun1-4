@@ -261,8 +261,6 @@ public class MatthewTeleopStarterBot extends OpMode {
         Pose2d currentPose = localizer.getPose();
 
         telemetry.addData("Pinpoint Status", localizer.driver.getDeviceStatus());
-        telemetry.addData("Pos X", currentPose.position.x);
-        telemetry.addData("Pos Y", currentPose.position.y);
         telemetry.addData("Heading Deg", Math.toDegrees(currentPose.heading.toDouble()));
         telemetry.addData("Left Transfer", gamepad2.dpad_left ? "Forward" : "Off");
         telemetry.addData("Right Transfer", gamepad2.dpad_right ? "Reverse" : "Off");
