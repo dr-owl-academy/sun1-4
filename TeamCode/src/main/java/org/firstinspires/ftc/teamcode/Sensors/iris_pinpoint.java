@@ -1,4 +1,4 @@
-/*
+package org.firstinspires.ftc.teamcode.Sensors;/*
  *   Copyright (c) 2025 Alan Smith
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -19,9 +19,10 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  *   SOFTWARE.
  */
-package org.firstinspires.ftc.teamcode.Sensors;
+
 
 import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -39,7 +40,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
  *
  * See the sensor's product page: https://www.gobilda.com/pinpoint-odometry-computer-imu-sensor-fusion-for-2-wheel-odometry/
  */
-@TeleOp(name = "iris_pinpoint", group = "Sensors")
+@TeleOp(name = "iris_pinpoint", group = "Sensor")
+
 public class iris_pinpoint extends OpMode {
     // Create an instance of the sensor
     GoBildaPinpointDriver pinpoint;
@@ -67,11 +69,9 @@ public class iris_pinpoint extends OpMode {
         pinpoint.update();
         Pose2D pose2D = pinpoint.getPosition();
 
-        telemetry.addData("X coordinate (IN)", pose2D.getX(DistanceUnit.INCH)*-1);
-        telemetry.addData("Y coordinate (IN)", pose2D.getY(DistanceUnit.INCH)*-1);
+        telemetry.addData("X coordinate (IN)", pose2D.getX(DistanceUnit.INCH));
+        telemetry.addData("Y coordinate (IN)", pose2D.getY(DistanceUnit.INCH));
         telemetry.addData("Heading angle (DEGREES)", pose2D.getHeading(AngleUnit.DEGREES));
-        telemetry.addData("Distance to Red Goal (IN)" , Math.sqrt(Math.pow(57-(pose2D.getX(DistanceUnit.INCH)) , 2) + Math.pow((57-(pose2D.getY(DistanceUnit.INCH))) , 2)));
-        telemetry.addData("Distance to Blue Goal (IN)" , Math.sqrt(Math.pow(-57-(pose2D.getX(DistanceUnit.INCH)) , 2) + Math.pow((58-(pose2D.getY(DistanceUnit.INCH))) , 2)));
     }
 
     public void configurePinpoint(){
@@ -84,7 +84,7 @@ public class iris_pinpoint extends OpMode {
          *  The Y pod offset refers to how far forwards from the tracking point the Y (strafe) odometry pod is.
          *  Forward of center is a positive number, backwards is a negative number.
          */
-        pinpoint.setOffsets(-55.0, -110.0, DistanceUnit.MM); //these are tuned for 3110-0002-0001 Product Insight #1
+        pinpoint.setOffsets(-45.0, -100.0, DistanceUnit.MM); //these are tuned for 3110-0002-0001 Product Insight #1
 
         /*
          * Set the kind of pods used by your robot. If you're using goBILDA odometry pods, select either
@@ -100,8 +100,8 @@ public class iris_pinpoint extends OpMode {
          * increase when you move the robot forward. And the Y (strafe) pod should increase when
          * you move the robot to the left.
          */
-        pinpoint.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.FORWARD,
-                GoBildaPinpointDriver.EncoderDirection.FORWARD);
+        pinpoint.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.REVERSED,
+                GoBildaPinpointDriver.EncoderDirection.REVERSED);
 
         /*
          * Before running the robot, recalibrate the IMU. This needs to happen when the robot is stationary
