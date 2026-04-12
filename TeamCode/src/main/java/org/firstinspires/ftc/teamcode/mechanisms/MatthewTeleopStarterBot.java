@@ -260,18 +260,6 @@ public class MatthewTeleopStarterBot extends OpMode {
         PoseVelocity2d currentVelocity = localizer.update();
         Pose2d currentPose = localizer.getPose();
 
-        double robotX = currentPose.position.x;
-        double robotY = currentPose.position.y;
-// Red goal
-        double redGoalX = 57;
-        double redGoalY = 57;
-// Blue goal
-        double blueGoalX = -57;
-        double blueGoalY = 58;
-// Distance calculations
-        double redDist = Math.hypot(redGoalX - robotX, redGoalY - robotY);
-        double blueDist = Math.hypot(blueGoalX - robotX, blueGoalY - robotY);
-
         telemetry.addData("Pinpoint Status", localizer.driver.getDeviceStatus());
         telemetry.addData("Pos X", currentPose.position.x);
         telemetry.addData("Pos Y", currentPose.position.y);
@@ -281,8 +269,6 @@ public class MatthewTeleopStarterBot extends OpMode {
         telemetry.addData("Flywheel Power", launcher.getPower());
         telemetry.addData("Flywheel Target Speed", LAUNCHER_TARGET_VELOCITY);
         telemetry.addData("Pose", "(%.1f, %.1f, %.1f)", currentPose.position.x, currentPose.position.y, Math.toDegrees(currentPose.heading.toDouble()));
-        telemetry.addData("Red Goal Dist", "%.2f", redDist);
-        telemetry.addData("Blue Goal Dist", "%.2f", blueDist);
         telemetry.addData("motorSpeed", launcher.getVelocity());
         telemetry.addData("Launch Min Vel", LAUNCHER_MIN_VELOCITY);
         telemetry.addData("Launch tgt Vel", LAUNCHER_TARGET_VELOCITY);
