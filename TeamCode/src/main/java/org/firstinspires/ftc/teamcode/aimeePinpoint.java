@@ -45,7 +45,7 @@ public class aimeePinpoint extends OpMode {
     // Create an instance of the sensor\
     GoBildaPinpointDriver pinpoint;
 
-    private aimeePinpoint pose2d;
+    private aimeePinpoint pose2D;
     private Object redDistance;
     private Object blueDistance;
 
@@ -77,9 +77,17 @@ public class aimeePinpoint extends OpMode {
         pinpoint.update();
         Pose2D pose2D = pinpoint.getPosition();
 
+        double robotPosX = pose2D.getX(DistanceUnit.INCH);
+        double robotPosY = pose2D.getY(DistanceUnit.INCH);
+
+        double redDistance = Math.hypot(redGoalX - robotPosX, redGoalY - robotPosY);
+        double blueDistance = Math.hypot(blueGoalX - robotPosX, blueGoalY - robotPosY);
+
         telemetry.addData("X coordinate (IN)", pose2D.getX(DistanceUnit.INCH));
         telemetry.addData("Y coordinate (IN)", pose2D.getY(DistanceUnit.INCH));
         telemetry.addData("Heading angle (DEGREES)", pose2D.getHeading(AngleUnit.DEGREES));
+        telemetry.addData("Distance from the red goal in inches", "%.2f inches", redDistance);
+        telemetry.addData("Distance from the blue goal in inches", "%.2f inches", blueDistance);
     }
 
     public void configurePinpoint(){
