@@ -81,6 +81,8 @@ public class CoachTeleopStarterBot extends OpMode {
     double LAUNCHER_TARGET_VELOCITY = 2000;
     double LAUNCHER_MIN_VELOCITY = 900;
 
+    double kOffset = 0;
+
     // Declare OpMode members.
     private DcMotor leftFrontDrive = null;
     private DcMotor rightFrontDrive = null;
@@ -89,6 +91,7 @@ public class CoachTeleopStarterBot extends OpMode {
     private DcMotorEx launcher = null;
     private CRServo leftFeeder = null;
     private CRServo rightFeeder = null;
+    //Coach: declare a localizer using PinpointLocalizer so that you can call the methods in that java class
     private PinpointLocalizer localizer = null;
 
     // Change this to your desired starting pose: x, y in inches, heading in radians
@@ -193,7 +196,7 @@ public class CoachTeleopStarterBot extends OpMode {
          * both work to feed the ball into the robot.
          */
         rightFeeder.setDirection(DcMotorSimple.Direction.REVERSE);
-        // Initialize PinpointLocalizer with starting pose
+        // coach: Initialize PinpointLocalizer with starting pose
         localizer = new PinpointLocalizer(hardwareMap, PINPOINT_IN_PER_TICK, initialRobotPose);
 
         /*
@@ -234,15 +237,8 @@ public class CoachTeleopStarterBot extends OpMode {
          */
         mecanumDrive(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
 
+
         /*
-         * Here we give the user control of the speed of the launcher motor without automatically
-         * queuing a shot.
-         */
-        if (gamepad2.y) {
-            launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
-        } else if (gamepad2.b) { // stop flywheel
-            launcher.setVelocity(STOP_SPEED);
-        }
         if (gamepad2.dpadUpWasPressed()) {
             LAUNCHER_TARGET_VELOCITY += 10;
         }
@@ -250,12 +246,33 @@ public class CoachTeleopStarterBot extends OpMode {
         if (gamepad2.dpadDownWasPressed()) {
             LAUNCHER_TARGET_VELOCITY -= 10;
         }
+        */
+
         /*
          * Now we call our "Launch" function.
          */
         launch(gamepad2.rightBumperWasPressed());
         PoseVelocity2d currentVelocity = localizer.update();
         Pose2d currentPose = localizer.getPose();
+
+
+// Distance to BLUE goal
+        double distToBlue = Math.hypot(BLUE_GOAL_X - currentPose.position.x, BLUE_GOAL_Y - currentPose.position.y);
+
+// Distance to RED goal
+        double distToRed = Math.hypot(RED_GOAL_X - currentPose.position.x, RED_GOAL_Y - currentPose.position.y);
+
+
+        /*
+         * Here we give the user control of the speed of the launcher motor without automatically
+         * queuing a shot.
+         */
+        if (gamepad2.y) {
+            LAUNCHER_TARGET_VELOCITY = velocityFromDistance(distToRed) + kOffset;
+            launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
+        } else if (gamepad2.b) { // stop flywheel
+            launcher.setVelocity(STOP_SPEED);
+        }
 
         /*
          * Show the state and motor powers
@@ -264,12 +281,10 @@ public class CoachTeleopStarterBot extends OpMode {
         telemetry.addData("motorSpeed", launcher.getVelocity());
         telemetry.addData("Launch Min Vel", LAUNCHER_MIN_VELOCITY);
         telemetry.addData("Launch tgt Vel", LAUNCHER_TARGET_VELOCITY);
-        telemetry.addData("Pose", "(%.1f, %.1f, %.1f)", currentPose.position.x, currentPose.position.y, Math.toDegrees(currentPose.heading.toDouble())
-        );
-
-        telemetry.addData("Velocity", "(%.1f, %.1f, %.1f)", currentVelocity.linearVel.x, currentVelocity.linearVel.y, Math.toDegrees(currentVelocity.angVel)
-        );
-
+        telemetry.addData("Pose", "(%.1f, %.1f, %.1f)", currentPose.position.x, currentPose.position.y, Math.toDegrees(currentPose.heading.toDouble()));
+        telemetry.addData("Velocity", "(%.1f, %.1f, %.1f)", currentVelocity.linearVel.x, currentVelocity.linearVel.y, Math.toDegrees(currentVelocity.angVel));
+        telemetry.addData("Dist Blue", "%.1f in", distToBlue);
+        telemetry.addData("Dist Red", "%.1f in", distToRed);
         telemetry.update();
 
     }
@@ -328,5 +343,15 @@ public class CoachTeleopStarterBot extends OpMode {
                 }
                 break;
         }
+    }
+
+    double velocityFromDistance(double x) {
+        // Only clamp minimum (no upper clamp)
+        x = Math.max(18, x);
+
+        return 0.0000487634 * x * x * x
+                - 0.0126354 * x * x
+                + 6.9415 * x
+                + 993.60499;
     }
 }
