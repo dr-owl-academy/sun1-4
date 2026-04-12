@@ -233,13 +233,17 @@ public class AimeeTeleop extends OpMode {
         } else if (gamepad1.b) { // stop flywheel
             launcher.setVelocity(STOP_SPEED);
         }
-        if (gamepad1.dpadUpWasPressed()) {
+
+        /* if (gamepad1.dpadUpWasPressed()) {
             LAUNCHER_TARGET_VELOCITY += 25;
         }
 
         if (gamepad1.dpadDownWasPressed()) {
             LAUNCHER_TARGET_VELOCITY -= 25;
         }
+        */
+
+        /* the code above is commented out on purpose because it will disrupt the other code I will be using this week */
 
         launch(gamepad1.rightBumperWasPressed());
 
