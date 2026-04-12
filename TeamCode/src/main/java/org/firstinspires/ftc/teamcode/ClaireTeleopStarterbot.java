@@ -205,7 +205,6 @@ public class ClaireTeleopStarterbot extends OpMode {
      */
     @Override
     public void start() {
-        @Override
         public void loop() {
             telemetry.addLine("Push your robot around to see it track");
             telemetry.addLine("Press A to reset the position");
@@ -352,9 +351,6 @@ public class ClaireTeleopStarterbot extends OpMode {
         // Only clamp minimum (no upper clamp)
         x = Math.max(18, x);
 
-        return 0.0000487634 * x * x * x
-                - 0.0120502 * x * x
-                + 6.84276 * x
-                + 1021.17195;
+        return 0.0000487634 * x * x * x - 0.0120502 * x * x + 6.84276 * x + 1021.17195;
     }
     }
