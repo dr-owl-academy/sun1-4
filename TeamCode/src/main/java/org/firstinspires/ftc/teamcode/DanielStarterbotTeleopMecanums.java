@@ -34,6 +34,8 @@ package org.firstinspires.ftc.teamcode;
 
 import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
 
+import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -42,6 +44,8 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 /*
  * This file includes a teleop (driver-controlled) file for the goBILDA® StarterBot for the
@@ -64,7 +68,13 @@ public class DanielStarterbotTeleopMecanums extends OpMode {
     final double FEED_TIME_SECONDS = 0.20; //The feeder servos run this long when a shot is requested.
     final double STOP_SPEED = 0.0; //We send this power to the servos when we want them to stop.
     final double FULL_SPEED = 1.0;
+    public static final double redGoalX = 57;
+    public static final double redGoalY = 57;
+    public static final double blueGoalX = -57;
+    public static final double blueGoalY = 58;
 
+    private Pose2d initialRobotPose = new Pose2d(0, 0, 0);
+    private static final double PINPOINT_IN_PER_TICK = 0.0019684344326;
     /*
      * When we control our launcher motor, we are using encoders. These allow the control system
      * to read the current speed of the motor and apply more or less power to keep it at a constant
@@ -74,7 +84,7 @@ public class DanielStarterbotTeleopMecanums extends OpMode {
     double LAUNCHER_TARGET_VELOCITY = 2000;
     double LAUNCHER_MIN_VELOCITY = 1000;
 
-
+    double kOffset = 0;
 
     // Declare OpMode members.
     private DcMotor leftFrontDrive = null;
@@ -84,6 +94,7 @@ public class DanielStarterbotTeleopMecanums extends OpMode {
     private DcMotorEx launcher = null;
     private CRServo leftFeeder = null;
     private CRServo rightFeeder = null;
+    private PinpointLocalizer localizer = null;
 
     ElapsedTime feederTimer = new ElapsedTime();
 
@@ -234,14 +245,23 @@ public class DanielStarterbotTeleopMecanums extends OpMode {
          * Now we call our "Launch" function.
          */
         launch(gamepad1.rightBumperWasPressed());
+        PoseVelocity2d currentVelocity = localizer.update();
+        Pose2d currentPose = localizer.getPose();
 
-        if (gamepad1.dpadUpWasPressed()) {
-            LAUNCHER_TARGET_VELOCITY += 25;
-        }
 
-        else if (gamepad1.dpadDownWasPressed()) {
-            LAUNCHER_TARGET_VELOCITY -= 25;
-        }
+//        if (gamepad1.dpadUpWasPressed()) {
+//            LAUNCHER_TARGET_VELOCITY += 25;
+//        }
+//
+//        else if (gamepad1.dpadDownWasPressed()) {
+//            LAUNCHER_TARGET_VELOCITY -= 25;
+//        }
+
+        double robotX = localizer.currentPose.position.x;
+        double robotY = localizer.currentPose.position.y;
+
+        double redDist = Math.hypot(redGoalX - robotX, redGoalY - robotY);
+        double blueDist = Math.hypot(blueGoalX - robotX, blueGoalY - robotY);
 
         /*
          * Show the state and motor powers
@@ -250,6 +270,10 @@ public class DanielStarterbotTeleopMecanums extends OpMode {
         telemetry.addData("motorSpeed", launcher.getVelocity());
         telemetry.addData("launcherminspeed", LAUNCHER_MIN_VELOCITY);
         telemetry.addData("launchertargetspeed", LAUNCHER_TARGET_VELOCITY);
+        telemetry.addData("Pose", "(%.1f, %.1f, %.1f)", currentPose.position.x, currentPose.position.y, Math.toDegrees(currentPose.heading.toDouble()));
+        telemetry.addData("Velocity", "(%.1f, %.1f, %.1f)", currentVelocity.linearVel.x, currentVelocity.linearVel.y, Math.toDegrees(currentVelocity.angVel));
+        telemetry.addData("Dist Blue", "%.1f in", blueDist);
+        telemetry.addData("Dist Red", "%.1f in", redDist);
         telemetry.update();
     }
 
@@ -316,5 +340,15 @@ public class DanielStarterbotTeleopMecanums extends OpMode {
                 }
                 break;
         }
+    }
+
+        double velocityFromDistance(double x) {
+            // Only clamp minimum (no upper clamp)
+            x = Math.max(18, x);
+
+            return 0.0000487634 * x * x * x
+                    - 0.0120502 * x * x
+                    + 6.84276 * x
+                    + 1021.17195;
     }
 }
