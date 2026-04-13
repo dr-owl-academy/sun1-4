@@ -75,7 +75,7 @@ public class HanmingOpModeTest extends OpMode {
         rightFeeder.setDirection(DcMotorSimple.Direction.REVERSE);
         telemetry.addData("Status", "Initialized");
 
-        localizer = new PinpointLocalizer(hardwareMap, 25.4, new Pose2d(0,-62, 0));
+        localizer = new PinpointLocalizer(hardwareMap, 0.0019684344326, new Pose2d(0,-62, 0));
 
     }
 
@@ -93,6 +93,7 @@ public class HanmingOpModeTest extends OpMode {
             launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
         } else if (gamepad2.b) { // stop flywheel
             launcher.setVelocity(STOP_SPEED);
+
         }
         if (gamepad1.dpadUpWasPressed()) {
             kOffset += 10;
@@ -102,19 +103,20 @@ public class HanmingOpModeTest extends OpMode {
             kOffset -= 10;
         }
 
+       // if (gamepad1.dpadLeftWasPressed()) {
+       //     LAUNCHER_TARGET_VELOCITY += 25;
+       // }
+
+       // if (gamepad1.dpadRightWasPressed()) {
+       //     LAUNCHER_TARGET_VELOCITY -= 25;
+       // }
+
         if (gamepad2.right_trigger > 0.1) {
             leftFeeder.setPower(FULL_SPEED);
             rightFeeder.setPower(FULL_SPEED);
         } else {
             leftFeeder.setPower(STOP_SPEED);
             rightFeeder.setPower(STOP_SPEED);
-        }
-
-        if (gamepad2.y) {
-            LAUNCHER_TARGET_VELOCITY = velocityFromDistance(10) + kOffset;
-            launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
-        } else if (gamepad2.b) {
-            launcher.setVelocity(STOP_SPEED);
         }
 
         PoseVelocity2d currentVelocity = localizer.update();
@@ -131,6 +133,13 @@ public class HanmingOpModeTest extends OpMode {
 // Distance calculations
         double redDist = Math.hypot(redGoalX - robotX, redGoalY - robotY);
         double blueDist = Math.hypot(blueGoalX - robotX, blueGoalY - robotY);
+
+        if (gamepad2.y) {
+            LAUNCHER_TARGET_VELOCITY = velocityFromDistance(blueDist) + kOffset;
+            launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
+        } else if (gamepad2.b) {
+            launcher.setVelocity(STOP_SPEED);
+        }
 
         telemetry.addData("Pinpoint Status", localizer.driver.getDeviceStatus());
         telemetry.addData("Pos X", currentPose.position.x);
@@ -220,9 +229,16 @@ public class HanmingOpModeTest extends OpMode {
 
         x = Math.max(18, x);
 
-        return -0.00276858 * x * x * x
-                + 0.734433 * x * x
-                - 53.4832 * x
-                + 2467.23833;
+        //return -0.00276858 * x * x * x
+          //      + 0.734433 * x * x
+            //    - 53.4832 * x
+              //  + 2467.23833;
+
+        //y=-0.000439386x^{3}+0.128207x^{2}-5.0367x+1298.79524
+
+        return -0.000439386 * x * x * x
+                + 0.128207 * x * x
+                - 5.0367 * x
+                + 1298.79524;
     }
 }
