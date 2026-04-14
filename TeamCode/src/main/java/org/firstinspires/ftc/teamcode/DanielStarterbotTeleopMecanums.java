@@ -258,8 +258,8 @@ public class DanielStarterbotTeleopMecanums extends OpMode {
 //            LAUNCHER_TARGET_VELOCITY -= 25;
 //        }
 
-        double robotX = localizer.currentPose.position.x;
-        double robotY = localizer.currentPose.position.y;
+        double robotX = currentPose.position.x;
+        double robotY = currentPose.position.y;
 
         double redDist = Math.hypot(redGoalX - robotX, redGoalY - robotY);
         double blueDist = Math.hypot(blueGoalX - robotX, blueGoalY - robotY);
