@@ -261,7 +261,8 @@ public class TinaTeleopStarterbot extends OpMode {
          * queuing a shot.
          */
         if (gamepad2.y) {
-            launcher.setVelocity(LAUNCHER_TARGET_VELOCITY) + kOffset;
+            LAUNCHER_TARGET_VELOCITY = velocityFromDistance(redDistance) + kOffset;
+            launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
         } else if (gamepad2.b) { // stop flywheel
             launcher.setVelocity(STOP_SPEED);
         }
@@ -358,7 +359,7 @@ public class TinaTeleopStarterbot extends OpMode {
 
         x = Math.max(18, x);
 
-        return - 0.00235435 * x * x * x - 0.656851 * x * x + 63.00581 * x - 568.02224;
+        return - 5.59888 * x + 1010.69697;
     }
 }
 
