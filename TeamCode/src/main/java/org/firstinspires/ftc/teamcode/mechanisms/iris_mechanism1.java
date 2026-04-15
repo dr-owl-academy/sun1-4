@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 @TeleOp
-public class iris_test1 extends OpMode {
+public class iris_mechanism1 extends OpMode {
     private DcMotor Flywheel;
     private DcMotor rightFront;
     private DcMotor leftFront;
