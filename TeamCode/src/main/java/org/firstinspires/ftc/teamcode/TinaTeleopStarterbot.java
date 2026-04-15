@@ -261,7 +261,7 @@ public class TinaTeleopStarterbot extends OpMode {
          * queuing a shot.
          */
         if (gamepad2.y) {
-            launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
+            launcher.setVelocity(LAUNCHER_TARGET_VELOCITY) + kOffset;
         } else if (gamepad2.b) { // stop flywheel
             launcher.setVelocity(STOP_SPEED);
         }
