@@ -30,7 +30,7 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.mechanisms;
 
 import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
 
@@ -63,9 +63,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
  * we will also need to adjust the "PIDF" coefficients with some that are a better fit for our application.
  */
 
-@TeleOp(name = "ClaireTeleOpStarterbot", group = "StarterBot")
+@TeleOp(name = "Test", group = "StarterBot")
 //@Disabled
-public class ClaireTeleopStarterbot extends OpMode {
+public class Test extends OpMode {
     final double FEED_TIME_SECONDS = 0.20; //The feeder servos run this long when a shot is requested.
     final double STOP_SPEED = 0.0; //We send this power to the servos when we want them to stop.
     final double FULL_SPEED = 1.0;
@@ -88,6 +88,7 @@ public class ClaireTeleopStarterbot extends OpMode {
     private CRServo leftFeeder = null;
     private CRServo rightFeeder = null;
     private GoBildaPinpointDriver pinpoint = null;
+    private Pose2D initialRobotPose = new Pose2D(0,0);
 
     ElapsedTime feederTimer = new ElapsedTime();
 
@@ -197,7 +198,7 @@ public class ClaireTeleopStarterbot extends OpMode {
          */
         telemetry.addData("Status", "Initialized");
 
-       /* pinpoint stuff */
+        /* pinpoint stuff */
 
         pinpoint.setOffsets(-57.0, -132.0, DistanceUnit.MM);
 
@@ -257,7 +258,6 @@ public class ClaireTeleopStarterbot extends OpMode {
                         Math.pow(redGoalY - robotY, 2)
         );
 
-        double targetDistance = Math.min(blueDistance, redDistance);
 
         telemetry.addData("Blue Distance", blueDistance);
         telemetry.addData("Red Distance", redDistance);
@@ -276,10 +276,6 @@ public class ClaireTeleopStarterbot extends OpMode {
          * Here we give the user control of the speed of the launcher motor without automatically
          * queuing a shot.
          */
-        double targetVelocity = velocityFromDistance(targetDistance) + kOffset;
-        targetVelocity = Math.max(0, targetVelocity);
-
-        launcher.setVelocity(targetVelocity);
 
         /*
          * Now we call our "Launch" function.
@@ -309,8 +305,7 @@ public class ClaireTeleopStarterbot extends OpMode {
          */
         telemetry.addData("State", launchState);
         telemetry.addData("motorSpeed", launcher.getVelocity());
-        telemetry.addData("Target Distance", targetDistance);
-        telemetry.addData("Flywheel Target Vel", velocityFromDistance(targetDistance) + kOffset);
+        telemetry.addData("Flywheel Target Vel", LAUNCHER_TARGET_VELOCITY);
         telemetry.addData("kOffset", kOffset);
     }
 
@@ -373,12 +368,7 @@ public class ClaireTeleopStarterbot extends OpMode {
     double velocityFromDistance(double x) {
         x = Math.max(18, x);
 
-        return (
-                0.0000487634 * x * x * x
-                        - 0.0120502 * x * x
-                        + 6.84276 * x
-                        + 1021.17195
-                        + kOffset);
+        return 5.59888 * x + 1010.69697;
     }
 }
 
