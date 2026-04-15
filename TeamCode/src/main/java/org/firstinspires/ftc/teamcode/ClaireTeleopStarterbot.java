@@ -288,11 +288,11 @@ public class ClaireTeleopStarterbot extends OpMode {
         launch(gamepad2.rightBumperWasPressed());
 
         if (gamepad2.dpadUpWasPressed()) {
-            LAUNCHER_TARGET_VELOCITY += 25;
-            launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
+            kOffset += 25;
+
         } else if (gamepad2.dpadDownWasPressed()) {
-            LAUNCHER_TARGET_VELOCITY -= 25;
-            launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
+            kOffset -= 25;
+
         }
 
 
