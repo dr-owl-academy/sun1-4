@@ -88,6 +88,7 @@ public class ClaireTeleopStarterbot extends OpMode {
     private CRServo leftFeeder = null;
     private CRServo rightFeeder = null;
     private GoBildaPinpointDriver pinpoint = null;
+    boolean manualShooterMode = false;
 
     ElapsedTime feederTimer = new ElapsedTime();
 
@@ -275,22 +276,23 @@ public class ClaireTeleopStarterbot extends OpMode {
         /*
          * Here we give the user control of the speed of the launcher motor without automatically
          * queuing a shot.
-         */
-        double targetVelocity = velocityFromDistance(targetDistance) + kOffset;
-        targetVelocity = Math.max(0, targetVelocity);
-
-        launcher.setVelocity(targetVelocity);
-
-        /*
          * Now we call our "Launch" function.
          */
+
+        if (gamepad2.y) {
+            LAUNCHER_TARGET_VELOCITY = velocityFromDistance(redDistance) + kOffset;
+            launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
+        } else if (gamepad2.b) { // stop flywheel
+            launcher.setVelocity(STOP_SPEED);
+        }
+
         launch(gamepad2.rightBumperWasPressed());
 
         if (gamepad2.dpadUpWasPressed()) {
-            kOffset += 25;
+            kOffset  += 50;
 
         } else if (gamepad2.dpadDownWasPressed()) {
-            kOffset -= 25;
+            kOffset  -= 50;
 
         }
 
@@ -304,7 +306,6 @@ public class ClaireTeleopStarterbot extends OpMode {
         telemetry.addData("Target Distance", targetDistance);
         telemetry.addData("Flywheel Target Vel", velocityFromDistance(targetDistance) + kOffset);
         telemetry.addData("kOffset", kOffset);
-
     }
 
     /*
