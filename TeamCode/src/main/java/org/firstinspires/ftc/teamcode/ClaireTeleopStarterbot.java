@@ -121,6 +121,7 @@ public class ClaireTeleopStarterbot extends OpMode {
     double rightFrontPower;
     double leftBackPower;
     double rightBackPower;
+    double kOffset = 0;
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -195,6 +196,21 @@ public class ClaireTeleopStarterbot extends OpMode {
          * Tell the driver that initialization is complete.
          */
         telemetry.addData("Status", "Initialized");
+
+       /* pinpoint stuff */
+
+        pinpoint.setOffsets(-57.0, -132.0, DistanceUnit.MM);
+
+        pinpoint.setEncoderResolution(
+                GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD
+        );
+
+        pinpoint.setEncoderDirections(
+                GoBildaPinpointDriver.EncoderDirection.FORWARD,
+                GoBildaPinpointDriver.EncoderDirection.FORWARD
+        );
+
+        pinpoint.resetPosAndIMU();
     }
 
     /*
@@ -241,6 +257,8 @@ public class ClaireTeleopStarterbot extends OpMode {
                         Math.pow(redGoalY - robotY, 2)
         );
 
+        double targetDistance = Math.min(blueDistance, redDistance);
+
         telemetry.addData("Blue Distance", blueDistance);
         telemetry.addData("Red Distance", redDistance);
         /*
@@ -258,11 +276,11 @@ public class ClaireTeleopStarterbot extends OpMode {
          * Here we give the user control of the speed of the launcher motor without automatically
          * queuing a shot.
          */
-        if (gamepad2.y) {
-            launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
-        } else if (gamepad2.b) { // stop flywheel
-            launcher.setVelocity(STOP_SPEED);
-        }
+        double targetVelocity = velocityFromDistance(targetDistance) + kOffset;
+
+        targetVelocity = Math.max(0, targetVelocity);
+
+        launcher.setVelocity(targetVelocity);
 
         /*
          * Now we call our "Launch" function.
@@ -284,6 +302,9 @@ public class ClaireTeleopStarterbot extends OpMode {
          */
         telemetry.addData("State", launchState);
         telemetry.addData("motorSpeed", launcher.getVelocity());
+        telemetry.addData("Target Distance", targetDistance);
+        telemetry.addData("Flywheel Target Vel", velocityFromDistance(targetDistance) + kOffset);
+        telemetry.addData("kOffset", kOffset);
 
     }
 
@@ -344,10 +365,17 @@ public class ClaireTeleopStarterbot extends OpMode {
     }
 
     double velocityFromDistance(double x) {
-        // Only clamp minimum (no upper clamp)
         x = Math.max(18, x);
 
-        return 0.0000487634 * x * x * x - 0.0120502 * x * x + 6.84276 * x + 1021.17195;
+        return (
+                0.0000487634 * x * x * x
+                        - 0.0120502 * x * x
+                        + 6.84276 * x
+                        + 1021.17195
+        ) + kOffset;
     }
 }
+
+
+
 
