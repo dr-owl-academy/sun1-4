@@ -78,7 +78,7 @@ public class TinaTeleopStarterbot extends OpMode {
      */
     double LAUNCHER_TARGET_VELOCITY = 1500;
     double LAUNCHER_MIN_VELOCITY = 800;
-    double kOffset = 0;
+
 
     // Declare OpMode members.
     private DcMotor leftFrontDrive = null;
@@ -89,6 +89,7 @@ public class TinaTeleopStarterbot extends OpMode {
     private CRServo leftFeeder = null;
     private CRServo rightFeeder = null;
     private GoBildaPinpointDriver pinpoint = null;
+
 
     ElapsedTime feederTimer = new ElapsedTime();
 
@@ -122,6 +123,7 @@ public class TinaTeleopStarterbot extends OpMode {
     double rightFrontPower;
     double leftBackPower;
     double rightBackPower;
+    double kOffset = 0;
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -142,6 +144,7 @@ public class TinaTeleopStarterbot extends OpMode {
         launcher = hardwareMap.get(DcMotorEx.class, "Flywheel");
         leftFeeder = hardwareMap.get(CRServo.class, "leftTransfer");
         rightFeeder = hardwareMap.get(CRServo.class, "rightTransfer");
+        pinpoint = hardwareMap.get(GoBildaPinpointDriver.class, "pinpoint");
 
         /*
          * To drive forward, most robots need the motor on one side to be reversed,
