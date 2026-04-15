@@ -73,7 +73,7 @@ public class TinaTeleopStarterbot extends OpMode {
      */
     double LAUNCHER_TARGET_VELOCITY = 1500;
     double LAUNCHER_MIN_VELOCITY = 800;
-
+    double kOffset = 0;
     // Declare OpMode members.
     private DcMotor leftFrontDrive = null;
     private DcMotor rightFrontDrive = null;
@@ -233,14 +233,17 @@ public class TinaTeleopStarterbot extends OpMode {
          */
         launch(gamepad2.rightBumperWasPressed());
 
-        if (gamepad2.dpadUpWasPressed()) {
-            LAUNCHER_TARGET_VELOCITY += 25;
-            launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
+
+        /*if (gamepad2.dpadUpWasPressed()) {
+        *    LAUNCHER_TARGET_VELOCITY += 25;
+        *    launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
+        *}
+        *else if (gamepad2.dpadDownWasPressed()) {
+        *    LAUNCHER_TARGET_VELOCITY -= 25;
+        *    launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
         }
-        else if (gamepad2.dpadDownWasPressed()) {
-            LAUNCHER_TARGET_VELOCITY -= 25;
-            launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
-        }
+         */
+
 
         /*
          * Show the state and motor powers
@@ -306,6 +309,15 @@ public class TinaTeleopStarterbot extends OpMode {
                 }
                 break;
         }
+    }
+
+    double velocityFromDistance(double x) {
+
+        // Only clamp minimum (no upper clamp)
+
+        x = Math.max(18, x);
+
+        return - 0.00235435 * x * x * x - 0.656851 * x * x + 63.00581 * x - 568.02224;
     }
 }
 
