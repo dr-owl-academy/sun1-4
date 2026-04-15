@@ -42,6 +42,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
@@ -86,6 +87,7 @@ public class ClaireTeleopStarterbot extends OpMode {
     private DcMotorEx launcher = null;
     private CRServo leftFeeder = null;
     private CRServo rightFeeder = null;
+    private GoBildaPinpointDriver pinpoint = null;
 
     ElapsedTime feederTimer = new ElapsedTime();
 
@@ -139,6 +141,7 @@ public class ClaireTeleopStarterbot extends OpMode {
         launcher = hardwareMap.get(DcMotorEx.class, "Flywheel");
         leftFeeder = hardwareMap.get(CRServo.class, "leftTransfer");
         rightFeeder = hardwareMap.get(CRServo.class, "rightTransfer");
+        pinpoint = hardwareMap.get(GoBildaPinpointDriver.class, "pinpoint");
 
         /*
          * To drive forward, most robots need the motor on one side to be reversed,
@@ -187,6 +190,7 @@ public class ClaireTeleopStarterbot extends OpMode {
         leftFeeder.setDirection(DcMotorSimple.Direction.FORWARD);
         rightFeeder.setDirection(DcMotorSimple.Direction.REVERSE);
 
+
         /*
          * Tell the driver that initialization is complete.
          */
@@ -203,52 +207,42 @@ public class ClaireTeleopStarterbot extends OpMode {
     /*
      * Code to run ONCE when the driver hits START
      */
-    @Override
-    public void start() {
-        public void loop() {
-            telemetry.addLine("Push your robot around to see it track");
-            telemetry.addLine("Press A to reset the position");
-            if(gamepad1.a){
-                // You could use readings from April Tags here to give a new known position to the pinpoint
-                pinpoint.setPosition(new Pose2D(DistanceUnit.INCH, 0, 0, AngleUnit.DEGREES, 0));
-            }
-            pinpoint.update();
-            Pose2D pose2D = pinpoint.getPosition();
 
-            double robotX = pose2D.getX(DistanceUnit.INCH);
-            double robotY = -pose2D.getY(DistanceUnit.INCH);
-
-// distance to blue goal
-            double blueDistance = Math.sqrt(
-                    Math.pow(blueGoalX - robotX, 2) +
-                            Math.pow(blueGoalY - robotY, 2)
-            );
-
-// distance to red goal
-            double redDistance = Math.sqrt(
-                    Math.pow(redGoalX - robotX, 2) +
-                            Math.pow(redGoalY - robotY, 2)
-            );
-
-// telemetry
-            telemetry.addData("X coordinate (IN)", robotX);
-            telemetry.addData("Y coordinate (IN)", robotY);
-            telemetry.addData("Heading angle (DEGREES)", pose2D.getHeading(AngleUnit.DEGREES));
-
-            telemetry.addData("Distance to Blue Goal (in)", Math.round(blueDistance * 100.0) / 100.0);
-            telemetry.addData("Distance to Red Goal (in)", Math.round(redDistance * 100.0) / 100.0);
-        }
-
-        public void configurePinpoint;
-        /*
-         *
-    }
 
     /*
      * Code to run REPEATEDLY after the driver hits START but before they hit STOP
      */
     @Override
     public void loop() {
+
+        double blueGoalX = -57;
+        double blueGoalY = 58;
+
+        double redGoalX = 57;
+        double redGoalY = 57;
+
+        if(gamepad1.a){
+            pinpoint.setPosition(new Pose2D(DistanceUnit.INCH, 0, 0, AngleUnit.DEGREES, 0));
+        }
+
+        pinpoint.update();
+        Pose2D pose2D = pinpoint.getPosition();
+
+        double robotX = pose2D.getX(DistanceUnit.INCH);
+        double robotY = -pose2D.getY(DistanceUnit.INCH);
+
+        double blueDistance = Math.sqrt(
+                Math.pow(blueGoalX - robotX, 2) +
+                        Math.pow(blueGoalY - robotY, 2)
+        );
+
+        double redDistance = Math.sqrt(
+                Math.pow(redGoalX - robotX, 2) +
+                        Math.pow(redGoalY - robotY, 2)
+        );
+
+        telemetry.addData("Blue Distance", blueDistance);
+        telemetry.addData("Red Distance", redDistance);
         /*
          * Here we call a function called arcadeDrive. The arcadeDrive function takes the input from
          * the joysticks, and applies power to the left and right drive motor to move the robot
@@ -347,10 +341,13 @@ public class ClaireTeleopStarterbot extends OpMode {
                 }
                 break;
         }
-    }double velocityFromDistance(double x) {
+    }
+
+    double velocityFromDistance(double x) {
         // Only clamp minimum (no upper clamp)
         x = Math.max(18, x);
 
         return 0.0000487634 * x * x * x - 0.0120502 * x * x + 6.84276 * x + 1021.17195;
     }
-    }
+}
+
