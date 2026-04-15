@@ -43,6 +43,10 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
+
 /*
  * This file includes a teleop (driver-controlled) file for the goBILDA® StarterBot for the
  * 2025-2026 FIRST® Tech Challenge season DECODE™. It leverages a differential/Skid-Steer
@@ -207,6 +211,34 @@ public class TinaTeleopStarterbot extends OpMode {
      */
     @Override
     public void loop() {
+
+        double blueGoalX = -57;
+        double blueGoalY = 58;
+
+        double redGoalX = 57;
+        double redGoalY = 57;
+
+        if(gamepad1.a){
+            pinpoint.setPosition(new Pose2D(DistanceUnit.INCH, 0, 0, AngleUnit.DEGREES, 0));
+        }
+
+        pinpoint.update();
+        Pose2D pose2D = pinpoint.getPosition();
+
+        double robotX = pose2D.getX(DistanceUnit.INCH);
+        double robotY = -pose2D.getY(DistanceUnit.INCH);
+
+        double blueDistance = Math.sqrt(
+                Math.pow(blueGoalX - robotX, 2) +
+                        Math.pow(blueGoalY - robotY, 2)
+        );
+
+        double redDistance = Math.sqrt(
+                Math.pow(redGoalX - robotX, 2) +
+                        Math.pow(redGoalY - robotY, 2)
+        );
+
+        /*
         /*
          * Here we call a function called arcadeDrive. The arcadeDrive function takes the input from
          * the joysticks, and applies power to the left and right drive motor to move the robot
