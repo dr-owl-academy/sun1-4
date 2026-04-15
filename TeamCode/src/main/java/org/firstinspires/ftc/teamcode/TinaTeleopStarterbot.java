@@ -79,6 +79,7 @@ public class TinaTeleopStarterbot extends OpMode {
     double LAUNCHER_TARGET_VELOCITY = 1500;
     double LAUNCHER_MIN_VELOCITY = 800;
     double kOffset = 0;
+
     // Declare OpMode members.
     private DcMotor leftFrontDrive = null;
     private DcMotor rightFrontDrive = null;
