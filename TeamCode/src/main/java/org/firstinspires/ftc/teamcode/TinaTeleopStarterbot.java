@@ -251,6 +251,9 @@ public class TinaTeleopStarterbot extends OpMode {
         telemetry.addData("State", launchState);
         telemetry.addData("motorSpeed", launcher.getVelocity());
         telemetry.addData("min-speed", LAUNCHER_MIN_VELOCITY);
+
+        telemetry.addData("blue dist. (IN)", Math.round(blueDistance * 100.0) / 100.0);
+        telemetry.addData("red dist. (IN)", Math.round(redDistance * 100.0) / 100.0);
         telemetry.update();
 
     }
