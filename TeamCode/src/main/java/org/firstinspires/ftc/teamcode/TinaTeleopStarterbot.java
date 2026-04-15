@@ -123,7 +123,7 @@ public class TinaTeleopStarterbot extends OpMode {
     double rightFrontPower;
     double leftBackPower;
     double rightBackPower;
-    double kOffset = 0;
+    double kOffset = 167;
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -291,8 +291,8 @@ public class TinaTeleopStarterbot extends OpMode {
         telemetry.addData("motorSpeed", launcher.getVelocity());
         telemetry.addData("min-speed", LAUNCHER_MIN_VELOCITY);
 
-        telemetry.addData("blue dist. (IN)", Math.round(blueDistance * 100.0) / 100.0);
-        telemetry.addData("red dist. (IN)", Math.round(redDistance * 100.0) / 100.0);
+        telemetry.addData("blue dist. (IN)", blueDistance);
+        telemetry.addData("red dist. (IN)", redDistance);
         telemetry.update();
 
     }
