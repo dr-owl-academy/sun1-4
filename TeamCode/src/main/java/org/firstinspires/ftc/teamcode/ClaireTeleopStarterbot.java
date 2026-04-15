@@ -277,7 +277,6 @@ public class ClaireTeleopStarterbot extends OpMode {
          * queuing a shot.
          */
         double targetVelocity = velocityFromDistance(targetDistance) + kOffset;
-
         targetVelocity = Math.max(0, targetVelocity);
 
         launcher.setVelocity(targetVelocity);
