@@ -260,6 +260,19 @@ public class AimeeTeleop extends OpMode {
         PoseVelocity2d currentVelocity = localizer.update();
         Pose2d currentPose = localizer.getPose();
 
+        /* this is the distance to the blue goal!*/
+        double distToBlueGoal = Math.hypot(blueGoalX - currentPose.position.x, blueGoalY - currentPose.position.y);
+
+        /* this is the distance to the red goal!*/
+        double distToRedGoal = Math.hypot(redGoalX - currentPose.position.x, redGoalY - currentPose.position.y);
+
+        if (gamepad2.y) {
+            LAUNCHER_TARGET_VELOCITY = velocityFromDistance(distToRedGoal) + kOffset;
+            launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
+        } else if (gamepad2.b) {
+            launcher.setVelocity(STOP_SPEED);
+        }
+
         /*
          * Show the state and motor powers
          */
