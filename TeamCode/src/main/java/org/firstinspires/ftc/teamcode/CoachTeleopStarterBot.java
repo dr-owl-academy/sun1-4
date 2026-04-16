@@ -81,7 +81,10 @@ public class CoachTeleopStarterBot extends OpMode {
     double LAUNCHER_TARGET_VELOCITY = 2000;
     double LAUNCHER_MIN_VELOCITY = 900;
 
-    double kOffset = 200;
+    double kOffset = 0;
+    double kTurn = 1.5;
+    double driverTurn = 0;
+
 
     // Declare OpMode members.
     private DcMotor leftFrontDrive = null;
@@ -235,7 +238,17 @@ public class CoachTeleopStarterBot extends OpMode {
          * both motors work to rotate the robot. Combinations of these inputs can be used to create
          * more complex maneuvers.
          */
-        mecanumDrive(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
+        PoseVelocity2d currentVelocity = localizer.update();
+        Pose2d currentPose = localizer.getPose();
+
+// hold left trigger to auto-aim
+        if (gamepad1.right_bumper) {
+            driverTurn = spintoRed(currentPose);
+        } else {
+            driverTurn = gamepad1.right_stick_x;
+        }
+
+        mecanumDrive(-gamepad1.left_stick_y, gamepad1.left_stick_x, driverTurn);
 
 
         /*
@@ -252,8 +265,8 @@ public class CoachTeleopStarterBot extends OpMode {
          * Now we call our "Launch" function.
          */
         launch(gamepad2.rightBumperWasPressed());
-        PoseVelocity2d currentVelocity = localizer.update();
-        Pose2d currentPose = localizer.getPose();
+
+
 
 
 // Distance to BLUE goal
@@ -274,6 +287,19 @@ public class CoachTeleopStarterBot extends OpMode {
             launcher.setVelocity(STOP_SPEED);
         }
 
+        double robotX = currentPose.position.x;
+        double robotY = currentPose.position.y;
+        double robotHeading = currentPose.heading.toDouble();
+
+        double dx = RED_GOAL_X - robotX;
+        double dy = RED_GOAL_Y - robotY;
+
+        double targetAngle = -Math.atan2(dx, dy); // radians
+        double angleError = targetAngle - robotHeading;
+
+        // wrap to [-pi, pi]
+        //angleError = Math.atan2(Math.sin(angleError), Math.cos(angleError));
+
         /*
          * Show the state and motor powers
          */
@@ -285,6 +311,8 @@ public class CoachTeleopStarterBot extends OpMode {
         telemetry.addData("Velocity", "(%.1f, %.1f, %.1f)", currentVelocity.linearVel.x, currentVelocity.linearVel.y, Math.toDegrees(currentVelocity.angVel));
         telemetry.addData("Dist Blue", "%.1f in", distToBlue);
         telemetry.addData("Dist Red", "%.1f in", distToRed);
+        telemetry.addData("targetAngle", Math.toDegrees(targetAngle));
+        telemetry.addData("angleError", Math.toDegrees(angleError));
         telemetry.update();
 
     }
@@ -348,10 +376,31 @@ public class CoachTeleopStarterBot extends OpMode {
     double velocityFromDistance(double x) {
         // Only clamp minimum (no upper clamp)
         x = Math.max(18, x);
-
+/*
         return  0.0000487634 * x * x * x
                 - 0.0120502 * x * x
                 + 6.84276 * x
                 + 1021.17195;
+        */
+        return -0.000439386 * x * x * x
+                + 0.128207 * x * x
+                - 5.0367 * x
+                + 1298.79524;
+    }
+
+    double spintoRed (Pose2d pose2d) {
+        double robotX = pose2d.position.x;
+        double robotY = pose2d.position.y;
+        double robotHeading = pose2d.heading.toDouble(); // radians
+
+        double dx = RED_GOAL_X - robotX;
+        double dy = RED_GOAL_Y - robotY;
+
+        double targetAngle = -Math.atan2(dx, dy); // radians
+        double angleError = targetAngle - robotHeading;
+
+        // wrap to [-pi, pi], can also use mod but more complicated
+        angleError = Math.atan2(Math.sin(angleError), Math.cos(angleError));
+        return -kTurn * angleError;
     }
 }
