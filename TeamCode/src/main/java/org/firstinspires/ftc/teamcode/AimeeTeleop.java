@@ -280,6 +280,10 @@ public class AimeeTeleop extends OpMode {
         telemetry.addData("motorSpeed", launcher.getVelocity());
         telemetry.addData("Launch Min Vel", LAUNCHER_MIN_VELOCITY);
         telemetry.addData("Launch tgt Vel", LAUNCHER_TARGET_VELOCITY);
+        telemetry.addData("Pose", "(%.1f, %.1f, %.1f)", currentPose.position.x, currentPose.position.y, Math.toDegrees(currentPose.heading.toDouble()));
+        telemetry.addData("Velocity", "(%.1f, %.1f, %.1f)", currentVelocity.linearVel.x, currentVelocity.linearVel.y, Math.toDegrees(currentVelocity.angVel));
+        telemetry.addData("Dist Blue", "%.1f in", distToBlueGoal);
+        telemetry.addData("Dist Red", "%.1f in", distToRedGoal);
         telemetry.update();
 
     }
