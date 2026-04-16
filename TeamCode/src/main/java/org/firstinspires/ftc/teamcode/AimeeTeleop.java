@@ -238,13 +238,13 @@ public class AimeeTeleop extends OpMode {
 
 
         /* for some reason gamepad2 screws everything up*/
-        if (gamepad1.y) {
+        /*if (gamepad1.y) {
             launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
 
         } else if (gamepad1.b) { // stop flywheel
             launcher.setVelocity(STOP_SPEED);
         }
-
+        */
         /* if (gamepad1.dpadUpWasPressed()) {
             LAUNCHER_TARGET_VELOCITY += 25;
         }
@@ -257,6 +257,8 @@ public class AimeeTeleop extends OpMode {
         /* the code above is commented out on purpose because it will disrupt the other code I will be using this week */
 
         launch(gamepad1.rightBumperWasPressed());
+        PoseVelocity2d currentVelocity = localizer.update();
+        Pose2d currentPose = localizer.getPose();
 
         /*
          * Show the state and motor powers
