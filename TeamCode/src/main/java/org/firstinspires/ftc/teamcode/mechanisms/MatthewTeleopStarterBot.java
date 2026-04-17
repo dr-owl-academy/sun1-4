@@ -75,7 +75,7 @@ public class MatthewTeleopStarterBot extends OpMode {
         rightFeeder.setDirection(DcMotorSimple.Direction.REVERSE);
         telemetry.addData("Status", "Initialized");
 
-        localizer = new PinpointLocalizer(hardwareMap, 0.00076699, new Pose2d(0,0, 0));
+        localizer = new PinpointLocalizer(hardwareMap, 0.0019684344326, new Pose2d(0,-62, 0));
 
     }
 
@@ -93,14 +93,23 @@ public class MatthewTeleopStarterBot extends OpMode {
             launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
         } else if (gamepad2.b) { // stop flywheel
             launcher.setVelocity(STOP_SPEED);
+
         }
-        if (gamepad2.dpadUpWasPressed()) {
-            LAUNCHER_TARGET_VELOCITY += 50;
+        if (gamepad1.dpadUpWasPressed()) {
+            kOffset += 10;
         }
 
-        if (gamepad2.dpadDownWasPressed()) {
-            LAUNCHER_TARGET_VELOCITY -= 50;
+        if (gamepad1.dpadDownWasPressed()) {
+            kOffset -= 10;
         }
+
+        // if (gamepad1.dpadLeftWasPressed()) {
+        //     LAUNCHER_TARGET_VELOCITY += 25;
+        // }
+
+        // if (gamepad1.dpadRightWasPressed()) {
+        //     LAUNCHER_TARGET_VELOCITY -= 25;
+        // }
 
         if (gamepad2.right_trigger > 0.1) {
             leftFeeder.setPower(FULL_SPEED);
@@ -108,13 +117,6 @@ public class MatthewTeleopStarterBot extends OpMode {
         } else {
             leftFeeder.setPower(STOP_SPEED);
             rightFeeder.setPower(STOP_SPEED);
-        }
-
-        if (gamepad2.y) {
-            LAUNCHER_TARGET_VELOCITY = velocityFromDistance(10) + kOffset;
-            launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
-        } else if (gamepad2.b) {
-            launcher.setVelocity(STOP_SPEED);
         }
 
         PoseVelocity2d currentVelocity = localizer.update();
@@ -127,24 +129,31 @@ public class MatthewTeleopStarterBot extends OpMode {
         double redGoalY = 57;
 // Blue goal
         double blueGoalX = -57;
-        double blueGoalY = 58;
+        double blueGoalY = 57;
 // Distance calculations
         double redDist = Math.hypot(redGoalX - robotX, redGoalY - robotY);
         double blueDist = Math.hypot(blueGoalX - robotX, blueGoalY - robotY);
 
+        if (gamepad2.y) {
+            LAUNCHER_TARGET_VELOCITY = velocityFromDistance(blueDist) + kOffset;
+            launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
+        } else if (gamepad2.b) {
+            launcher.setVelocity(STOP_SPEED);
+        }
+
         telemetry.addData("Pinpoint Status", localizer.driver.getDeviceStatus());
-        telemetry.addData("Position X", currentPose.position.x);
-        telemetry.addData("Position Y", currentPose.position.y);
-        telemetry.addData("Heading Degrees", Math.toDegrees(currentPose.heading.toDouble()));
+        telemetry.addData("Pos X", currentPose.position.x);
+        telemetry.addData("Pos Y", currentPose.position.y);
+        telemetry.addData("Heading Deg", Math.toDegrees(currentPose.heading.toDouble()));
         telemetry.addData("Pose", "(%.1f, %.1f, %.1f)", currentPose.position.x, currentPose.position.y, Math.toDegrees(currentPose.heading.toDouble()));
-        telemetry.addData("Red Goal Distance (IN)", "%.2f", redDist);
-        telemetry.addData("Blue Goal Distance (IN)", "%.2f", blueDist);
+        telemetry.addData("Red Goal Dist", "%.2f", redDist);
+        telemetry.addData("Blue Goal Dist", "%.2f", blueDist);
         telemetry.addLine();
         telemetry.addData("Left Transfer", gamepad2.dpad_left ? "Forward" : "Off");
         telemetry.addData("Right Transfer", gamepad2.dpad_right ? "Reverse" : "Off");
         telemetry.addData("Flywheel Power", launcher.getPower());
         telemetry.addData("Flywheel Target Speed", LAUNCHER_TARGET_VELOCITY);
-        telemetry.addData("Launch Min Velocity", LAUNCHER_MIN_VELOCITY);
+        telemetry.addData("Launch Min Vel", LAUNCHER_MIN_VELOCITY);
         telemetry.addData("Offset", kOffset);
         telemetry.update();
 
@@ -155,7 +164,7 @@ public class MatthewTeleopStarterBot extends OpMode {
     }
 
     void mecanumDrive(double forward, double strafe, double rotate){
-        double denominator = Math.max(Math.abs(forward) + Math.abs(strafe) + Math.abs(rotate), 2);
+        double denominator = Math.max(Math.abs(forward) + Math.abs(strafe) + Math.abs(rotate), 1);
 
         leftFrontPower = (forward + strafe + rotate) / denominator;
         rightFrontPower = (forward - strafe - rotate) / denominator;
@@ -220,9 +229,16 @@ public class MatthewTeleopStarterBot extends OpMode {
 
         x = Math.max(18, x);
 
-        return -0.0000268509 * x * x * x
-                + 0.0072161 * x * x
-                + 5.81051 * x
-                + 931.86605;
+        //return -0.00276858 * x * x * x
+        //      + 0.734433 * x * x
+        //    - 53.4832 * x
+        //  + 2467.23833;
+
+        //y=-0.000439386x^{3}+0.128207x^{2}-5.0367x+1298.79524
+
+        return -0.000439386 * x * x * x
+                + 0.128207 * x * x
+                - 5.0367 * x
+                + 1298.79524;
     }
 }
