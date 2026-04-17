@@ -75,7 +75,7 @@ public class MatthewTeleopStarterBot extends OpMode {
         rightFeeder.setDirection(DcMotorSimple.Direction.REVERSE);
         telemetry.addData("Status", "Initialized");
 
-        localizer = new PinpointLocalizer(hardwareMap, 0.00076699, new Pose2d(0,-62, 0));
+        localizer = new PinpointLocalizer(hardwareMap, 0.00076699, new Pose2d(0,0, 0));
 
     }
 
@@ -155,7 +155,7 @@ public class MatthewTeleopStarterBot extends OpMode {
     }
 
     void mecanumDrive(double forward, double strafe, double rotate){
-        double denominator = Math.max(Math.abs(forward) + Math.abs(strafe) + Math.abs(rotate), 0.5);
+        double denominator = Math.max(Math.abs(forward) + Math.abs(strafe) + Math.abs(rotate), 2);
 
         leftFrontPower = (forward + strafe + rotate) / denominator;
         rightFrontPower = (forward - strafe - rotate) / denominator;
