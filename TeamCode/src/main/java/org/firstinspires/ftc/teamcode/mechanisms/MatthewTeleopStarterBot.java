@@ -227,7 +227,7 @@ public class MatthewTeleopStarterBot extends OpMode {
     }
     double velocityFromDistance(double x) {
 
-        x = Math.max(18, x);
+        x = Math.max(50, x);
 
         return 6.36699 * x
                 + 920.91593;
