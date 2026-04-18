@@ -259,6 +259,7 @@ public class AimeeTeleop extends OpMode {
         launch(gamepad1.yWasPressed());
         PoseVelocity2d currentVelocity = localizer.update();
         Pose2d currentPose = localizer.getPose();
+        /*changed from rightBumperWasPressed to gamepad1.y*/
 
         /* this is the distance to the blue goal!*/
         double distToBlueGoal = Math.hypot(blueGoalX - currentPose.position.x, blueGoalY - currentPose.position.y);
