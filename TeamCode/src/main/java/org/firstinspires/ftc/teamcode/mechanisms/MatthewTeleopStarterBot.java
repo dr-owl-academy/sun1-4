@@ -229,16 +229,7 @@ public class MatthewTeleopStarterBot extends OpMode {
 
         x = Math.max(18, x);
 
-        //return -0.00276858 * x * x * x
-        //      + 0.734433 * x * x
-        //    - 53.4832 * x
-        //  + 2467.23833;
-
-        //y=-0.000439386x^{3}+0.128207x^{2}-5.0367x+1298.79524
-
-        return -0.000439386 * x * x * x
-                + 0.128207 * x * x
-                - 5.0367 * x
-                + 1298.79524;
+        return 6.36699 * x
+                + 920.91593;
     }
 }
