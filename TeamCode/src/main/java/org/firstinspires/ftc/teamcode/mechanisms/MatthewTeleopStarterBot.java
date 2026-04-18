@@ -137,6 +137,8 @@ public class MatthewTeleopStarterBot extends OpMode {
         if (gamepad1.y) {
             LAUNCHER_TARGET_VELOCITY = velocityFromDistance(blueDist) + kOffset;
             launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
+            LAUNCHER_TARGET_VELOCITY = velocityFromDistance(redDist) + kOffset;
+            launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
         } else if (gamepad1.b) {
             launcher.setVelocity(STOP_SPEED);
         }
@@ -149,8 +151,8 @@ public class MatthewTeleopStarterBot extends OpMode {
         telemetry.addData("Red Goal Dist", "%.2f", redDist);
         telemetry.addData("Blue Goal Dist", "%.2f", blueDist);
         telemetry.addLine();
-        telemetry.addData("Left Transfer", gamepad2.dpad_left ? "Forward" : "Off");
-        telemetry.addData("Right Transfer", gamepad2.dpad_right ? "Reverse" : "Off");
+        telemetry.addData("Left Transfer", gamepad1.dpad_left ? "Forward" : "Off");
+        telemetry.addData("Right Transfer", gamepad1.dpad_right ? "Reverse" : "Off");
         telemetry.addData("Flywheel Power", launcher.getPower());
         telemetry.addData("Flywheel Target Speed", LAUNCHER_TARGET_VELOCITY);
         telemetry.addData("Launch Min Velocity", LAUNCHER_MIN_VELOCITY);
@@ -227,7 +229,7 @@ public class MatthewTeleopStarterBot extends OpMode {
     }
     double velocityFromDistance(double x) {
 
-        x = Math.max(25, x);
+        x = Math.max(18, x);
 
         return 6.36634 * x
                 + 921.80667;
