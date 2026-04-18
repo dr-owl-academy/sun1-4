@@ -266,10 +266,10 @@ public class AimeeTeleop extends OpMode {
         /* this is the distance to the red goal!*/
         double distToRedGoal = Math.hypot(redGoalX - currentPose.position.x, redGoalY - currentPose.position.y);
 
-        if (gamepad2.y) {
+        if (gamepad1.y) {
             LAUNCHER_TARGET_VELOCITY = velocityFromDistance(distToRedGoal) + kOffset;
             launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
-        } else if (gamepad2.b) {
+        } else if (gamepad1.b) {
             launcher.setVelocity(STOP_SPEED);
         }
 
