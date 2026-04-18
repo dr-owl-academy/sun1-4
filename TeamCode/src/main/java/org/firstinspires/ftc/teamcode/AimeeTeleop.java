@@ -256,7 +256,7 @@ public class AimeeTeleop extends OpMode {
 
         /* the code above is commented out on purpose because it will disrupt the other code I will be using this week */
 
-        launch(gamepad1.leftBumperWasPressed());
+        launch(gamepad1.yWasPressed());
         PoseVelocity2d currentVelocity = localizer.update();
         Pose2d currentPose = localizer.getPose();
 
