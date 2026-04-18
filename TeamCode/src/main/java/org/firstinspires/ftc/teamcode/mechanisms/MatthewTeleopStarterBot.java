@@ -46,7 +46,7 @@ public class MatthewTeleopStarterBot extends OpMode {
     double rightFrontPower;
     double leftBackPower;
     double rightBackPower;
-    double kOffset = -100;
+    double kOffset = 150;
 
     @Override
     public void init() {
