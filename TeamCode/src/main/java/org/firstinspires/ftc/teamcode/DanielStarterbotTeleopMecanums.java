@@ -84,7 +84,7 @@ public class DanielStarterbotTeleopMecanums extends OpMode {
     double LAUNCHER_TARGET_VELOCITY = 2000;
     double LAUNCHER_MIN_VELOCITY = 1000;
 
-    double kOffset = 50;
+    double kOffset = 150;
 
     // Declare OpMode members.
     private DcMotor leftFrontDrive = null;
