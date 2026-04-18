@@ -46,7 +46,7 @@ public class MatthewTeleopStarterBot extends OpMode {
     double rightFrontPower;
     double leftBackPower;
     double rightBackPower;
-    double kOffset = 0;
+    double kOffset = 150;
 
     @Override
     public void init() {
@@ -78,6 +78,7 @@ public class MatthewTeleopStarterBot extends OpMode {
         localizer = new PinpointLocalizer(hardwareMap, 0.0019684344326, new Pose2d(0,-62, 0));
 
     }
+
 
     @Override
     public void init_loop() {
