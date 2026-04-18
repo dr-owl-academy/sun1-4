@@ -89,9 +89,9 @@ public class MatthewTeleopStarterBot extends OpMode {
     public void loop() {
         mecanumDrive(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
 
-        if (gamepad2.right_bumper) {
+        if (gamepad1.right_bumper) {
             launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
-        } else if (gamepad2.b) { // stop flywheel
+        } else if (gamepad1.b) { // stop flywheel
             launcher.setVelocity(STOP_SPEED);
 
         }
@@ -111,7 +111,7 @@ public class MatthewTeleopStarterBot extends OpMode {
         //     LAUNCHER_TARGET_VELOCITY -= 25;
         // }
 
-        if (gamepad2.right_trigger > 0.1) {
+        if (gamepad1.right_trigger > 0.1) {
             leftFeeder.setPower(FULL_SPEED);
             rightFeeder.setPower(FULL_SPEED);
         } else {
@@ -153,7 +153,7 @@ public class MatthewTeleopStarterBot extends OpMode {
         telemetry.addData("Right Transfer", gamepad2.dpad_right ? "Reverse" : "Off");
         telemetry.addData("Flywheel Power", launcher.getPower());
         telemetry.addData("Flywheel Target Speed", LAUNCHER_TARGET_VELOCITY);
-        telemetry.addData("Launch Min Vel", LAUNCHER_MIN_VELOCITY);
+        telemetry.addData("Launch Min Velocity", LAUNCHER_MIN_VELOCITY);
         telemetry.addData("Offset", kOffset);
         telemetry.update();
 
