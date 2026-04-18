@@ -46,7 +46,7 @@ public class MatthewTeleopStarterBot extends OpMode {
     double rightFrontPower;
     double leftBackPower;
     double rightBackPower;
-    double kOffset = -50;
+    double kOffset = -100;
 
     @Override
     public void init() {
@@ -136,9 +136,9 @@ public class MatthewTeleopStarterBot extends OpMode {
         double blueDist = Math.hypot(blueGoalX - robotX, blueGoalY - robotY);
 
         if (gamepad1.y) {
-            LAUNCHER_TARGET_VELOCITY = velocityFromDistance(blueDist) + kOffset;
+            LAUNCHER_TARGET_VELOCITY = velocityFromDistance(blueDist)+kOffset;
             launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
-            LAUNCHER_TARGET_VELOCITY = velocityFromDistance(redDist) + kOffset;
+            LAUNCHER_TARGET_VELOCITY = velocityFromDistance(redDist)+kOffset;
             launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
         } else if (gamepad1.b) {
             launcher.setVelocity(STOP_SPEED);
