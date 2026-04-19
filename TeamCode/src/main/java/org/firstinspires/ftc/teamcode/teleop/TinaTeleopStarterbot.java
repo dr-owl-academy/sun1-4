@@ -356,7 +356,9 @@ public class TinaTeleopStarterbot extends OpMode {
 
         x = Math.max(18, x);
 
-        return - 0.000182489 * x * x * x - 0.0676779 * x * x + 13.51296 * x + 739.6681;
+        return 0.000182489 * x * x * x
+                - 0.0676779 * x * x
+                + 13.51296 * x + 739.6681;
 
     }
 }
