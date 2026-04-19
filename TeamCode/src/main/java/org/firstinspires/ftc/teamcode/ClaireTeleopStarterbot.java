@@ -34,6 +34,8 @@ package org.firstinspires.ftc.teamcode;
 
 import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
 
+import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -42,11 +44,8 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
 
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
+import org.firstinspires.ftc.teamcode.PinpointLocalizer;
 
 /*
  * This file includes a teleop (driver-controlled) file for the goBILDA® StarterBot for the
@@ -63,12 +62,17 @@ import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
  * we will also need to adjust the "PIDF" coefficients with some that are a better fit for our application.
  */
 
-@TeleOp(name = "ClaireTeleOpStarterbot", group = "StarterBot")
+@TeleOp(name = "ClaireTeleopStarterbot", group = "StarterBot")
 //@Disabled
 public class ClaireTeleopStarterbot extends OpMode {
-    final double FEED_TIME_SECONDS = 0.20; //The feeder servos run this long when a shot is requested.
+    final double FEED_TIME_SECONDS = 0.50; //The feeder servos run this long when a shot is requested.
     final double STOP_SPEED = 0.0; //We send this power to the servos when we want them to stop.
     final double FULL_SPEED = 1.0;
+    private static final double BLUE_GOAL_X = -57.0;
+    private static final double BLUE_GOAL_Y = 57.0;
+
+    private static final double RED_GOAL_X = 57.0;
+    private static final double RED_GOAL_Y = 57.0;
 
     /*
      * When we control our launcher motor, we are using encoders. These allow the control system
@@ -76,8 +80,10 @@ public class ClaireTeleopStarterbot extends OpMode {
      * velocity. Here we are setting the target, and minimum velocity that the launcher should run
      * at. The minimum velocity is a threshold for determining when to fire.
      */
-    double LAUNCHER_TARGET_VELOCITY = 1125;
-    double LAUNCHER_MIN_VELOCITY = 1075;
+    double LAUNCHER_TARGET_VELOCITY = 2000;
+    double LAUNCHER_MIN_VELOCITY = 900;
+    double kTurn = 0;
+    double kOffset = 140;
 
     // Declare OpMode members.
     private DcMotor leftFrontDrive = null;
@@ -87,7 +93,12 @@ public class ClaireTeleopStarterbot extends OpMode {
     private DcMotorEx launcher = null;
     private CRServo leftFeeder = null;
     private CRServo rightFeeder = null;
-    private GoBildaPinpointDriver pinpoint = null;
+    //Coach: declare a localizer using PinpointLocalizer so that you can call the methods in that java class
+    private PinpointLocalizer localizer = null;
+
+    // Change this to your desired starting pose: x, y in inches, heading in radians
+    private Pose2d initialRobotPose = new Pose2d(0, 0, 0);
+    private static final double PINPOINT_IN_PER_TICK = 0.0019684344326;
 
     ElapsedTime feederTimer = new ElapsedTime();
 
@@ -116,12 +127,11 @@ public class ClaireTeleopStarterbot extends OpMode {
 
     private LaunchState launchState;
 
-    // Set up a variable for each drive wheel to save power level for telemetry
+    // Setup a variable for each drive wheel to save power level for telemetry
     double leftFrontPower;
     double rightFrontPower;
     double leftBackPower;
     double rightBackPower;
-    double kOffset = 0;
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -142,7 +152,6 @@ public class ClaireTeleopStarterbot extends OpMode {
         launcher = hardwareMap.get(DcMotorEx.class, "Flywheel");
         leftFeeder = hardwareMap.get(CRServo.class, "leftTransfer");
         rightFeeder = hardwareMap.get(CRServo.class, "rightTransfer");
-        pinpoint = hardwareMap.get(GoBildaPinpointDriver.class, "pinpoint");
 
         /*
          * To drive forward, most robots need the motor on one side to be reversed,
@@ -153,8 +162,9 @@ public class ClaireTeleopStarterbot extends OpMode {
          */
         leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
         rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
-        leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
+        leftBackDrive.setDirection(DcMotor.Direction.FORWARD);
         rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
+
 
         /*
          * Here we set our launcher to the RUN_USING_ENCODER runmode.
@@ -188,29 +198,16 @@ public class ClaireTeleopStarterbot extends OpMode {
          * Much like our drivetrain motors, we set the left feeder servo to reverse so that they
          * both work to feed the ball into the robot.
          */
-        leftFeeder.setDirection(DcMotorSimple.Direction.FORWARD);
         rightFeeder.setDirection(DcMotorSimple.Direction.REVERSE);
-
+        // coach: Initialize PinpointLocalizer with starting pose
+        localizer = new PinpointLocalizer(hardwareMap, PINPOINT_IN_PER_TICK, initialRobotPose);
 
         /*
          * Tell the driver that initialization is complete.
          */
         telemetry.addData("Status", "Initialized");
-
-       /* pinpoint stuff */
-
-        pinpoint.setOffsets(-57.0, -132.0, DistanceUnit.MM);
-
-        pinpoint.setEncoderResolution(
-                GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD
-        );
-
-        pinpoint.setEncoderDirections(
-                GoBildaPinpointDriver.EncoderDirection.FORWARD,
-                GoBildaPinpointDriver.EncoderDirection.FORWARD
-        );
-
-        pinpoint.resetPosAndIMU();
+        telemetry.addData("Initial Pose", "(%.2f, %.2f, %.2f rad)", initialRobotPose.position.x, initialRobotPose.position.y, initialRobotPose.heading.toDouble());
+        telemetry.update();
     }
 
     /*
@@ -223,44 +220,15 @@ public class ClaireTeleopStarterbot extends OpMode {
     /*
      * Code to run ONCE when the driver hits START
      */
-
+    @Override
+    public void start() {
+    }
 
     /*
      * Code to run REPEATEDLY after the driver hits START but before they hit STOP
      */
     @Override
     public void loop() {
-
-        double blueGoalX = -57;
-        double blueGoalY = 58;
-
-        double redGoalX = 57;
-        double redGoalY = 57;
-
-        if(gamepad1.a){
-            pinpoint.setPosition(new Pose2D(DistanceUnit.INCH, 0, 0, AngleUnit.DEGREES, 0));
-        }
-
-        pinpoint.update();
-        Pose2D pose2D = pinpoint.getPosition();
-
-        double robotX = pose2D.getX(DistanceUnit.INCH);
-        double robotY = -pose2D.getY(DistanceUnit.INCH);
-
-        double blueDistance = Math.sqrt(
-                Math.pow(blueGoalX - robotX, 2) +
-                        Math.pow(blueGoalY - robotY, 2)
-        );
-
-        double redDistance = Math.sqrt(
-                Math.pow(redGoalX - robotX, 2) +
-                        Math.pow(redGoalY - robotY, 2)
-        );
-
-        double targetDistance = Math.min(blueDistance, redDistance);
-
-        telemetry.addData("Blue Distance", blueDistance);
-        telemetry.addData("Red Distance", redDistance);
         /*
          * Here we call a function called arcadeDrive. The arcadeDrive function takes the input from
          * the joysticks, and applies power to the left and right drive motor to move the robot
@@ -272,46 +240,56 @@ public class ClaireTeleopStarterbot extends OpMode {
          */
         mecanumDrive(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
 
-        /*
-         * Here we give the user control of the speed of the launcher motor without automatically
-         * queuing a shot.
-         */
-        double targetVelocity = velocityFromDistance(targetDistance) + kOffset;
-        targetVelocity = Math.max(0, targetVelocity);
 
-        launcher.setVelocity(targetVelocity);
+        /*
+        if (gamepad2.dpadUpWasPressed()) {
+            LAUNCHER_TARGET_VELOCITY += 10;
+        }
+
+        if (gamepad2.dpadDownWasPressed()) {
+            LAUNCHER_TARGET_VELOCITY -= 10;
+        }
+        */
 
         /*
          * Now we call our "Launch" function.
          */
+        launch(gamepad2.rightBumperWasPressed());
+        PoseVelocity2d currentVelocity = localizer.update();
+        Pose2d currentPose = localizer.getPose();
 
+
+// Distance to BLUE goal
+        double distance_to_blue = Math.hypot(BLUE_GOAL_X - currentPose.position.x, BLUE_GOAL_Y - currentPose.position.y);
+
+// Distance to RED goal
+        double distance_to_red = Math.hypot(RED_GOAL_X - currentPose.position.x, RED_GOAL_Y - currentPose.position.y);
+
+
+        /*
+         * Here we give the user control of the speed of the launcher motor without automatically
+         * queuing a shot.
+         */
         if (gamepad2.y) {
-            LAUNCHER_TARGET_VELOCITY = velocityFromDistance(redDistance) + kOffset;
+            LAUNCHER_TARGET_VELOCITY = velocityFromDistance(distance_to_red);
             launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
         } else if (gamepad2.b) { // stop flywheel
             launcher.setVelocity(STOP_SPEED);
         }
-
-        launch(gamepad2.rightBumperWasPressed());
-
-        if (gamepad2.dpadUpWasPressed()) {
-            kOffset  += 25;
-
-        } else if (gamepad2.dpadDownWasPressed()) {
-            kOffset  -= 25;
-
-        }
-
-
 
         /*
          * Show the state and motor powers
          */
         telemetry.addData("State", launchState);
         telemetry.addData("motorSpeed", launcher.getVelocity());
-        telemetry.addData("Target Distance", targetDistance);
-        telemetry.addData("Flywheel Target Vel", velocityFromDistance(targetDistance) + kOffset);
-        telemetry.addData("kOffset", kOffset);
+        telemetry.addData("Launch Min Vel", LAUNCHER_MIN_VELOCITY);
+        telemetry.addData("Launch tgt Vel", LAUNCHER_TARGET_VELOCITY);
+        telemetry.addData("Pose", "(%.1f, %.1f, %.1f)", currentPose.position.x, currentPose.position.y, Math.toDegrees(currentPose.heading.toDouble()));
+        telemetry.addData("Velocity", "(%.1f, %.1f, %.1f)", currentVelocity.linearVel.x, currentVelocity.linearVel.y, Math.toDegrees(currentVelocity.angVel));
+        telemetry.addData("Dist Blue", "%.1f in", distance_to_blue);
+        telemetry.addData("Dist Red", "%.1f in", distance_to_red);
+        telemetry.update();
+
     }
 
     /*
