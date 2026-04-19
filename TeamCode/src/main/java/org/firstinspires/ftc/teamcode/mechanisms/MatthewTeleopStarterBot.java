@@ -158,7 +158,7 @@ public class MatthewTeleopStarterBot extends OpMode {
     }
 
     void mecanumDrive(double forward, double strafe, double rotate){
-        double denominator = Math.max(Math.abs(forward) + Math.abs(strafe) + Math.abs(rotate), 2);
+        double denominator = Math.max(Math.abs(forward) + Math.abs(strafe) + Math.abs(rotate), 1.5);
 
         leftFrontPower = (forward + strafe + rotate) / denominator;
         rightFrontPower = (forward - strafe - rotate) / denominator;
