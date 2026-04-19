@@ -358,5 +358,5 @@ public class AimeeTeleop extends OpMode {
     }
 
     /* I'm doing red goal this week for HW */
-    /*SOMETHING IS VERY VERY WRONG WITH YOUR TELEMETRY SO FIX IT*/
+    /*SOMETHING IS VERY, VERY WRONG WITH YOUR TELEMETRY SO FIX IT*/
 }
