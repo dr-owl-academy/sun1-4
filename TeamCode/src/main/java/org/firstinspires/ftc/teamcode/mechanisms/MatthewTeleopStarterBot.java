@@ -1,6 +1,9 @@
 package org.firstinspires.ftc.teamcode.mechanisms;
 import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
 
+import static org.firstinspires.ftc.teamcode.mechanisms.MatthewPinpoint.RED_GOAL_X;
+import static org.firstinspires.ftc.teamcode.mechanisms.MatthewPinpoint.RED_GOAL_Y;
+
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -227,5 +230,20 @@ public class MatthewTeleopStarterBot extends OpMode {
 
         return 6.36634 * x
                 + 921.80667;
+    }
+    double spintoRed (Pose2d pose2d) {
+        double robotX = pose2d.position.x;
+        double robotY = pose2d.position.y;
+        double robotHeading = pose2d.heading.toDouble(); // radians
+
+        double dx = RED_GOAL_X - robotX;
+        double dy = RED_GOAL_Y - robotY;
+
+        double targetAngle = -Math.atan2(dx, dy); // radians
+        double angleError = targetAngle - robotHeading;
+
+        // wrap to [-pi, pi], can also use mod but more complicated
+        angleError = Math.atan2(Math.sin(angleError), Math.cos(angleError));
+        return -kTurn * angleError;
     }
 }
