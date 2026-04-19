@@ -135,7 +135,7 @@ public class HanmingOpModeTest extends OpMode {
         double blueDist = Math.hypot(blueGoalX - robotX, blueGoalY - robotY);
 
         if (gamepad2.y) {
-            LAUNCHER_TARGET_VELOCITY = velocityFromDistance(blueDist) + kOffset;
+            LAUNCHER_TARGET_VELOCITY = velocityFromDistance(redDist) + kOffset;
             launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
         } else if (gamepad2.b) {
             launcher.setVelocity(STOP_SPEED);
