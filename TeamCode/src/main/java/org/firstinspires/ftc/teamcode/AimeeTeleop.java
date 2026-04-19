@@ -356,5 +356,5 @@ public class AimeeTeleop extends OpMode {
                 + 1021.17195;
     }
 
-    /* I think for the code above it's already done (desmos graphing calc. for reference) */
+    /* I'm doing red goal this week for HW */
 }
