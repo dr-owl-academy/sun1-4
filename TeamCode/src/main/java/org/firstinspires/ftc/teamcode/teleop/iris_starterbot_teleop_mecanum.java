@@ -263,10 +263,8 @@ public class iris_starterbot_teleop_mecanum extends OpMode {
         /*
          * Now we call our "Launch" function.
          */
-        launch(gamepad2.rightBumperWasPressed());
-        PoseVelocity2d currentVelocity = localizer.update();
-        Pose2d currentPose = localizer.getPose();
 
+        launch(gamepad2.rightBumperWasPressed());
 
 // Distance to BLUE goal
         double distance_to_blue = Math.hypot(BLUE_GOAL_X - currentPose.position.x, BLUE_GOAL_Y - currentPose.position.y);
@@ -363,9 +361,19 @@ public class iris_starterbot_teleop_mecanum extends OpMode {
         return 7.19106 * x + 855.80671;
 
     }
-    double spintoRed() {
-        launch(gamepad2.rightBumperWasPressed());
-        PoseVelocity2d currentVelocity = localizer.update();
-        Pose2d currentPose = localizer.getPose();
+    double spintoRed (Pose2d pose2d) {
+        double robotX = pose2d.position.x;
+        double robotY = pose2d.position.y;
+        double robotHeading = pose2d.heading.toDouble(); // radians
+
+        double dx = RED_GOAL_X - robotX;
+        double dy = RED_GOAL_Y - robotY;
+
+        double targetAngle = -Math.atan2(dx, dy); // radians
+        double angleError = targetAngle - robotHeading;
+
+        // wrap to [-pi, pi], can also use mod but more complicated
+        angleError = Math.atan2(Math.sin(angleError), Math.cos(angleError));
+        return -kTurn * angleError;
     }
 }
