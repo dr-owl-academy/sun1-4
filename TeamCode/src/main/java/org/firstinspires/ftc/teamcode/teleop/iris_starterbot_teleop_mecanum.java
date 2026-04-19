@@ -238,6 +238,11 @@ public class iris_starterbot_teleop_mecanum extends OpMode {
          * both motors work to rotate the robot. Combinations of these inputs can be used to create
          * more complex maneuvers.
          */
+        if (gamepad1.right_bumper) {
+            driverTurn = spintoRed(currentPose);
+        } else {
+            driverTurn = gamepad1.right_stick_x;
+        }
         mecanumDrive(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
 
 
@@ -354,4 +359,5 @@ public class iris_starterbot_teleop_mecanum extends OpMode {
         return 7.19106 * x + 855.80671;
 
     }
+    double spintoRed()
 }
