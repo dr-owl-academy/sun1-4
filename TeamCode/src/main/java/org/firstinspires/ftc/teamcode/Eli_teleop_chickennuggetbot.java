@@ -128,7 +128,6 @@ public class Eli_teleop_chickennuggetbot extends OpMode {
     public void loop() {
 
 
-
         mecanumDrive(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
 
         // Compute pose & distances early so auto speed is available below
