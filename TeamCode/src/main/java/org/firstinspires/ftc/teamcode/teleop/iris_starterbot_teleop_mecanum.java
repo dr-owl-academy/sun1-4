@@ -238,6 +238,10 @@ public class iris_starterbot_teleop_mecanum extends OpMode {
          * both motors work to rotate the robot. Combinations of these inputs can be used to create
          * more complex maneuvers.
          */
+        launch(gamepad2.rightBumperWasPressed());
+        PoseVelocity2d currentVelocity = localizer.update();
+        Pose2d currentPose = localizer.getPose();
+
         if (gamepad1.right_bumper) {
             driverTurn = spintoRed(currentPose);
         } else {
@@ -360,6 +364,8 @@ public class iris_starterbot_teleop_mecanum extends OpMode {
 
     }
     double spintoRed() {
-
+        launch(gamepad2.rightBumperWasPressed());
+        PoseVelocity2d currentVelocity = localizer.update();
+        Pose2d currentPose = localizer.getPose();
     }
 }
