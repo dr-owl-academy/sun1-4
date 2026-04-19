@@ -243,7 +243,7 @@ public class iris_starterbot_teleop_mecanum extends OpMode {
         Pose2d currentPose = localizer.getPose();
 
         if (gamepad1.right_bumper) {
-            driverTurn = spintoRed(currentPose);
+            driverTurn = spintoBlue(currentPose);
         } else {
             driverTurn = gamepad1.right_stick_x;
         }
@@ -278,7 +278,7 @@ public class iris_starterbot_teleop_mecanum extends OpMode {
          * queuing a shot.
          */
         if (gamepad2.y) {
-            LAUNCHER_TARGET_VELOCITY = velocityFromDistance(distance_to_red) + kOffset;
+            LAUNCHER_TARGET_VELOCITY = velocityFromDistance(distance_to_blue) + kOffset;
             launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
         } else if (gamepad2.b) { // stop flywheel
             launcher.setVelocity(STOP_SPEED);
@@ -295,6 +295,7 @@ public class iris_starterbot_teleop_mecanum extends OpMode {
         telemetry.addData("Velocity", "(%.1f, %.1f, %.1f)", currentVelocity.linearVel.x, currentVelocity.linearVel.y, Math.toDegrees(currentVelocity.angVel));
         telemetry.addData("Dist Blue", "%.1f in", distance_to_blue);
         telemetry.addData("Dist Red", "%.1f in", distance_to_red);
+        telemetry.addData("Target Angle", targetAngle);
         telemetry.update();
 
     }
@@ -361,13 +362,13 @@ public class iris_starterbot_teleop_mecanum extends OpMode {
         return 7.19106 * x + 855.80671;
 
     }
-    double spintoRed (Pose2d pose2d) {
+    double spintoBlue (Pose2d pose2d) {
         double robotX = pose2d.position.x;
         double robotY = pose2d.position.y;
         double robotHeading = pose2d.heading.toDouble(); // radians
 
-        double dx = RED_GOAL_X - robotX;
-        double dy = RED_GOAL_Y - robotY;
+        double dx = BLUE_GOAL_X - robotX;
+        double dy = BLUE_GOAL_Y - robotY;
 
         double targetAngle = -Math.atan2(dx, dy); // radians
         double angleError = targetAngle - robotHeading;
@@ -376,4 +377,5 @@ public class iris_starterbot_teleop_mecanum extends OpMode {
         angleError = Math.atan2(Math.sin(angleError), Math.cos(angleError));
         return -kTurn * angleError;
     }
+
 }
