@@ -84,7 +84,7 @@ public class iris_starterbot_teleop_mecanum extends OpMode {
     double LAUNCHER_MIN_VELOCITY = 900;
     double kTurn = 0;
     double kOffset = 140;
-
+    double driverTurn = 0;
     // Declare OpMode members.
     private DcMotor leftFrontDrive = null;
     private DcMotor rightFrontDrive = null;
@@ -243,7 +243,7 @@ public class iris_starterbot_teleop_mecanum extends OpMode {
         } else {
             driverTurn = gamepad1.right_stick_x;
         }
-        mecanumDrive(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
+        mecanumDrive(-gamepad1.left_stick_y, gamepad1.left_stick_x, driverTurn);
 
 
         /*
@@ -359,5 +359,7 @@ public class iris_starterbot_teleop_mecanum extends OpMode {
         return 7.19106 * x + 855.80671;
 
     }
-    double spintoRed()
+    double spintoRed() {
+
+    }
 }
