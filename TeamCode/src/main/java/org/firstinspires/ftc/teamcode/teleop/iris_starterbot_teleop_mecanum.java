@@ -82,7 +82,7 @@ public class iris_starterbot_teleop_mecanum extends OpMode {
      */
     double LAUNCHER_TARGET_VELOCITY = 2000;
     double LAUNCHER_MIN_VELOCITY = 900;
-
+    double kTurn = 0;
     double kOffset = 140;
 
     // Declare OpMode members.
