@@ -40,7 +40,6 @@ public class MatthewTeleopStarterBot extends OpMode {
         LAUNCH,
         LAUNCHING,
     }
-
     private LaunchState launchState;
     double leftFrontPower;
     double rightFrontPower;
