@@ -30,7 +30,7 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.teleop;
 
 import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
 
@@ -83,7 +83,7 @@ public class TinaTeleopStarterbot extends OpMode {
     double LAUNCHER_TARGET_VELOCITY = 2000;
     double LAUNCHER_MIN_VELOCITY = 900;
 
-    double kOffset = 140;
+    double kOffset = 160;
 
     // Declare OpMode members.
     private DcMotor leftFrontDrive = null;
@@ -112,7 +112,7 @@ public class TinaTeleopStarterbot extends OpMode {
      * what "State" our machine is in, run the associated code, and when we are done with that step
      * move on to the next state.
      * This enum is called the "LaunchState". It reflects the current condition of the shooter
-     * motor and we move through the enum when the user asks our code to fire a shot.
+     * motor, and we move through the enum when the user asks our code to fire a shot.
      * It starts at idle, when the user requests a launch, we enter SPIN_UP where we get the
      * motor up to speed, once it meets a minimum speed then it starts and then ends the launch process.
      * We can use higher level code to cycle through these states. But this allows us to write
@@ -127,7 +127,7 @@ public class TinaTeleopStarterbot extends OpMode {
 
     private LaunchState launchState;
 
-    // Setup a variable for each drive wheel to save power level for telemetry
+    // Set up a variable for each drive wheel to save power level for telemetry
     double leftFrontPower;
     double rightFrontPower;
     double leftBackPower;
@@ -242,7 +242,7 @@ public class TinaTeleopStarterbot extends OpMode {
 
 
         /*
-        if (gamepad2.dpadUpWasPressed()) {
+         *if (gamepad2.dpadUpWasPressed()) {
             LAUNCHER_TARGET_VELOCITY += 10;
         }
 
@@ -273,7 +273,9 @@ public class TinaTeleopStarterbot extends OpMode {
         if (gamepad2.y) {
             LAUNCHER_TARGET_VELOCITY = velocityFromDistance(distance_to_red) + kOffset;
             launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
+
         } else if (gamepad2.b) { // stop flywheel
+
             launcher.setVelocity(STOP_SPEED);
         }
 
@@ -349,11 +351,12 @@ public class TinaTeleopStarterbot extends OpMode {
     }
 
     double velocityFromDistance(double x) {
+
         // Only clamp minimum (no upper clamp)
+
         x = Math.max(18, x);
 
-        //return -0.000291077 * x * x * x + 0.109951 * x * x - 6.00757 * x + 1334.39439;
-        return 7.19106*x+855.80671;
+        return - 0.00235435 * x * x * x - 0.656851 * x * x + 63.00581 * x - 568.02224;
 
     }
 }
