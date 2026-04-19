@@ -351,9 +351,7 @@ public class iris_starterbot_teleop_mecanum extends OpMode {
     double velocityFromDistance(double x) {
         // Only clamp minimum (no upper clamp)
         x = Math.max(18, x);
-
-        //return -0.000291077 * x * x * x + 0.109951 * x * x - 6.00757 * x + 1334.39439;
-        return 7.19106*x+855.80671;
+        return 7.19106 * x + 855.80671;
 
     }
 }
