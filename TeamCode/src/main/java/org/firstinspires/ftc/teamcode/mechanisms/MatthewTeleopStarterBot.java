@@ -103,14 +103,6 @@ public class MatthewTeleopStarterBot extends OpMode {
             kOffset -= 10;
         }
 
-        // if (gamepad1.dpadLeftWasPressed()) {
-        //     LAUNCHER_TARGET_VELOCITY += 25;
-        // }
-
-        // if (gamepad1.dpadRightWasPressed()) {
-        //     LAUNCHER_TARGET_VELOCITY -= 25;
-        // }
-
         if (gamepad1.right_trigger > 0.1) {
             leftFeeder.setPower(FULL_SPEED);
             rightFeeder.setPower(FULL_SPEED);
