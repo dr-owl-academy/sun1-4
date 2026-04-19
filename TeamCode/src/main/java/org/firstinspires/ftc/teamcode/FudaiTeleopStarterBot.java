@@ -296,7 +296,7 @@ public class FudaiTeleopStarterBot extends OpMode {
     public void stop() {
     }
 
-    void mecanumDrive(double forward, double strafe, double rotate){
+    void mecanumDrive(double forward, double strafe, double rotate) {
 
         /* the denominator is the largest motor power (absolute value) or 1
          * This ensures all the powers maintain the same ratio,
@@ -349,9 +349,23 @@ public class FudaiTeleopStarterBot extends OpMode {
         // Only clamp minimum (no upper clamp)
         x = Math.max(18, x);
 
-        return  -0.00000238762 * x * x * x
-                -0.00198538 * x * x
+        return -0.00000238762 * x * x * x
+                - 0.00198538 * x * x
                 + 6.7136 * x
                 + 979.25862;
     }
-}
+    double spintoRed (Pose2d pose2d) {
+        double robotX = pose2d.position.x;
+        double robotY = pose2d.position.y;
+        double robotHeading = pose2d.heading.toDouble(); // radians
+
+        double dx = RED_GOAL_X - robotX;
+        double dy = RED_GOAL_Y - robotY;
+
+        double targetAngle = -Math.atan2(dx, dy); // radians
+        double angleError = targetAngle - robotHeading;
+
+        // wrap to [-pi, pi], can also use mod but more complicated
+        angleError = Math.atan2(Math.sin(angleError), Math.cos(angleError));
+        return -1.5 * angleError;
+    }}
