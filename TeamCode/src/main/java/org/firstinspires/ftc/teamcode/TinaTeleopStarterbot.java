@@ -62,7 +62,7 @@ import org.firstinspires.ftc.teamcode.PinpointLocalizer;
  * we will also need to adjust the "PIDF" coefficients with some that are a better fit for our application.
  */
 
-@TeleOp(name = "TineTeleopStarterbot", group = "StarterBot")
+@TeleOp(name = "TinaTeleopStarterbot", group = "StarterBot")
 //@Disabled
 public class TinaTeleopStarterbot extends OpMode {
     final double FEED_TIME_SECONDS = 0.50; //The feeder servos run this long when a shot is requested.
@@ -241,20 +241,19 @@ public class TinaTeleopStarterbot extends OpMode {
         mecanumDrive(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
 
 
-
-        /*if (gamepad2.dpadUpWasPressed()) {
-        *   LAUNCHER_TARGET_VELOCITY += 10;
-        *}
+        /*
+        if (gamepad2.dpadUpWasPressed()) {
+            LAUNCHER_TARGET_VELOCITY += 10;
+        }
 
         if (gamepad2.dpadDownWasPressed()) {
             LAUNCHER_TARGET_VELOCITY -= 10;
         }
-
+        */
 
         /*
          * Now we call our "Launch" function.
          */
-
         launch(gamepad2.rightBumperWasPressed());
         PoseVelocity2d currentVelocity = localizer.update();
         Pose2d currentPose = localizer.getPose();
@@ -285,8 +284,8 @@ public class TinaTeleopStarterbot extends OpMode {
         telemetry.addData("motorSpeed", launcher.getVelocity());
         telemetry.addData("Launch Min Vel", LAUNCHER_MIN_VELOCITY);
         telemetry.addData("Launch tgt Vel", LAUNCHER_TARGET_VELOCITY);
-        telemetry.addData("Pose2D", "(%.1f, %.1f, %.1f)", currentPose.position.x, currentPose.position.y, Math.toDegrees(currentPose.heading.toDouble()));
-        telemetry.addData("Velocity", "%.1f", currentVelocity.linearVel.x, currentVelocity.linearVel.y, Math.toDegrees(currentVelocity.angVel));
+        telemetry.addData("Pose", "(%.1f, %.1f, %.1f)", currentPose.position.x, currentPose.position.y, Math.toDegrees(currentPose.heading.toDouble()));
+        telemetry.addData("Velocity", "(%.1f, %.1f, %.1f)", currentVelocity.linearVel.x, currentVelocity.linearVel.y, Math.toDegrees(currentVelocity.angVel));
         telemetry.addData("Dist Blue", "%.1f in", distance_to_blue);
         telemetry.addData("Dist Red", "%.1f in", distance_to_red);
         telemetry.update();
@@ -353,8 +352,8 @@ public class TinaTeleopStarterbot extends OpMode {
         // Only clamp minimum (no upper clamp)
         x = Math.max(18, x);
 
-        //return - 0.00235435 * x * x * x - 0.656851 * x * x + 63.00581 * x - 568.02224;
-        return - 5.59888 * x + 1010.69697;
+        //return -0.000291077 * x * x * x + 0.109951 * x * x - 6.00757 * x + 1334.39439;
+        return 7.19106*x+855.80671;
 
     }
 }
