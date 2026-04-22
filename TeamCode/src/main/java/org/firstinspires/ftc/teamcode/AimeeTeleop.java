@@ -235,6 +235,9 @@ public class AimeeTeleop extends OpMode {
          * more complex maneuvers.
          */
 
+        PoseVelocity2d currentVelocity = localizer.update();
+        Pose2d currentPose = localizer.getPose();
+
         if (gamepad1.right_bumper) {
             driverTurn = spintoRed(currentPose);
         } else {
