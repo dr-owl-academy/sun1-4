@@ -164,7 +164,7 @@ public class iris_starterbot_teleop_mecanum extends OpMode {
          */
         leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
         rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
-        leftBackDrive.setDirection(DcMotor.Direction.FORWARD);
+        leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
         rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
 
 
@@ -275,8 +275,8 @@ public class iris_starterbot_teleop_mecanum extends OpMode {
         double robotY = currentPose.position.y;
         double robotHeading = currentPose.heading.toDouble();
 
-        double dx = RED_GOAL_X - robotX;
-        double dy = RED_GOAL_Y - robotY;
+        double dx = BLUE_GOAL_X - robotX;
+        double dy = BLUE_GOAL_Y - robotY;
 
         double targetAngle = -Math.atan2(dx, dy); // radians
         double angleError = targetAngle - robotHeading;
@@ -294,7 +294,7 @@ public class iris_starterbot_teleop_mecanum extends OpMode {
         telemetry.addData("Dist Red", "%.1f in", distance_to_red);
         telemetry.addData("targetAngle", Math.toDegrees(targetAngle));
         telemetry.addData("angleError", Math.toDegrees(angleError));
-        telemetry.addData("spintoBlue", spintoBlue(currentPose));
+        telemetry.addData("spintoBlue", Math.toDegrees(spintoBlue(currentPose)));
         telemetry.update();
 
     }
@@ -316,7 +316,7 @@ public class iris_starterbot_teleop_mecanum extends OpMode {
 
         leftFrontPower = (forward + strafe + rotate) / denominator;
         rightFrontPower = (forward - strafe - rotate) / denominator;
-        leftBackPower = (forward - strafe + rotate) / denominator;
+        leftBackPower =   (forward - strafe + rotate) / denominator;
         rightBackPower = (forward + strafe - rotate) / denominator;
 
         leftFrontDrive.setPower(leftFrontPower);
