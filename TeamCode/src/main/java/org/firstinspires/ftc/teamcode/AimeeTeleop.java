@@ -83,6 +83,10 @@ public class AimeeTeleop extends OpMode {
 
      double kOffset = 50; /* change this if needed */
 
+    double kTurn = 1.5;
+
+    double driverTurn = 0;
+
     // Declare OpMode members.
     private DcMotor leftFrontDrive = null;
     private DcMotor rightFrontDrive = null;
