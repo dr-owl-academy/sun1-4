@@ -82,7 +82,7 @@ public class iris_starterbot_teleop_mecanum extends OpMode {
      */
     double LAUNCHER_TARGET_VELOCITY = 2000;
     double LAUNCHER_MIN_VELOCITY = 900;
-    double kTurn = 0;
+    double kTurn = 1;
     double kOffset = 140;
     double driverTurn = 0;
     double targetAngle = 0;
@@ -294,6 +294,7 @@ public class iris_starterbot_teleop_mecanum extends OpMode {
         telemetry.addData("Dist Red", "%.1f in", distance_to_red);
         telemetry.addData("targetAngle", Math.toDegrees(targetAngle));
         telemetry.addData("angleError", Math.toDegrees(angleError));
+        telemetry.addData("spintoBlue", spintoBlue(currentPose));
         telemetry.update();
 
     }
