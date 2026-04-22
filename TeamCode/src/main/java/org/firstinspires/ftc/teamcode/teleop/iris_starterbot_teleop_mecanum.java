@@ -251,21 +251,6 @@ public class iris_starterbot_teleop_mecanum extends OpMode {
         }
         mecanumDrive(-gamepad1.left_stick_y, gamepad1.left_stick_x, driverTurn);
 
-
-        /*
-        if (gamepad2.dpadUpWasPressed()) {
-            LAUNCHER_TARGET_VELOCITY += 10;
-        }
-
-        if (gamepad2.dpadDownWasPressed()) {
-            LAUNCHER_TARGET_VELOCITY -= 10;
-        }
-        */
-
-        /*
-         * Now we call our "Launch" function.
-         */
-
         launch(gamepad2.rightBumperWasPressed());
 
         //Distance to BLUE goal
@@ -285,6 +270,16 @@ public class iris_starterbot_teleop_mecanum extends OpMode {
         } else if (gamepad2.b) { // stop flywheel
             launcher.setVelocity(STOP_SPEED);
         }
+
+        double robotX = currentPose.position.x;
+        double robotY = currentPose.position.y;
+        double robotHeading = currentPose.heading.toDouble();
+
+        double dx = RED_GOAL_X - robotX;
+        double dy = RED_GOAL_Y - robotY;
+
+        double targetAngle = -Math.atan2(dx, dy); // radians
+        double angleError = targetAngle - robotHeading;
 
         /*
          * Show the state and motor powers
