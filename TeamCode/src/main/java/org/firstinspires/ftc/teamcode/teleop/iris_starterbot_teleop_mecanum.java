@@ -82,11 +82,12 @@ public class iris_starterbot_teleop_mecanum extends OpMode {
      */
     double LAUNCHER_TARGET_VELOCITY = 2000;
     double LAUNCHER_MIN_VELOCITY = 900;
-    double kTurn = 0;
-    double kOffset = 140;
+
+    double kOffset = 0;
+    double kTurn = 1.5;
     double driverTurn = 0;
-    double targetAngle = 0;
-    double angleError = 0;
+
+
     // Declare OpMode members.
     private DcMotor leftFrontDrive = null;
     private DcMotor rightFrontDrive = null;
@@ -99,7 +100,7 @@ public class iris_starterbot_teleop_mecanum extends OpMode {
     private PinpointLocalizer localizer = null;
 
     // Change this to your desired starting pose: x, y in inches, heading in radians
-    private Pose2d initialRobotPose = new Pose2d(0, 0, 0);
+    private Pose2d initialRobotPose = new Pose2d(-24, -62, 0);
     private static final double PINPOINT_IN_PER_TICK = 0.0019684344326;
 
     ElapsedTime feederTimer = new ElapsedTime();
@@ -166,7 +167,6 @@ public class iris_starterbot_teleop_mecanum extends OpMode {
         rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
         leftBackDrive.setDirection(DcMotor.Direction.FORWARD);
         rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
-
 
         /*
          * Here we set our launcher to the RUN_USING_ENCODER runmode.
@@ -240,15 +240,16 @@ public class iris_starterbot_teleop_mecanum extends OpMode {
          * both motors work to rotate the robot. Combinations of these inputs can be used to create
          * more complex maneuvers.
          */
-        launch(gamepad2.rightBumperWasPressed());
         PoseVelocity2d currentVelocity = localizer.update();
         Pose2d currentPose = localizer.getPose();
 
+// hold left trigger to auto-aim
         if (gamepad1.right_bumper) {
-            driverTurn = spintoBlue(currentPose);
+            driverTurn = spintoRed(currentPose);
         } else {
             driverTurn = gamepad1.right_stick_x;
         }
+
         mecanumDrive(-gamepad1.left_stick_y, gamepad1.left_stick_x, driverTurn);
 
 
@@ -265,14 +266,16 @@ public class iris_starterbot_teleop_mecanum extends OpMode {
         /*
          * Now we call our "Launch" function.
          */
-
         launch(gamepad2.rightBumperWasPressed());
 
-        //Distance to BLUE goal
-        double distance_to_blue = Math.hypot(BLUE_GOAL_X - currentPose.position.x, BLUE_GOAL_Y - currentPose.position.y);
 
-        //Distance to RED goal
-        double distance_to_red = Math.hypot(RED_GOAL_X - currentPose.position.x, RED_GOAL_Y - currentPose.position.y);
+
+
+// Distance to BLUE goal
+        double distToBlue = Math.hypot(BLUE_GOAL_X - currentPose.position.x, BLUE_GOAL_Y - currentPose.position.y);
+
+// Distance to RED goal
+        double distToRed = Math.hypot(RED_GOAL_X - currentPose.position.x, RED_GOAL_Y - currentPose.position.y);
 
 
         /*
@@ -280,11 +283,24 @@ public class iris_starterbot_teleop_mecanum extends OpMode {
          * queuing a shot.
          */
         if (gamepad2.y) {
-            LAUNCHER_TARGET_VELOCITY = velocityFromDistance(distance_to_blue) + kOffset;
+            LAUNCHER_TARGET_VELOCITY = velocityFromDistance(distToRed) + kOffset;
             launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
         } else if (gamepad2.b) { // stop flywheel
             launcher.setVelocity(STOP_SPEED);
         }
+
+        double robotX = currentPose.position.x;
+        double robotY = currentPose.position.y;
+        double robotHeading = currentPose.heading.toDouble();
+
+        double dx = RED_GOAL_X - robotX;
+        double dy = RED_GOAL_Y - robotY;
+
+        double targetAngle = -Math.atan2(dx, dy); // radians
+        double angleError = targetAngle - robotHeading;
+
+        // wrap to [-pi, pi]
+        //angleError = Math.atan2(Math.sin(angleError), Math.cos(angleError));
 
         /*
          * Show the state and motor powers
@@ -295,8 +311,8 @@ public class iris_starterbot_teleop_mecanum extends OpMode {
         telemetry.addData("Launch tgt Vel", LAUNCHER_TARGET_VELOCITY);
         telemetry.addData("Pose", "(%.1f, %.1f, %.1f)", currentPose.position.x, currentPose.position.y, Math.toDegrees(currentPose.heading.toDouble()));
         telemetry.addData("Velocity", "(%.1f, %.1f, %.1f)", currentVelocity.linearVel.x, currentVelocity.linearVel.y, Math.toDegrees(currentVelocity.angVel));
-        telemetry.addData("Dist Blue", "%.1f in", distance_to_blue);
-        telemetry.addData("Dist Red", "%.1f in", distance_to_red);
+        telemetry.addData("Dist Blue", "%.1f in", distToBlue);
+        telemetry.addData("Dist Red", "%.1f in", distToRed);
         telemetry.addData("targetAngle", Math.toDegrees(targetAngle));
         telemetry.addData("angleError", Math.toDegrees(angleError));
         telemetry.update();
@@ -362,16 +378,22 @@ public class iris_starterbot_teleop_mecanum extends OpMode {
     double velocityFromDistance(double x) {
         // Only clamp minimum (no upper clamp)
         x = Math.max(18, x);
-        return 7.19106 * x + 855.80671;
-
+/*
+        return  0.0000487634 * x * x * x
+                - 0.0120502 * x * x
+                + 6.84276 * x
+                + 1021.17195;
+        */
+        return 6.51455 * x + 912.63273;
     }
-    double spintoBlue (Pose2d pose2d) {
+
+    double spintoRed (Pose2d pose2d) {
         double robotX = pose2d.position.x;
         double robotY = pose2d.position.y;
         double robotHeading = pose2d.heading.toDouble(); // radians
 
-        double dx = BLUE_GOAL_X - robotX;
-        double dy = BLUE_GOAL_Y - robotY;
+        double dx = RED_GOAL_X - robotX;
+        double dy = RED_GOAL_Y - robotY;
 
         double targetAngle = -Math.atan2(dx, dy); // radians
         double angleError = targetAngle - robotHeading;
@@ -380,5 +402,4 @@ public class iris_starterbot_teleop_mecanum extends OpMode {
         angleError = Math.atan2(Math.sin(angleError), Math.cos(angleError));
         return -kTurn * angleError;
     }
-
 }
