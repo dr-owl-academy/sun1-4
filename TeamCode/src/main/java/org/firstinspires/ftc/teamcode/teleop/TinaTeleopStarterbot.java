@@ -291,6 +291,8 @@ public class TinaTeleopStarterbot extends OpMode {
         telemetry.addData("Velocity", "(%.1f, %.1f, %.1f)", currentVelocity.linearVel.x, currentVelocity.linearVel.y, Math.toDegrees(currentVelocity.angVel));
         telemetry.addData("blue dist.", "%.1f in", dist_to_blue);
         //telemetry.addData("red dist.", "%.1f in", dist_to_red);
+        telemetry.addData("targetAngle", Math.toDegrees(targetAngle));
+        telemetry.addData("angleError", Math.toDegrees(angleError));
         telemetry.update();
 
     }
