@@ -275,6 +275,16 @@ public class AimeeTeleop extends OpMode {
             launcher.setVelocity(STOP_SPEED);
         }
 
+        double robotX = currentPose.position.x;
+        double robotY = currentPose.position.y;
+        double robotHeading = currentPose.heading.toDouble();
+
+        double dx = redGoalX - robotX;
+        double dy = redGoalY - robotY;
+
+        double targetAngle = -Math.atan2(dx, dy);
+        double angleError = targetAngle - robotHeading;
+
         /*
          * Show the state and motor powers
          */
@@ -286,6 +296,8 @@ public class AimeeTeleop extends OpMode {
         telemetry.addData("Velocity", "(%.1f, %.1f, %.1f)", currentVelocity.linearVel.x, currentVelocity.linearVel.y, Math.toDegrees(currentVelocity.angVel));
         telemetry.addData("Dist Blue", "%.1f in", distToBlueGoal);
         telemetry.addData("Dist Red", "%.1f in", distToRedGoal);
+        telemetry.addData("targetAngle", Math.toDegrees(targetAngle));
+        telemetry.addData("angleError",Math.toDegrees(angleError));
         telemetry.update();
 
     }
@@ -359,4 +371,22 @@ public class AimeeTeleop extends OpMode {
 
     /* I'm doing red goal this week for HW */
     /*SOMETHING IS VERY, VERY WRONG WITH YOUR TELEMETRY SO FIX IT*/
+
+    double spintoRed (Pose2d pose2d) {
+        double robotX = pose2d.position.x;
+        double robotY = pose2d.position.y;
+        double robotHeading = pose2d.heading.toDouble(); // radians
+
+        double dx = redGoalX - robotX;
+        double dy = redGoalY - robotY;
+
+        double targetAngle = -Math.atan2(dx, dy); // radians
+        double angleError = targetAngle - robotHeading;
+
+        // wrap to [-pi, pi], can also use mod but more complicated
+        angleError = Math.atan2(Math.sin(angleError), Math.cos(angleError));
+        return - kTurn * angleError;
+    }
+
+    /*(MODIFY IT LATER) */
 }
