@@ -271,7 +271,7 @@ public class TinaTeleopStarterbot extends OpMode {
          * queuing a shot.
          */
         if (gamepad2.y) {
-            LAUNCHER_TARGET_VELOCITY = velocityFromDistance(distance_to_red) + kOffset;
+            LAUNCHER_TARGET_VELOCITY = velocityFromDistance(distance_to_blue) + kOffset;
             launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
 
         } else if (gamepad2.b) { // stop flywheel
@@ -284,12 +284,12 @@ public class TinaTeleopStarterbot extends OpMode {
          */
         telemetry.addData("State", launchState);
         telemetry.addData("motorSpeed", launcher.getVelocity());
-        telemetry.addData("Launch Min Vel", LAUNCHER_MIN_VELOCITY);
-        telemetry.addData("Launch tgt Vel", LAUNCHER_TARGET_VELOCITY);
+        telemetry.addData("launch_min_vel.", LAUNCHER_MIN_VELOCITY);
+        telemetry.addData("launch_tgt_vel.", LAUNCHER_TARGET_VELOCITY);
         telemetry.addData("Pose", "(%.1f, %.1f, %.1f)", currentPose.position.x, currentPose.position.y, Math.toDegrees(currentPose.heading.toDouble()));
         telemetry.addData("Velocity", "(%.1f, %.1f, %.1f)", currentVelocity.linearVel.x, currentVelocity.linearVel.y, Math.toDegrees(currentVelocity.angVel));
-        telemetry.addData("Dist Blue", "%.1f in", distance_to_blue);
-        telemetry.addData("Dist Red", "%.1f in", distance_to_red);
+        telemetry.addData("blue dist.", "%.1f in", distance_to_blue);
+        //telemetry.addData("red dist.", "%.1f in", distance_to_red);
         telemetry.update();
 
     }
