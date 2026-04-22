@@ -254,15 +254,14 @@ public class TinaTeleopStarterbot extends OpMode {
         /*
          * Now we call our "Launch" function.
          */
+
         launch(gamepad2.rightBumperWasPressed());
         PoseVelocity2d currentVelocity = localizer.update();
         Pose2d currentPose = localizer.getPose();
 
 
-// Distance to BLUE goal
         double distance_to_blue = Math.hypot(BLUE_GOAL_X - currentPose.position.x, BLUE_GOAL_Y - currentPose.position.y);
 
-// Distance to RED goal
         double distance_to_red = Math.hypot(RED_GOAL_X - currentPose.position.x, RED_GOAL_Y - currentPose.position.y);
 
 
