@@ -269,6 +269,7 @@ public class TinaTeleopStarterbot extends OpMode {
          * Here we give the user control of the speed of the launcher motor without automatically
          * queuing a shot.
          */
+
         if (gamepad2.y) {
             LAUNCHER_TARGET_VELOCITY = velocityFromDistance(dist_to_blue) + kOffset;
             launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
@@ -281,6 +282,7 @@ public class TinaTeleopStarterbot extends OpMode {
         /*
          * Show the state and motor powers
          */
+
         telemetry.addData("State", launchState);
         telemetry.addData("motorSpeed", launcher.getVelocity());
         telemetry.addData("launch_min_vel.", LAUNCHER_MIN_VELOCITY);
