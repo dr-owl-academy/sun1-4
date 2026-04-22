@@ -84,7 +84,9 @@ public class DanielStarterbotTeleopMecanums extends OpMode {
     double LAUNCHER_TARGET_VELOCITY = 2000;
     double LAUNCHER_MIN_VELOCITY = 1000;
 
-    double kOffset = 100;
+    double kOffset = 0;
+    double kTurn = 1.5;
+    double driverTurn = 0;
 
     // Declare OpMode members.
     private DcMotor leftFrontDrive = null;
@@ -158,7 +160,7 @@ public class DanielStarterbotTeleopMecanums extends OpMode {
          */
         leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
         rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
-        leftBackDrive.setDirection(DcMotor.Direction.FORWARD);
+        leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
         rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
 
         /*
@@ -230,8 +232,17 @@ public class DanielStarterbotTeleopMecanums extends OpMode {
          * both motors work to rotate the robot. Combinations of these inputs can be used to create
          * more complex maneuvers.
          */
-        mecanumDrive(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
 
+        PoseVelocity2d currentVelocity = localizer.update();
+        Pose2d currentPose = localizer.getPose();
+
+        if (gamepad1.right_bumper) {
+            driverTurn = spintoBlue(currentPose);
+        } else {
+            driverTurn = gamepad1.right_stick_x;
+        }
+
+        mecanumDrive(-gamepad1.left_stick_y, gamepad1.left_stick_x, driverTurn);
         /*
          * Here we give the user control of the speed of the launcher motor without automatically
          * queuing a shot.
@@ -246,8 +257,7 @@ public class DanielStarterbotTeleopMecanums extends OpMode {
          * Now we call our "Launch" function.
          */
         launch(gamepad1.rightBumperWasPressed());
-        PoseVelocity2d currentVelocity = localizer.update();
-        Pose2d currentPose = localizer.getPose();
+
 
 
 //        if (gamepad1.dpadUpWasPressed()) {
@@ -265,11 +275,20 @@ public class DanielStarterbotTeleopMecanums extends OpMode {
         double blueDist = Math.hypot(blueGoalX - robotX, blueGoalY - robotY);
 
         if (gamepad1.y) {
-            LAUNCHER_TARGET_VELOCITY = velocityFromDistance(redDist) + kOffset;
+            LAUNCHER_TARGET_VELOCITY = velocityFromDistance(blueDist) + kOffset;
             launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
         } else if (gamepad1.b) { // stop flywheel
             launcher.setVelocity(STOP_SPEED);
         }
+        double robotHeading = currentPose.heading.toDouble();
+
+        double dx = blueGoalX - robotX;
+        double dy = blueGoalY - robotY;
+
+        double targetAngle = -Math.atan2(dx, dy); // radians
+        double angleError = targetAngle - robotHeading;
+
+
         /*
          * Show the state and motor powers
          */
@@ -281,6 +300,8 @@ public class DanielStarterbotTeleopMecanums extends OpMode {
         telemetry.addData("Velocity", "(%.1f, %.1f, %.1f)", currentVelocity.linearVel.x, currentVelocity.linearVel.y, Math.toDegrees(currentVelocity.angVel));
         telemetry.addData("Dist Blue", "%.1f in", blueDist);
         telemetry.addData("Dist Red", "%.1f in", redDist);
+        telemetry.addData("targetAngle", Math.toDegrees(targetAngle));
+        telemetry.addData("angleError", Math.toDegrees(angleError));
         telemetry.update();
     }
 
@@ -352,4 +373,20 @@ public class DanielStarterbotTeleopMecanums extends OpMode {
                     + 6.84276 * x
                     + 1021.17195;
     }
+
+        double spintoBlue (Pose2d pose2d) {
+            double robotX = pose2d.position.x;
+            double robotY = pose2d.position.y;
+            double robotHeading = pose2d.heading.toDouble(); // radians
+
+            double dx = blueGoalX - robotX;
+            double dy = blueGoalY - robotY;
+
+            double targetAngle = -Math.atan2(dx, dy); // radians
+            double angleError = targetAngle - robotHeading;
+
+            // wrap to [-pi, pi], can also use mod but more complicated
+            angleError = Math.atan2(Math.sin(angleError), Math.cos(angleError));
+            return -kTurn * angleError;
+        }
 }
