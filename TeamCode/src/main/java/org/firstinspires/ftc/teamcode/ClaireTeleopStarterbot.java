@@ -45,8 +45,6 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.PinpointLocalizer;
-
 /*
  * This file includes a teleop (driver-controlled) file for the goBILDA® StarterBot for the
  * 2025-2026 FIRST® Tech Challenge season DECODE™. It leverages a differential/Skid-Steer
@@ -82,8 +80,11 @@ public class ClaireTeleopStarterbot extends OpMode {
      */
     double LAUNCHER_TARGET_VELOCITY = 2000;
     double LAUNCHER_MIN_VELOCITY = 900;
-    double kTurn = 0;
-    double kOffset = 140;
+
+    double kOffset = 0;
+    double kTurn = 1.5;
+    double driverTurn = 0;
+
 
     // Declare OpMode members.
     private DcMotor leftFrontDrive = null;
@@ -97,7 +98,7 @@ public class ClaireTeleopStarterbot extends OpMode {
     private PinpointLocalizer localizer = null;
 
     // Change this to your desired starting pose: x, y in inches, heading in radians
-    private Pose2d initialRobotPose = new Pose2d(0, 0, 0);
+    private Pose2d initialRobotPose = new Pose2d(-24, -62, 0);
     private static final double PINPOINT_IN_PER_TICK = 0.0019684344326;
 
     ElapsedTime feederTimer = new ElapsedTime();
@@ -127,7 +128,7 @@ public class ClaireTeleopStarterbot extends OpMode {
 
     private LaunchState launchState;
 
-    // Set up a variable for each drive wheel to save power level for telemetry
+    // Setup a variable for each drive wheel to save power level for telemetry
     double leftFrontPower;
     double rightFrontPower;
     double leftBackPower;
@@ -164,7 +165,6 @@ public class ClaireTeleopStarterbot extends OpMode {
         rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
         leftBackDrive.setDirection(DcMotor.Direction.FORWARD);
         rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
-
 
         /*
          * Here we set our launcher to the RUN_USING_ENCODER runmode.
@@ -238,7 +238,17 @@ public class ClaireTeleopStarterbot extends OpMode {
          * both motors work to rotate the robot. Combinations of these inputs can be used to create
          * more complex maneuvers.
          */
-        mecanumDrive(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
+        PoseVelocity2d currentVelocity = localizer.update();
+        Pose2d currentPose = localizer.getPose();
+
+// hold left trigger to auto-aim
+        if (gamepad1.right_bumper) {
+            driverTurn = spintoBlue(currentPose);
+        } else {
+            driverTurn = gamepad1.right_stick_x;
+        }
+
+        mecanumDrive(-gamepad1.left_stick_y, gamepad1.left_stick_x, driverTurn);
 
 
         /*
@@ -255,15 +265,15 @@ public class ClaireTeleopStarterbot extends OpMode {
          * Now we call our "Launch" function.
          */
         launch(gamepad2.rightBumperWasPressed());
-        PoseVelocity2d currentVelocity = localizer.update();
-        Pose2d currentPose = localizer.getPose();
+
+
 
 
 // Distance to BLUE goal
-        double distance_to_blue = Math.hypot(BLUE_GOAL_X - currentPose.position.x, BLUE_GOAL_Y - currentPose.position.y);
+        double distToBlue = Math.hypot(BLUE_GOAL_X - currentPose.position.x, BLUE_GOAL_Y - currentPose.position.y);
 
 // Distance to RED goal
-        double distance_to_red = Math.hypot(RED_GOAL_X - currentPose.position.x, RED_GOAL_Y - currentPose.position.y);
+        double distToRed = Math.hypot(RED_GOAL_X - currentPose.position.x, RED_GOAL_Y - currentPose.position.y);
 
 
         /*
@@ -271,11 +281,24 @@ public class ClaireTeleopStarterbot extends OpMode {
          * queuing a shot.
          */
         if (gamepad2.y) {
-            LAUNCHER_TARGET_VELOCITY = velocityFromDistance(distance_to_red);
+            LAUNCHER_TARGET_VELOCITY = velocityFromDistance(distToBlue) + kOffset;
             launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
         } else if (gamepad2.b) { // stop flywheel
             launcher.setVelocity(STOP_SPEED);
         }
+
+        double robotX = currentPose.position.x;
+        double robotY = currentPose.position.y;
+        double robotHeading = currentPose.heading.toDouble();
+
+        double dx = BLUE_GOAL_X - robotX;
+        double dy = BLUE_GOAL_Y - robotY;
+
+        double targetAngle = -Math.atan2(dx, dy); // radians
+        double angleError = targetAngle - robotHeading;
+
+        // wrap to [-pi, pi]
+        //angleError = Math.atan2(Math.sin(angleError), Math.cos(angleError));
 
         /*
          * Show the state and motor powers
@@ -286,8 +309,10 @@ public class ClaireTeleopStarterbot extends OpMode {
         telemetry.addData("Launch tgt Vel", LAUNCHER_TARGET_VELOCITY);
         telemetry.addData("Pose", "(%.1f, %.1f, %.1f)", currentPose.position.x, currentPose.position.y, Math.toDegrees(currentPose.heading.toDouble()));
         telemetry.addData("Velocity", "(%.1f, %.1f, %.1f)", currentVelocity.linearVel.x, currentVelocity.linearVel.y, Math.toDegrees(currentVelocity.angVel));
-        telemetry.addData("Dist Blue", "%.1f in", distance_to_blue);
-        telemetry.addData("Dist Red", "%.1f in", distance_to_red);
+        telemetry.addData("Dist Blue", "%.1f in", distToBlue);
+        telemetry.addData("Dist Red", "%.1f in", distToRed);
+        telemetry.addData("targetAngle", Math.toDegrees(targetAngle));
+        telemetry.addData("angleError", Math.toDegrees(angleError));
         telemetry.update();
 
     }
@@ -347,7 +372,6 @@ public class ClaireTeleopStarterbot extends OpMode {
                 break;
         }
     }
-
     double velocityFromDistance(double x) {
         x = Math.max(18, x);
 
@@ -358,6 +382,23 @@ public class ClaireTeleopStarterbot extends OpMode {
                         + 1021.17195
                         + kOffset);
     }
+
+    double spintoBlue(Pose2d pose2d) {
+        double robotX = pose2d.position.x;
+        double robotY = pose2d.position.y;
+        double robotHeading = pose2d.heading.toDouble(); // radians
+
+        double dx = BLUE_GOAL_X - robotX;
+        double dy = BLUE_GOAL_Y - robotY;
+
+        double targetAngle = -Math.atan2(dx, dy); // radians
+        double angleError = targetAngle - robotHeading;
+
+        // wrap to [-pi, pi], can also use mod but more complicated
+        angleError = Math.atan2(Math.sin(angleError), Math.cos(angleError));
+        return -kTurn * angleError;
+    }
+
 }
 
 
