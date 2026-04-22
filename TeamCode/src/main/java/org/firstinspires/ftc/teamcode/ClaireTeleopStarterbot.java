@@ -82,13 +82,14 @@ public class ClaireTeleopStarterbot extends OpMode {
     double LAUNCHER_MIN_VELOCITY = 900;
 
     double kOffset = 0;
-    double kTurn = 1.5;
+    double kTurn = 2.5;
     double driverTurn = 0;
 
 
     // Declare OpMode members.
     private DcMotor leftFrontDrive = null;
     private DcMotor rightFrontDrive = null;
+
     private DcMotor leftBackDrive = null;
     private DcMotor rightBackDrive = null;
     private DcMotorEx launcher = null;
@@ -128,7 +129,7 @@ public class ClaireTeleopStarterbot extends OpMode {
 
     private LaunchState launchState;
 
-    // Setup a variable for each drive wheel to save power level for telemetry
+    // Set up a variable for each drive wheel to save power level for telemetry
     double leftFrontPower;
     double rightFrontPower;
     double leftBackPower;
