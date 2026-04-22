@@ -279,6 +279,18 @@ public class TinaTeleopStarterbot extends OpMode {
             launcher.setVelocity(STOP_SPEED);
         }
 
+        double robotX = currentPose.position.x;
+        double robotY = currentPose.position.y;
+        double robotHeading = currentPose.heading.toDouble();
+
+        double dx = BLUE_GOAL_X - robotX;
+        double dy = BLUE_GOAL_Y - robotY;
+
+        double target_angle = -Math.atan2(dx, dy);
+        double angle_error = target_angle - robotHeading;
+        // wrap to [-pi, pi]
+        //angle_error = Math.atan2(Math.sin(angle_error) , Math.cos(angle_error));
+
         /*
          * Show the state and motor powers
          */
@@ -291,8 +303,8 @@ public class TinaTeleopStarterbot extends OpMode {
         telemetry.addData("Velocity", "(%.1f, %.1f, %.1f)", currentVelocity.linearVel.x, currentVelocity.linearVel.y, Math.toDegrees(currentVelocity.angVel));
         telemetry.addData("blue dist.", "%.1f in", dist_to_blue);
         //telemetry.addData("red dist.", "%.1f in", dist_to_red);
-        telemetry.addData("targetAngle", Math.toDegrees(targetAngle));
-        telemetry.addData("angleError", Math.toDegrees(angleError));
+        telemetry.addData("target_angle", Math.toDegrees(target_angle));
+        telemetry.addData("angle_error", Math.toDegrees(angle_error));
         telemetry.update();
 
     }
