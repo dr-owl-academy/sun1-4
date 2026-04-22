@@ -84,6 +84,8 @@ public class TinaTeleopStarterbot extends OpMode {
     double LAUNCHER_MIN_VELOCITY = 900;
 
     double kOffset = 160;
+    double kTurn = 1.5;
+    double driver_turn = 0;
 
     // Declare OpMode members.
     private DcMotor leftFrontDrive = null;
@@ -168,8 +170,8 @@ public class TinaTeleopStarterbot extends OpMode {
 
         /*
          * Here we set our launcher to the RUN_USING_ENCODER runmode.
-         * If you notice that you have no control over the velocity of the motor, it just jumps
-         * right to a number much higher than your set point, make sure that your encoders are plugged
+         * If you notice that you have no control over the velocity of the motor. It just jumps
+         * right to a number much higher than your set point; make sure that your encoders are plugged
          * into the port right beside the motor itself. And that the motors polarity is consistent
          * through any wiring.
          */
@@ -238,7 +240,17 @@ public class TinaTeleopStarterbot extends OpMode {
          * both motors work to rotate the robot. Combinations of these inputs can be used to create
          * more complex maneuvers.
          */
-        mecanumDrive(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
+
+        PoseVelocity2d currentVelocity = localizer.update();
+        Pose2d currentPose = localizer.getPose();
+
+        if (gamepad1.right_bumper) {
+            driver_turn = spin_to_blue(currentPose);
+        }else{
+            driver_turn = gamepad1.right_stick_x;
+        }
+
+        mecanumDrive(-gamepad1.left_stick_y, gamepad1.left_stick_x, driver_turn);
 
 
         /*
@@ -256,8 +268,7 @@ public class TinaTeleopStarterbot extends OpMode {
          */
 
         launch(gamepad2.rightBumperWasPressed());
-        PoseVelocity2d currentVelocity = localizer.update();
-        Pose2d currentPose = localizer.getPose();
+
 
 
         double dist_to_blue = Math.hypot(BLUE_GOAL_X - currentPose.position.x, BLUE_GOAL_Y - currentPose.position.y);
@@ -375,5 +386,20 @@ public class TinaTeleopStarterbot extends OpMode {
                 - 0.0676779 * x * x
                 + 13.51296 * x + 739.6681;
 
+    }
+
+    double spin_to_blue (Pose2d pose2d) {
+        double robotX = pose2d.position.x;
+        double robotY = pose2d.position.y;
+        double robotHeading = pose2d.heading.toDouble();
+
+        double dx = BLUE_GOAL_X - robotX;
+        double dy = BLUE_GOAL_Y - robotY;
+
+        double target_angle = -Math.atan2(dx, dy);
+        double angle_error = target_angle - robotHeading;
+
+        angle_error = Math.atan2(Math.sin(angle_error), Math.cos(angle_error));
+        return -kTurn * angle_error;
     }
 }
