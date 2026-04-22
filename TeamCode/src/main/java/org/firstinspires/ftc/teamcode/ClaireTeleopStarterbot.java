@@ -242,7 +242,7 @@ public class ClaireTeleopStarterbot extends OpMode {
         Pose2d currentPose = localizer.getPose();
 
 // hold left trigger to auto-aim
-        if (gamepad1.right_bumper) {
+        if (gamepad1.left_bumper) {
             driverTurn = spintoBlue(currentPose);
         } else {
             driverTurn = gamepad1.right_stick_x;
