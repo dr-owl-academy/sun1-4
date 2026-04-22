@@ -85,6 +85,8 @@ public class iris_starterbot_teleop_mecanum extends OpMode {
     double kTurn = 0;
     double kOffset = 140;
     double driverTurn = 0;
+    double targetAngle = 0;
+    double angleError = 0;
     // Declare OpMode members.
     private DcMotor leftFrontDrive = null;
     private DcMotor rightFrontDrive = null;
@@ -266,10 +268,10 @@ public class iris_starterbot_teleop_mecanum extends OpMode {
 
         launch(gamepad2.rightBumperWasPressed());
 
-// Distance to BLUE goal
+        //Distance to BLUE goal
         double distance_to_blue = Math.hypot(BLUE_GOAL_X - currentPose.position.x, BLUE_GOAL_Y - currentPose.position.y);
 
-// Distance to RED goal
+        //Distance to RED goal
         double distance_to_red = Math.hypot(RED_GOAL_X - currentPose.position.x, RED_GOAL_Y - currentPose.position.y);
 
 
@@ -295,7 +297,8 @@ public class iris_starterbot_teleop_mecanum extends OpMode {
         telemetry.addData("Velocity", "(%.1f, %.1f, %.1f)", currentVelocity.linearVel.x, currentVelocity.linearVel.y, Math.toDegrees(currentVelocity.angVel));
         telemetry.addData("Dist Blue", "%.1f in", distance_to_blue);
         telemetry.addData("Dist Red", "%.1f in", distance_to_red);
-        telemetry.addData("Target Angle", targetAngle);
+        telemetry.addData("targetAngle", Math.toDegrees(targetAngle));
+        telemetry.addData("angleError", Math.toDegrees(angleError));
         telemetry.update();
 
     }
