@@ -47,6 +47,14 @@ public class HanmingOpModeTest extends OpMode {
     double leftBackPower;
     double rightBackPower;
     double kOffset = 0;
+    private static final double RED_GOAL_X = 57.0;
+    private static final double RED_GOAL_Y = 57.0;
+
+    private static final double BLUE_GOAL_X = -57.0;
+    private static final double BLUE_GOAL_Y = 57.0;
+
+    double kTurn = 1.5;   // turning gain, tune this
+    double driverTurn = 0;
 
     @Override
     public void init() {
@@ -87,14 +95,38 @@ public class HanmingOpModeTest extends OpMode {
     }
     @Override
     public void loop() {
-        mecanumDrive(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
+        PoseVelocity2d currentVelocity = localizer.update();
+        Pose2d currentPose = localizer.getPose();
 
-        if (gamepad2.right_bumper) {
-            launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
-        } else if (gamepad2.b) { // stop flywheel
-            launcher.setVelocity(STOP_SPEED);
+        double robotX = currentPose.position.x;
+        double robotY = currentPose.position.y;
+        double actualHeading = currentPose.heading.toDouble();
 
+        double targetX = RED_GOAL_X;
+        double targetY = RED_GOAL_Y;
+
+        if (gamepad1.left_bumper) {
+            targetX = BLUE_GOAL_X;
+            targetY = BLUE_GOAL_Y;
         }
+
+        double dx = targetX - robotX;
+        double dy = targetY - robotY;
+
+        double targetHeading = -Math.atan2(dx, dy);
+        double headingError = targetHeading - actualHeading;
+        headingError = Math.atan2(Math.sin(headingError), Math.cos(headingError));
+
+        if (gamepad1.right_bumper) {
+            driverTurn = aimToRed(currentPose);
+        } else if (gamepad1.left_bumper) {
+            driverTurn = aimToBlue(currentPose);
+        } else {
+            driverTurn = gamepad1.right_stick_x;
+        }
+
+        mecanumDrive(-gamepad1.left_stick_y, gamepad1.left_stick_x, driverTurn);
+
         if (gamepad1.dpadUpWasPressed()) {
             kOffset += 10;
         }
@@ -119,11 +151,6 @@ public class HanmingOpModeTest extends OpMode {
             rightFeeder.setPower(STOP_SPEED);
         }
 
-        PoseVelocity2d currentVelocity = localizer.update();
-        Pose2d currentPose = localizer.getPose();
-
-        double robotX = currentPose.position.x;
-        double robotY = currentPose.position.y;
 // Red goal
         double redGoalX = 57;
         double redGoalY = 57;
@@ -131,23 +158,30 @@ public class HanmingOpModeTest extends OpMode {
         double blueGoalX = -57;
         double blueGoalY = 57;
 // Distance calculations
-        double redDist = Math.hypot(redGoalX - robotX, redGoalY - robotY);
-        double blueDist = Math.hypot(blueGoalX - robotX, blueGoalY - robotY);
+        double redDist = Math.hypot(RED_GOAL_X - robotX, RED_GOAL_Y - robotY);
+        double blueDist = Math.hypot(BLUE_GOAL_X - robotX, BLUE_GOAL_Y - robotY);
 
         if (gamepad2.y) {
             LAUNCHER_TARGET_VELOCITY = velocityFromDistance(redDist) + kOffset;
+            launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
+        } else if (gamepad2.x) {
+            LAUNCHER_TARGET_VELOCITY = velocityFromDistance(blueDist) + kOffset;
             launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
         } else if (gamepad2.b) {
             launcher.setVelocity(STOP_SPEED);
         }
 
         telemetry.addData("Pinpoint Status", localizer.driver.getDeviceStatus());
+        telemetry.addLine();
         telemetry.addData("Pos X", currentPose.position.x);
         telemetry.addData("Pos Y", currentPose.position.y);
-        telemetry.addData("Heading Deg", Math.toDegrees(currentPose.heading.toDouble()));
         telemetry.addData("Pose", "(%.1f, %.1f, %.1f)", currentPose.position.x, currentPose.position.y, Math.toDegrees(currentPose.heading.toDouble()));
         telemetry.addData("Red Goal Dist", "%.2f", redDist);
         telemetry.addData("Blue Goal Dist", "%.2f", blueDist);
+        telemetry.addLine();
+        telemetry.addData("Target Heading", Math.toDegrees(targetHeading));
+        telemetry.addData("Actual Heading", Math.toDegrees(actualHeading));
+        telemetry.addData("Heading Error", Math.toDegrees(headingError));
         telemetry.addLine();
         telemetry.addData("Left Transfer", gamepad2.dpad_left ? "Forward" : "Off");
         telemetry.addData("Right Transfer", gamepad2.dpad_right ? "Reverse" : "Off");
@@ -240,5 +274,36 @@ public class HanmingOpModeTest extends OpMode {
                 + 0.128207 * x * x
                 - 5.0367 * x
                 + 1298.79524;
+    }
+    double aimToRed(Pose2d pose2d) {
+        double robotX = pose2d.position.x;
+        double robotY = pose2d.position.y;
+        double robotHeading = pose2d.heading.toDouble(); // radians
+
+        double dx = RED_GOAL_X - robotX;
+        double dy = RED_GOAL_Y - robotY;
+
+        double targetAngle = -Math.atan2(dx, dy); // radians
+        double angleError = targetAngle - robotHeading;
+
+        angleError = Math.atan2(Math.sin(angleError), Math.cos(angleError));
+
+        return -kTurn * angleError;
+    }
+
+    double aimToBlue(Pose2d pose2d) {
+        double robotX = pose2d.position.x;
+        double robotY = pose2d.position.y;
+        double robotHeading = pose2d.heading.toDouble(); // radians
+
+        double dx = BLUE_GOAL_X - robotX;
+        double dy = BLUE_GOAL_Y - robotY;
+
+        double targetAngle = -Math.atan2(dx, dy); // radians
+        double angleError = targetAngle - robotHeading;
+
+        angleError = Math.atan2(Math.sin(angleError), Math.cos(angleError));
+
+        return -kTurn * angleError;
     }
 }
