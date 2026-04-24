@@ -81,7 +81,7 @@ public class AimeeTeleop extends OpMode {
     double LAUNCHER_TARGET_VELOCITY = 2000; /*maybe try 2000 and 1200 for each one respectively */
      double LAUNCHER_MIN_VELOCITY = 900;
 
-     double kOffset = 140; /* change this if needed */
+     double kOffset = 100; /* change this if needed */ /*change to 140*/
 
     double kTurn = 1.5;
 
