@@ -64,7 +64,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 @TeleOp(name = "AimeeTeleop", group = "StarterBot")
 //@Disabled
 public class AimeeTeleop extends OpMode {
-    final double FEED_TIME_SECONDS = 0.50; //The feeder servos run this long when a shot is requested.
+    final double FEED_TIME_SECONDS = 0.50; //The feeder servos run this long when a shot is requested. /*originally 0.2 btw*/
     final double STOP_SPEED = 0.0; //We send this power to the servos when we want them to stop.
     final double FULL_SPEED = 1.0;
     public static final double redGoalX = 57;
