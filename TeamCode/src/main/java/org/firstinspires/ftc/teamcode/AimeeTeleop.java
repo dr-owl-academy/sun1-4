@@ -79,9 +79,9 @@ public class AimeeTeleop extends OpMode {
      * at. The minimum velocity is a threshold for determining when to fire.
      */
     double LAUNCHER_TARGET_VELOCITY = 2000; /*maybe try 2000 and 1200 for each one respectively */
-     double LAUNCHER_MIN_VELOCITY = 1000;
+     double LAUNCHER_MIN_VELOCITY = 900;
 
-     double kOffset = 50; /* change this if needed */
+     double kOffset = 140; /* change this if needed */
 
     double kTurn = 1.5;
 
