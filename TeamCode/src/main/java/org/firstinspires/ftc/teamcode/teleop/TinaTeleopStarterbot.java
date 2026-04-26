@@ -99,7 +99,7 @@ public class TinaTeleopStarterbot extends OpMode {
     private PinpointLocalizer localizer = null;
 
     // Change this to your desired starting pose: x, y in inches, heading in radians
-    private Pose2d initialRobotPose = new Pose2d(0, 0, 0);
+    private Pose2d initialRobotPose = new Pose2d(-37.5, 62.5, 0);
     private static final double PINPOINT_IN_PER_TICK = 0.0019684344326;
 
     ElapsedTime feederTimer = new ElapsedTime();
