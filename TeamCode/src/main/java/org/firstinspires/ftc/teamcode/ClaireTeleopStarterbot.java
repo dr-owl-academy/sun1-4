@@ -380,7 +380,7 @@ public class ClaireTeleopStarterbot extends OpMode {
         //return -0.00276858 * x * x * x
         //      + 0.734433 * x * x
         //    - 53.4832 * x
-        //  + 2467.23833;
+        //  + 2467.23833
 
         //y=-0.000439386x^{3}+0.128207x^{2}-5.0367x+1298.79524
 
