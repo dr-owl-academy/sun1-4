@@ -79,7 +79,7 @@ public class MatthewTeleopStarterBot extends OpMode {
         rightFeeder.setDirection(DcMotorSimple.Direction.REVERSE);
         telemetry.addData("Status", "Initialized");
 
-        localizer = new PinpointLocalizer(hardwareMap, 0.0019684344326, new Pose2d(0,-62, 0));
+        localizer = new PinpointLocalizer(hardwareMap, 0.0019684344326, new Pose2d(24,-62, 0));
 
     }
 
