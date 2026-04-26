@@ -300,8 +300,9 @@ public class DanielStarterbotTeleopMecanums extends OpMode {
         telemetry.addData("Velocity", "(%.1f, %.1f, %.1f)", currentVelocity.linearVel.x, currentVelocity.linearVel.y, Math.toDegrees(currentVelocity.angVel));
         telemetry.addData("Dist Blue", "%.1f in", blueDist);
         telemetry.addData("Dist Red", "%.1f in", redDist);
-        telemetry.addData("targetAngle", Math.toDegrees(targetAngle));
-        telemetry.addData("angleError", Math.toDegrees(angleError));
+        telemetry.addData("TargetHeading", Math.toDegrees(targetAngle));
+        telemetry.addData("HeadingError", Math.toDegrees(angleError));
+        telemetry.addData("ActualHeading", Math.toDegrees(robotHeading));
         telemetry.update();
     }
 
