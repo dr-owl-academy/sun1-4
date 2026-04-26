@@ -377,7 +377,6 @@ public class TinaTeleopStarterbot extends OpMode {
     }
 
     double velocityFromDistance(double x) {
-
         // Only clamp minimum (no upper clamp)
 
         x = Math.max(18, x);
