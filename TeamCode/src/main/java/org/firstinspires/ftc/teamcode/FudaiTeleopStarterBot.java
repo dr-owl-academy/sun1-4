@@ -60,7 +60,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * we will also need to adjust the "PIDF" coefficients with some that are a better fit for our application.
  */
 
-@TeleOp(name = "CoachTeleopStarterBot", group = "StarterBot")
+@TeleOp(name = "FudaiTeleopStarterBot", group = "StarterBot")
 //@Disabled
 public class FudaiTeleopStarterBot extends OpMode {
     final double FEED_TIME_SECONDS = 0.50; //The feeder servos run this long when a shot is requested.
@@ -81,7 +81,7 @@ public class FudaiTeleopStarterBot extends OpMode {
     double LAUNCHER_TARGET_VELOCITY = 2000;
     double LAUNCHER_MIN_VELOCITY = 900;
 
-    double kOffset = 200;
+    double kOffset = 50;
 
     // Declare OpMode members.
     private DcMotor leftFrontDrive = null;
