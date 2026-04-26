@@ -84,7 +84,7 @@ public class DanielStarterbotTeleopMecanums extends OpMode {
     double LAUNCHER_TARGET_VELOCITY = 2000;
     double LAUNCHER_MIN_VELOCITY = 1000;
 
-    double kOffset = 100;
+    double kOffset = 0;
     double kTurn = 1.5;
     double driverTurn = 0;
 
@@ -368,11 +368,11 @@ public class DanielStarterbotTeleopMecanums extends OpMode {
             // Only clamp minimum (no upper clamp)
             x = Math.max(18, x);
 
-            return 0.0000487634 * x * x * x
-                    - 0.0120502 * x * x
-                    + 6.84276 * x
-                    + 1021.17195;
-    }
+            return -0.000439386 * x * x * x
+                    + 0.128207 * x * x
+                    - 5.0367 * x
+                    + 1298.79524;
+        }
 
         double spintoBlue (Pose2d pose2d) {
             double robotX = pose2d.position.x;
