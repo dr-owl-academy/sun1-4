@@ -248,20 +248,4 @@ public class MatthewTeleopStarterBot extends OpMode {
 
         return -kTurn * angleError;
     }
-
-    double aimToBlue(Pose2d pose2d) {
-        double robotX = pose2d.position.x;
-        double robotY = pose2d.position.y;
-        double robotHeading = pose2d.heading.toDouble(); // radians
-
-        double dx = BLUE_GOAL_X - robotX;
-        double dy = BLUE_GOAL_Y - robotY;
-
-        double targetAngle = -Math.atan2(dx, dy); // radians
-        double angleError = targetAngle - robotHeading;
-
-        angleError = Math.atan2(Math.sin(angleError), Math.cos(angleError));
-
-        return -kTurn * angleError;
-    }
 }
