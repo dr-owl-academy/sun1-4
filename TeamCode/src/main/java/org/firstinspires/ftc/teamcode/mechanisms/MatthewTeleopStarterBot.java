@@ -1,171 +1,140 @@
-package org.firstinspires.ftc.teamcode.mechanisms;
+package org.firstinspires.ftc.teamcode;
+
 import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
 
-import static org.firstinspires.ftc.teamcode.mechanisms.MatthewPinpoint.BLUE_GOAL_X;
-import static org.firstinspires.ftc.teamcode.mechanisms.MatthewPinpoint.BLUE_GOAL_Y;
-import static org.firstinspires.ftc.teamcode.mechanisms.MatthewPinpoint.RED_GOAL_X;
-import static org.firstinspires.ftc.teamcode.mechanisms.MatthewPinpoint.RED_GOAL_Y;
-
-import com.acmerobotics.roadrunner.Pose2d;
-import com.acmerobotics.roadrunner.PoseVelocity2d;
+import com.pedropathing.follower.Follower;
+import com.pedropathing.geometry.Pose;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.PIDFCoefficients;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.PinpointLocalizer;
+import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
+
+@TeleOp(name = "Matthew_Thingy")
+public class MatthewThingy extends OpMode {
+
+    // declare drive motors
+    private DcMotor leftFrontDrive;
+    private DcMotor rightFrontDrive;
+    private DcMotor leftBackDrive;
+    private DcMotor rightBackDrive;
+    private DcMotor intakemotor;
+    private double leftFrontPower;
+    private double rightFrontPower;
+    private double leftBackPower;
+    private double rightBackPower;
+
+    /* Using Pedro to read robot coordinates
+     */
+    private Follower follower;
 
 
-@TeleOp(name = "MatthewTeleopStarterBot", group = "StarterBot")
-public class MatthewTeleopStarterBot extends OpMode {
-    final double FEED_TIME_SECONDS = 0.50;
-    final double STOP_SPEED = 0.0;
-    final double FULL_SPEED = 1.0;
-    double LAUNCHER_TARGET_VELOCITY = 2000;
-    double LAUNCHER_MIN_VELOCITY = 900;
-    // Declare OpMode members.
-    private DcMotor leftFrontDrive = null;
-    private DcMotor rightFrontDrive = null;
-    private DcMotor leftBackDrive = null;
-    private DcMotor rightBackDrive = null;
-    private DcMotorEx launcher = null;
-    private CRServo leftFeeder = null;
-    private CRServo rightFeeder = null;
-    private PinpointLocalizer localizer;
-
-    ElapsedTime feederTimer = new ElapsedTime();
-
-    private enum LaunchState {
-        IDLE,
-        SPIN_UP,
-        LAUNCH,
-        LAUNCHING,
-    }
-    private LaunchState launchState;
-    double leftFrontPower;
-    double rightFrontPower;
-    double leftBackPower;
-    double rightBackPower;
-    double kOffset = 140;
-    double kTurn = 1.5;
-    double driverTurn = 0;
-
+    // Code to run ONCE when the driver hits INIT
     @Override
     public void init() {
 
-        launchState = LaunchState.IDLE;
+        /*
+         * Create the Pedro Follower.
+         * Constants.java must already be configured to use the Pinpoint localizer.
+         */
+        follower = Constants.createFollower(hardwareMap);
+
+        //Change this to your desired starting pose: x, y in inches, pedro takes heading in radians
+        follower.setStartingPose(new Pose(0, 0, Math.toRadians(0)));
+
         leftFrontDrive = hardwareMap.get(DcMotor.class, "frontLeft");
+
         rightFrontDrive = hardwareMap.get(DcMotor.class, "frontRight");
+
         leftBackDrive = hardwareMap.get(DcMotor.class, "backLeft");
+
         rightBackDrive = hardwareMap.get(DcMotor.class, "backRight");
-        launcher = hardwareMap.get(DcMotorEx.class, "Flywheel");
-        leftFeeder = hardwareMap.get(CRServo.class, "leftTransfer");
-        rightFeeder = hardwareMap.get(CRServo.class, "rightTransfer");
+
+        // ADDED: Initialize intake motor
+        intakemotor = hardwareMap.get(DcMotor.class, "intakemotor");
+
         leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
         rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
         leftBackDrive.setDirection(DcMotor.Direction.FORWARD);
         rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
-        launcher.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
         leftFrontDrive.setZeroPowerBehavior(BRAKE);
         rightFrontDrive.setZeroPowerBehavior(BRAKE);
         leftBackDrive.setZeroPowerBehavior(BRAKE);
         rightBackDrive.setZeroPowerBehavior(BRAKE);
-        launcher.setZeroPowerBehavior(BRAKE);
-        leftFeeder.setPower(STOP_SPEED);
-        rightFeeder.setPower(STOP_SPEED);
-        launcher.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(300, 0, 0, 10));
-        rightFeeder.setDirection(DcMotorSimple.Direction.REVERSE);
-        telemetry.addData("Status", "Initialized");
 
-        localizer = new PinpointLocalizer(hardwareMap, 0.0019684344326, new Pose2d(24,-62, 0));
+        // ADDED: Set intake brake mode (optional but recommended)
+        intakemotor.setZeroPowerBehavior(BRAKE);
 
+        leftFrontDrive.setPower(0);
+        rightFrontDrive.setPower(0);
+        leftBackDrive.setPower(0);
+        rightBackDrive.setPower(0);
+
+        // ADDED: Make sure intake starts off
+        intakemotor.setPower(0);
+
+        /*
+         * Read the starting Pinpoint position.
+         */
+        follower.updatePose();
+
+        telemetry.addLine("Initialized");
+
+        telemetry.update();
     }
 
-
+    /*
+     * Code to run REPEATEDLY after the driver hits INIT, but before they hit START
+     */
     @Override
     public void init_loop() {
     }
+
+    /*
+     * Code to run ONCE when the driver hits START
+     */
     @Override
     public void start() {
     }
+
     @Override
     public void loop() {
+
+        //Update only Pedro's position estimate.
+
+        follower.updatePose();
+
         mecanumDrive(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
 
-        if (gamepad1.right_bumper) {
-            launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
-        } else if (gamepad1.b) { // stop flywheel
-            launcher.setVelocity(STOP_SPEED);
+        // ADDED: Intake control with right trigger
+        intakemotor.setPower(gamepad1.right_trigger);
 
-        }
-        if (gamepad1.dpadUpWasPressed()) {
-            kOffset += 10;
-        }
+        //Get the current Pedro pose.
+        Pose robotPose = follower.getPose();
 
-        if (gamepad1.dpadDownWasPressed()) {
-            kOffset -= 10;
-        }
+        double robotX = robotPose.getX();
+        double robotY = robotPose.getY();
+        double robotHeading = robotPose.getHeading();
 
-        if (gamepad1.right_trigger > 0.1) {
-            leftFeeder.setPower(FULL_SPEED);
-            rightFeeder.setPower(FULL_SPEED);
-        } else {
-            leftFeeder.setPower(STOP_SPEED);
-            rightFeeder.setPower(STOP_SPEED);
-        }
+        /*
+         * Display robot coordinates.
+         */
+        telemetry.addData("X", "%.2f inches", robotX);
+        telemetry.addData("Y", "%.2f inches", robotY);
 
-        PoseVelocity2d currentVelocity = localizer.update();
-        Pose2d currentPose = localizer.getPose();
+        telemetry.addData("Heading", "%.1f degrees", Math.toDegrees(robotHeading));
 
-        double robotX = currentPose.position.x;
-        double robotY = currentPose.position.y;
-// Red goal
-        double redGoalX = 57;
-        double redGoalY = 57;
-// Blue goal
-        double blueGoalX = -57;
-        double blueGoalY = 57;
-// Distance calculations
-        double redDist = Math.hypot(redGoalX - robotX, redGoalY - robotY);
-        double blueDist = Math.hypot(blueGoalX - robotX, blueGoalY - robotY);
-
-        if (gamepad1.y) {
-            LAUNCHER_TARGET_VELOCITY = velocityFromDistance(blueDist)+kOffset;
-            launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
-            LAUNCHER_TARGET_VELOCITY = velocityFromDistance(redDist)+kOffset;
-            launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
-        } else if (gamepad1.b) {
-            launcher.setVelocity(STOP_SPEED);
-        }
-
-        telemetry.addData("Pinpoint Status", localizer.driver.getDeviceStatus());
-        telemetry.addData("Pos X", currentPose.position.x);
-        telemetry.addData("Pos Y", currentPose.position.y);
-        telemetry.addData("Heading Deg", Math.toDegrees(currentPose.heading.toDouble()));
-        telemetry.addData("Pose", "(%.1f, %.1f, %.1f)", currentPose.position.x, currentPose.position.y, Math.toDegrees(currentPose.heading.toDouble()));
-        telemetry.addData("Red Goal Dist", "%.2f", redDist);
-        telemetry.addData("Blue Goal Dist", "%.2f", blueDist);
-        telemetry.addLine();
-        telemetry.addData("Left Transfer", gamepad1.dpad_left ? "Forward" : "Off");
-        telemetry.addData("Right Transfer", gamepad1.dpad_right ? "Reverse" : "Off");
-        telemetry.addData("Flywheel Power", launcher.getPower());
-        telemetry.addData("Flywheel Target Speed", LAUNCHER_TARGET_VELOCITY);
-        telemetry.addData("Launch Min Velocity", LAUNCHER_MIN_VELOCITY);
-        telemetry.addData("Offset", kOffset);
         telemetry.update();
-
     }
 
-    @Override
-    public void stop() {
-    }
+    // Converts forward, strafe, and rotation commands into four mecanum-wheel motor powers.
 
-    void mecanumDrive(double forward, double strafe, double rotate){
-        double denominator = Math.max(Math.abs(forward) + Math.abs(strafe) + Math.abs(rotate), 1.5);
+    private void mecanumDrive(double forward, double strafe, double rotate) {
+
+        // the denominator keeps all four motor powers between -1 and 1 while preserving their ratios.
+
+        double denominator = Math.max(Math.abs(forward) + Math.abs(strafe) + Math.abs(rotate), 1);
 
         leftFrontPower = (forward + strafe + rotate) / denominator;
         rightFrontPower = (forward - strafe - rotate) / denominator;
@@ -176,76 +145,12 @@ public class MatthewTeleopStarterBot extends OpMode {
         rightFrontDrive.setPower(rightFrontPower);
         leftBackDrive.setPower(leftBackPower);
         rightBackDrive.setPower(rightBackPower);
-
     }
 
-    void launch(boolean bumperHeld) {
-        switch (launchState) {
-
-            case IDLE:
-                if (bumperHeld) {
-                    launchState = LaunchState.SPIN_UP;
-                }
-                break;
-
-            case SPIN_UP:
-                if (!bumperHeld) {
-                    launchState = LaunchState.IDLE;
-                    break;
-                }
-
-                launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
-
-                if (launcher.getVelocity() > LAUNCHER_MIN_VELOCITY) {
-                    feederTimer.reset();
-                    launchState = LaunchState.LAUNCH;
-                }
-                break;
-
-            case LAUNCH:
-                if (!bumperHeld) {
-                    leftFeeder.setPower(STOP_SPEED);
-                    rightFeeder.setPower(STOP_SPEED);
-                    launchState = LaunchState.IDLE;
-                    break;
-                }
-
-                if (feederTimer.seconds() > 1.0) {
-                    leftFeeder.setPower(FULL_SPEED);
-                    rightFeeder.setPower(FULL_SPEED);
-                    launchState = LaunchState.LAUNCHING;
-                }
-                break;
-
-            case LAUNCHING:
-                if (!bumperHeld) {
-                    leftFeeder.setPower(STOP_SPEED);
-                    rightFeeder.setPower(STOP_SPEED);
-                    launchState = LaunchState.IDLE;
-                }
-                break;
-        }
-    }
-    double velocityFromDistance(double x) {
-
-        x = Math.max(18, x);
-
-        return 6.36634 * x
-                + 921.80667;
-    }
-    double aimToRed(Pose2d pose2d) {
-        double robotX = pose2d.position.x;
-        double robotY = pose2d.position.y;
-        double robotHeading = pose2d.heading.toDouble(); // radians
-
-        double dx = RED_GOAL_X - robotX;
-        double dy = RED_GOAL_Y - robotY;
-
-        double targetAngle = -Math.atan2(dx, dy); // radians
-        double angleError = targetAngle - robotHeading;
-
-        angleError = Math.atan2(Math.sin(angleError), Math.cos(angleError));
-
-        return -kTurn * angleError;
+    /*
+     * Code to run ONCE after the driver hits STOP
+     */
+    @Override
+    public void stop() {
     }
 }
