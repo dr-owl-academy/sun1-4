@@ -198,6 +198,7 @@ public class CoachTeleopStarterBot extends OpMode {
          * Much like our drivetrain motors, we set the left feeder servo to reverse so that they
          * both work to feed the ball into the robot.
          */
+        leftFeeder.setDirection(DcMotorSimple.Direction.FORWARD);
         rightFeeder.setDirection(DcMotorSimple.Direction.REVERSE);
         // coach: Initialize PinpointLocalizer with starting pose
         localizer = new PinpointLocalizer(hardwareMap, PINPOINT_IN_PER_TICK, initialRobotPose);
