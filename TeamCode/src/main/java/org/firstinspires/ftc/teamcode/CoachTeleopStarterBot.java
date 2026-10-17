@@ -238,7 +238,8 @@ public class CoachTeleopStarterBot extends OpMode {
          * both motors work to rotate the robot. Combinations of these inputs can be used to create
          * more complex maneuvers.
          */
-        PoseVelocity2d currentVelocity = localizer.update();
+        PoseVelocity2d currentVelocity;
+        currentVelocity = localizer.update();
         Pose2d currentPose = localizer.getPose();
 
 // hold left trigger to auto-aim
