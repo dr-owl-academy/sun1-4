@@ -10,8 +10,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
-@TeleOp(name = "MAtthewTeleopStarterBot")
-public class MatthewThingy extends OpMode {
+@TeleOp(name = "MatthewTeleopStarterBot")
+public class MatthewTeleopStarterBot extends OpMode {
 
     // declare drive motors
     private DcMotor leftFrontDrive;
