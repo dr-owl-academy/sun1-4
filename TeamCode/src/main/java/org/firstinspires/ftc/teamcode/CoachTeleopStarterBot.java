@@ -359,16 +359,20 @@ public class CoachTeleopStarterBot extends OpMode {
                 }
                 break;
             case LAUNCH:
+                leftFeeder.getController().pwmEnable();
+                rightFeeder.getController().pwmEnable();
                 leftFeeder.setPower(FULL_SPEED);
                 rightFeeder.setPower(FULL_SPEED);
                 feederTimer.reset();
                 launchState = LaunchState.LAUNCHING;
                 break;
+
             case LAUNCHING:
                 if (feederTimer.seconds() > FEED_TIME_SECONDS) {
                     launchState = LaunchState.IDLE;
                     leftFeeder.setPower(STOP_SPEED);
                     rightFeeder.setPower(STOP_SPEED);
+                    leftFeeder.getController().pwmDisable(); // Completely cuts signal to the servo port
                 }
                 break;
         }
